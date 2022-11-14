@@ -1,0 +1,45 @@
+{
+  "name": "moutarde",
+  "version": "1.0.0",
+  "description": "Petite api de recueil de donnees",
+  "main": "index.js",
+  "scripts": {
+    "build:dev": "cross-env NODE_ENV=development webpack --config setups/webpack.dev.js",
+    "start:dev": "cross-env NODE_ENV=development node sources/backend/server.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config setups/webpack.prod.js",
+    "start:prod": "cross-env NODE_ENV=production node sources/backend/server.js",
+    "test": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tr-tt/moutarde.git"
+  },
+  "keywords": [
+    "moutarde",
+    "dijon"
+  ],
+  "author": "ghyslaine ribeiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tr-tt/moutarde/issues"
+  },
+  "homepage": "https://github.com/tr-tt/moutarde#readme",
+  "devDependencies": {
+    "chokidar": "^3.5.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.2",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-middleware": "^5.3.3",
+    "webpack-hot-middleware": "^2.25.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
