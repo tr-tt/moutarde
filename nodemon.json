@@ -1,0 +1,9 @@
+{
+    "watch": [
+        "sources/backend/"
+    ],
+    "env": {
+        "NODE_ENV": "development"
+      },
+    "ext": "js"
+}
