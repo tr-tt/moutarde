@@ -23,8 +23,8 @@ if(process.env.NODE_ENV === 'development')
     const compiler = webpack(webpackConfig)
     const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {publicPath: webpackConfig.output.publicPath, writeToDisk: true})
     const webpackHotMiddleware = require('webpack-hot-middleware')(compiler, {log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000})
-    const htmlFiles = `${path.resolve('sources', 'frontend')}/**/*.html`
-    const watcher = chokidar.watch(htmlFiles)
+    const sourcesFiles = `${path.resolve('sources', 'frontend')}/**/*`
+    const watcher = chokidar.watch(sourcesFiles)
 
     watcher.on('ready', () =>
     {
