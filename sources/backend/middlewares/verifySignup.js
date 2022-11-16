@@ -3,7 +3,7 @@ const db = require('../postgres')
 checkDuplicateUsernameOrEmail = (req, res, next) =>
 {
     // Username
-    db.Users.findOne({
+    db.User.findOne({
         where:
         {
             username: req.body.username
@@ -12,15 +12,14 @@ checkDuplicateUsernameOrEmail = (req, res, next) =>
     {
         if (user)
         {
-            res.status(400).send({
-                message: '[ERROR] Username is already in use.'
+            return res.status(400).send({
+                message: '[ERROR] Username is already in use.',
+                code: 3
             })
-
-            return
         }
 
         // Email
-        db.Users.findOne({
+        db.User.findOne({
             where:
             {
                 email: req.body.email
@@ -29,11 +28,10 @@ checkDuplicateUsernameOrEmail = (req, res, next) =>
         {
             if (user)
             {
-                res.status(400).send({
-                    message: '[ERROR] Email is already in use.'
+                return res.status(400).send({
+                    message: '[ERROR] Email is already in use.',
+                    code: 4
                 })
-
-                return
             }
 
             next()

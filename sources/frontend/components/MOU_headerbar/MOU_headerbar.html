@@ -3,11 +3,90 @@
 {
     box-sizing: border-box;
 }
-input
+#header
 {
-    background-color: red;
+    background-color: fff;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+    
+}
+#header__container
+{
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 60px;
+    justify-content: space-between;
+    padding: 0 60px;
+}
+#header__logo
+{
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    line-height: 26px;
+    column-gap: 16px;
+}
+#header__logo span
+{
+    color: #5f6368;
+}
+#header__aside
+{
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+}
+::slotted(.button) 
+{
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: .1px;
+    line-height: 24px;
+    align-items: center;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    padding: 12px 24px 11px !important; /* override from style.css file */
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    transition: background-color .2s,box-shadow .2s,color .2s;  
+}
+::slotted(.button.default)
+{
+    border-color: #dadce0;
+    background-color: rgba(0,0,0,0);
+    color: rgb(var(--color-moutarde-normal));
+}
+::slotted(.button.default:hover)
+{
+    box-shadow: none;
+    background-color: #f1f3f4;
+    border-color: rgb(var(--color-moutarde-light));
+    color: rgb(var(--color-moutarde-sature));
+}
+::slotted(.button.colored)
+{
+    background-color: rgb(var(--color-moutarde-normal));
+    color: #fff;
+}
+::slotted(.button.colored:hover)
+{
+    background-color: rgb(var(--color-moutarde-sature));
+    box-shadow: none;
+    color: #fff;
 }
 </style>
-<div>
-    <p>TEST</p>
+<div id="header">
+    <div id="header__container">
+        <div id="header__logo">
+            <img src="/static/images/Moutarde.png" width="30px" height="30px">
+            <span>Moutarde</span>
+        </div>
+        <slot id="header__aside"></slot>
+    </div> 
 </div>

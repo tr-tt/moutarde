@@ -1,6 +1,6 @@
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const cssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const { merge } = require('webpack-merge')
+const {merge} = require('webpack-merge')
 
 const commonConfiguration = require('./webpack.common.js')
 

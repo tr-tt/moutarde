@@ -11,27 +11,37 @@ class MOUsignup extends HTMLElement
 
         this.shadowRoot.innerHTML = template
 
-        this.button = this.shadowRoot.querySelector('#button')
-        this.username = this.shadowRoot.querySelector('#username')
-        this.email = this.shadowRoot.querySelector('#email')
-        this.password = this.shadowRoot.querySelector('#password')
+        this._button = this.shadowRoot.querySelector('#button')
+        this._username = this.shadowRoot.querySelector('#username')
+        this._email = this.shadowRoot.querySelector('#email')
+        this._password = this.shadowRoot.querySelector('#password')
+        this._username__error = this.shadowRoot.querySelector('#username__error')
+        this._email__error = this.shadowRoot.querySelector('#email__error')
+        this._password__error = this.shadowRoot.querySelector('#password__error')
     }
 
     connectedCallback()
     {
-        this.button.addEventListener('click', this._onClickHandler.bind(this))
+        this._button.addEventListener('click', this._onClickHandler.bind(this))
     }
 
     disconnectedCallback()
     {
-        this.button.removeEventListener('click', this._onClickHandler)
+        this._button.removeEventListener('click', this._onClickHandler)
     }
 
     _onClickHandler()
     {
-        const username = this.username.value
-        const email = this.email.value
-        const password = this.password.value
+        this._username__error.textContent = ''
+        this._username__error.style.opacity = 0
+        this._email__error.textContent = ''
+        this._email__error.style.opacity = 0
+        this._password__error.textContent = ''
+        this._password__error.style.opacity = 0
+
+        const username = this._username.value
+        const email = this._email.value
+        const password = this._password.value
 
         if (username && email && password)
         {
@@ -39,17 +49,28 @@ class MOUsignup extends HTMLElement
                 .signup(username, email, password)
                 .then((response) =>
                 {
-                    // [TODO] Success
-
-                    console.log('[DEBUG] signup success -')
-                    console.log(response.data)
+                    window.location.replace('signin') // Redirect to login page with no ability to return back.
                 })
                 .catch((exception) =>
                 {
-                    // [TODO] Error
+                    const code = exception.response.data.code || 0
 
-                    console.log('[DEBUG] signin error -')
-                    console.log(exception.response.data)
+                    switch(code)
+                    {
+                        case 3:
+                            this._username__error.textContent = `Ce nom d'utilisateur est déjà utilisé`
+                            this._username__error.style.opacity = 1
+                            break;
+                        case 4:
+                            this._email__error.textContent = 'Cette adresse email est déjà utilisée'
+                            this._email__error.style.opacity = 1
+                            break;
+                        case 5:
+                            console.log(`[ERROR] Internal server error code ${code}`)
+                            break;
+                        default:
+                            console.log(`[ERROR] Unknown error code ${code}`)
+                    }
                 })
         }
     }

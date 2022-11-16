@@ -1,18 +1,17 @@
 import axios from 'axios'
-import authHeader from './auth-header'
+import authHeader from './auth.header'
 
 const API_URL = `${window.location.href}/api/data/`
 
 class UserService
 {
-    getPublicContent()
+    getBoard()
     {
-        return axios.get(API_URL + 'all')
-    }
-
-    getUserBoard()
-    {
-        return axios.get(API_URL + 'user', { headers: authHeader() })
+        return axios
+            .get('board',
+            {
+                headers: authHeader()
+            })
     }
 }
 

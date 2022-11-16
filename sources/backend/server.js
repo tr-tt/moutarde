@@ -46,6 +46,9 @@ else
     app.use(express.static(path.resolve('_build')))
 }
 
+// PUBLIC FILES (like images)
+app.use('/static', express.static(path.resolve('sources', 'backend', 'public')))
+
 // DATABASE
 const db = require('./postgres')
 
@@ -53,16 +56,14 @@ db.sequelize.sync()
 
 // ROUTES
 require('./routes/auth.routes')(app)
+require('./routes/user.routes')(app)
 
-app.get('/', (request, response) =>
+app.get('*', (req, res) =>
 {
-    response.sendFile(path.resolve('_build', 'index.html'))
+    res.sendFile(path.resolve('_build', 'index.html'))
 })
 
-app.get('/services', (request, response) =>
-{
-    response.sendFile(path.resolve('_build', 'services.html'))
-})
+
 
 server.listen(APP_PORT, '127.0.0.1', () => 
 {

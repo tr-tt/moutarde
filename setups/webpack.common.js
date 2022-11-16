@@ -1,6 +1,6 @@
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 
 module.exports = 
 {
@@ -10,9 +10,17 @@ module.exports =
         [
             path.resolve('sources', 'frontend', 'pages', 'index', 'index.js')
         ],
-        services:
+        signin:
         [
-            path.resolve('sources', 'frontend', 'pages', 'services', 'services.js')
+            path.resolve('sources', 'frontend', 'pages', 'signin', 'signin.js')
+        ],
+        signup:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'signup', 'signup.js')
+        ],
+        board:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'board', 'board.js')
         ]
     },
 
@@ -38,9 +46,23 @@ module.exports =
 
         new htmlWebpackPlugin(
         {
-            filename: 'services.html',
-            template: path.resolve('sources', 'frontend', 'pages', 'services', 'services.html'),
-            chunks: ['services']
+            filename: 'signin.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'signin', 'signin.html'),
+            chunks: ['signin']
+        }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'signup.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'signup', 'signup.html'),
+            chunks: ['signup']
+        }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'board.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'board', 'board.html'),
+            chunks: ['board']
         }),
     ],
 

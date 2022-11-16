@@ -1,5 +1,5 @@
 const path = require('path')
-const { merge } = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const webpack = require('webpack')
 
 const commonConfiguration = require('./webpack.common.js')
@@ -15,7 +15,15 @@ module.exports = merge(
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ],
-            services:
+            signin:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            signup:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            board:
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ]

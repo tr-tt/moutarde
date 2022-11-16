@@ -26,6 +26,6 @@ const db = {}
 db.sequelize = sequelize
 db.DataTypes = DataTypes
 
-db.Users = require('./user.model.js')(sequelize, DataTypes)
+db.User = require('./user.model.js')(sequelize, DataTypes)
 
 module.exports = db

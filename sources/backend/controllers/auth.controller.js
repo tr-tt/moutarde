@@ -4,9 +4,19 @@ const config = require(path.resolve('setups', 'auth.config.js'))
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
+exports.signinPage = (req, res) =>
+{
+    res.sendFile(path.resolve('_build', 'signin.html'))
+}
+
+exports.signupPage = (req, res) =>
+{
+    res.sendFile(path.resolve('_build', 'signup.html'))
+}
+
 exports.signup = (req, res) =>
 {
-    db.Users.create({
+    db.Userscreate({
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
@@ -20,14 +30,15 @@ exports.signup = (req, res) =>
     .catch((err) =>
     {
         res.status(500).send({
-            message: `[ERROR] When registering new user - ${err.message}`
+            message: `[ERROR] When registering new user - ${err.message}`,
+            code: 5
         })
     })
 }
 
 exports.signin = (req, res) =>
 {
-    db.Users.findOne({
+    db.User.findOne({
         where:
         {
             username: req.body.username
@@ -38,7 +49,8 @@ exports.signin = (req, res) =>
         if (!user)
         {
             return res.status(404).send({
-                message: `[ERROR] User ${req.body.username} not found.`
+                message: `[ERROR] User ${req.body.username} not found.`,
+                code: 1
             })
         }
 
@@ -51,7 +63,8 @@ exports.signin = (req, res) =>
         {
             return res.status(401).send({
                 accessToken: null,
-                message: '[ERROR] Invalid password.'
+                message: '[ERROR] Invalid password.',
+                code: 2
             })
         }
 

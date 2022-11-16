@@ -13,11 +13,19 @@ module.exports = (app) =>
         next()
     })
 
+    app.get(
+        '/signin',
+        controller.signinPage
+    )
+
+    app.get(
+        '/signup',
+        controller.signupPage
+    )
+
     app.post(
         '/api/auth/signup',
-        [
-            verifySignUp.checkDuplicateUsernameOrEmail
-        ],
+        [verifySignUp.checkDuplicateUsernameOrEmail],
         controller.signup
     )
 

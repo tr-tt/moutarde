@@ -1,14 +1,88 @@
-<form action="#" onsubmit="return false">
-    <div class="signup">
-        <label for="username"><b>Utilisateur</b></label>
-        <input id="username" type="text" placeholder="Nom d'utilisateur" name="username" required>
-
-        <label for="email"><b>Adresse email</b></label>
-        <input id="email" type="text" placeholder="Adresse email" name="email" required>
-    
-        <label for="password"><b>Mot de passe</b></label>
-        <input id="password" type="text" placeholder="Mot de passe" name="password" required>
-
-        <button id="button" type="submit">S'inscrire</button>
+<style>
+*
+{
+    box-sizing: border-box;
+}
+#form
+{
+    border-radius: 8px;
+    border: 1px solid #dadce0;
+    padding: 40px;
+}
+#form__container
+{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+#form__field #title
+{
+    font-size: 30px;
+    font-weight: 400;
+}
+#form__field form
+{
+    display: flex;
+    flex-direction: column;
+}
+#form__field form button
+{
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: .1px;
+    line-height: 24px;
+    align-items: center;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    padding: 12px 24px 11px;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    transition: background-color .2s,box-shadow .2s,color .2s;
+    background-color: rgb(var(--color-moutarde-normal));
+    color: #fff;
+}
+#form__field form button:hover
+{
+    background-color: rgb(var(--color-moutarde-sature));
+    box-shadow: none;
+    color: #fff;
+}
+#form__logo
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.error
+{
+    color: #d93025;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity .2s;
+}
+</style>
+<div id="form">
+  <div id="form__container">
+      <div id="form__field">
+          <span id="title">Créer votre compte Moutarde</span>
+          <form action="#" onsubmit="return false">
+              <input id="username" type="text" placeholder="Nom d'utilisateur" required>
+              <span id="username__error" class="error"></span>
+              <input id="email" type="text" placeholder="Adresse email" required>
+              <span id="email__error" class="error"></span>
+              <input id="password" type="password" required>
+              <span id="password__error" class="error"></span>
+              <button id="button">Créer un compte</button>
+          </form>
       </div>
-</form>
+      <div id="form__logo">
+          <img src="/static/images/Moutarde.png" width="120px" height="120px">
+      </div>
+  </div>
+</div>
