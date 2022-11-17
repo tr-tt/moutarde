@@ -1,58 +1,44 @@
 <style>
-*
-{
-    box-sizing: border-box;
-}
-#form
+@import "/static/css/root.css";
+
+#signup
 {
     border-radius: 8px;
     border: 1px solid #dadce0;
     padding: 40px;
+    width: 100%;
 }
-#form__container
+#signup__container
 {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 40px;
 }
-#form__field #title
+#signup__field
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 300px;
+    gap: 20px;
+}
+#title
 {
     font-size: 30px;
     font-weight: 400;
 }
-#form__field form
+#subtitle
+{
+    transition: color .2s;
+}
+#signup__form
 {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
-#form__field form button
-{
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: .1px;
-    line-height: 24px;
-    align-items: center;
-    appearance: none;
-    -webkit-appearance: none;
-    border: 1px solid rgba(0,0,0,0);
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    padding: 12px 24px 11px;
-    text-decoration: none;
-    text-rendering: optimizeLegibility;
-    transition: background-color .2s,box-shadow .2s,color .2s;
-    background-color: rgb(var(--color-moutarde-normal));
-    color: #fff;
-}
-#form__field form button:hover
-{
-    background-color: rgb(var(--color-moutarde-sature));
-    box-shadow: none;
-    color: #fff;
-}
-#form__logo
+#signup__logo
 {
     display: flex;
     align-items: center;
@@ -61,27 +47,26 @@
 .error
 {
     color: #d93025;
-    font-size: 12px;
-    font-weight: 600;
-    opacity: 0;
-    transition: opacity .2s;
+}
+.success
+{
+    color: green;
 }
 </style>
-<div id="form">
-  <div id="form__container">
-      <div id="form__field">
-          <span id="title">Créer votre compte Moutarde</span>
-          <form action="#" onsubmit="return false">
-              <input id="username" type="text" placeholder="Nom d'utilisateur" required>
-              <span id="username__error" class="error"></span>
-              <input id="email" type="text" placeholder="Adresse email" required>
-              <span id="email__error" class="error"></span>
-              <input id="password" type="password" required>
-              <span id="password__error" class="error"></span>
-              <button id="button">Créer un compte</button>
+<div id="signup">
+  <div id="signup__container">
+      <div id="signup__field">
+          <span id="title">Créer votre compte</span>
+          <span id="subtitle">Créer un compte sur l'api moutarde</span>
+          <form id="signup__form" action="#" onsubmit="return false">
+              <input id="username" class="root input" type="text" placeholder="Nom d'utilisateur" required>
+              <input id="email" class="root input" type="text" placeholder="Adresse email" required>
+              <input id="password" class="root input" type="password" required>
+              <button id="button" class="root button colored">Créer un compte</button>
           </form>
+          <a href="/signin" id="signin" class="root button default">Connexion</a>
       </div>
-      <div id="form__logo">
+      <div id="signup__logo">
           <img src="/static/images/Moutarde.png" width="120px" height="120px">
       </div>
   </div>

@@ -8,9 +8,10 @@ verifyToken = (req, res, next) =>
 
     if (!token)
     {
+        console.error('[ERROR] verifyToken - No token provided')
+
         return res.status(403).send({
-            message: '[ERROR] No token provided.',
-            code: 6
+            message: `L'accès à ces données est réservé aux utilisateurs enregistrés`,
         })
     }
 
@@ -18,9 +19,10 @@ verifyToken = (req, res, next) =>
     {
         if (err)
         {
+            console.error('[ERROR] verifyToken -Unauthorized')
+
             return res.status(401).send({
-                message: '[ERROR] Unauthorized.',
-                code: 7
+                message: `Vous n'avez pas accès à ces données`,
             })
         }
         

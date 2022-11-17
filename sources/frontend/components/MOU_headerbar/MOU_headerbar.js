@@ -10,16 +10,6 @@ class MOUheaderbar extends HTMLElement
 
         this.shadowRoot.innerHTML = template
     }
-
-    connectedCallback()
-    {
-
-    }
-
-    disconnectedCallback()
-    {
-
-    }
 }
 
 window.customElements.define('mou-headerbar', MOUheaderbar)

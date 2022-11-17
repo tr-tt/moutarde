@@ -15,9 +15,11 @@ class MOUsignup extends HTMLElement
         this._username = this.shadowRoot.querySelector('#username')
         this._email = this.shadowRoot.querySelector('#email')
         this._password = this.shadowRoot.querySelector('#password')
-        this._username__error = this.shadowRoot.querySelector('#username__error')
-        this._email__error = this.shadowRoot.querySelector('#email__error')
-        this._password__error = this.shadowRoot.querySelector('#password__error')
+        this._subtitle = this.shadowRoot.querySelector('#subtitle')
+        this._form = this.shadowRoot.querySelector('form')
+        this._signin = this.shadowRoot.querySelector('#signin')
+
+        this._signin.style.display = 'none'
     }
 
     connectedCallback()
@@ -32,12 +34,7 @@ class MOUsignup extends HTMLElement
 
     _onClickHandler()
     {
-        this._username__error.textContent = ''
-        this._username__error.style.opacity = 0
-        this._email__error.textContent = ''
-        this._email__error.style.opacity = 0
-        this._password__error.textContent = ''
-        this._password__error.style.opacity = 0
+        this._subtitle.classList.remove('error')
 
         const username = this._username.value
         const email = this._email.value
@@ -46,31 +43,18 @@ class MOUsignup extends HTMLElement
         if (username && email && password)
         {
             AuthService
-                .signup(username, email, password)
-                .then((response) =>
+                .postApiUsers(username, email, password)
+                .then(() =>
                 {
-                    window.location.replace('signin') // Redirect to login page with no ability to return back.
+                    this._subtitle.textContent = `Votre compte a été crée, vous pouvez dès à présent vous connecter en cliquant sur le bouton ci dessus`
+                    this._subtitle.classList.add('success')
+                    this._form.style.display = 'none'
+                    this._signin.style.display = 'block'
                 })
                 .catch((exception) =>
                 {
-                    const code = exception.response.data.code || 0
-
-                    switch(code)
-                    {
-                        case 3:
-                            this._username__error.textContent = `Ce nom d'utilisateur est déjà utilisé`
-                            this._username__error.style.opacity = 1
-                            break;
-                        case 4:
-                            this._email__error.textContent = 'Cette adresse email est déjà utilisée'
-                            this._email__error.style.opacity = 1
-                            break;
-                        case 5:
-                            console.log(`[ERROR] Internal server error code ${code}`)
-                            break;
-                        default:
-                            console.log(`[ERROR] Unknown error code ${code}`)
-                    }
+                    this._subtitle.textContent = exception.response.data.message
+                    this._subtitle.classList.add('error')
                 })
         }
     }

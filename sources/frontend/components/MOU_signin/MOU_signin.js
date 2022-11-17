@@ -1,5 +1,4 @@
 import AuthService from '../../services/auth.service'
-import UserService from '../../services/user.service'
 import template from 'raw-loader!./MOU_signin.html'
 
 class MOUsignin extends HTMLElement
@@ -15,8 +14,7 @@ class MOUsignin extends HTMLElement
         this._button = this.shadowRoot.querySelector('#button')
         this._username = this.shadowRoot.querySelector('#username')
         this._password = this.shadowRoot.querySelector('#password')
-        this._username__error = this.shadowRoot.querySelector('#username__error')
-        this._password__error = this.shadowRoot.querySelector('#password__error')
+        this._subtitle = this.shadowRoot.querySelector('#subtitle')
     }
 
     connectedCallback()
@@ -31,10 +29,7 @@ class MOUsignin extends HTMLElement
 
     _onClickHandler()
     {
-        this._username__error.textContent = ''
-        this._username__error.style.opacity = 0
-        this._password__error.textContent = ''
-        this._password__error.style.opacity = 0
+        this._subtitle.classList.remove('error')
 
         const username = this._username.value
         const password = this._password.value
@@ -42,28 +37,21 @@ class MOUsignin extends HTMLElement
         if (username && password)
         {
             AuthService
-                .signin(username, password)
-                .then((response) =>
+                .postApiAuthSignin(username, password)
+                .then(() =>
                 {
-                    window.location.replace('board')
+                    this._subtitle.textContent = `Bienvenu ${username}, vous allez être redirigé vers la page des tableaux`
+                    this._subtitle.classList.add('success')
+
+                    setTimeout(() =>
+                    {
+                        window.location.replace('board') // Redirect to login page with no ability to return back.
+                    }, 1500)                    
                 })
                 .catch((exception) =>
                 {
-                    const code = exception.response.data.code || 0
-
-                    switch(code)
-                    {
-                        case 1:
-                            this._username__error.textContent = `Cet utilisateur n'est pas enregistré`
-                            this._username__error.style.opacity = 1
-                            break;
-                        case 2:
-                            this._password__error.textContent = 'Le mot de passe est incorrect'
-                            this._password__error.style.opacity = 1
-                            break;
-                        default:
-                            console.log(`[ERROR] Unknown error code ${code}`)
-                    }
+                    this._subtitle.textContent = exception.response.data.message
+                    this._subtitle.classList.add('error')
                 })
         }
     }

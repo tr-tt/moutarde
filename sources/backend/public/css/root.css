@@ -1,0 +1,90 @@
+/*
+This file include generic style that can be used inside shadowdom of webcomponents.
+*/
+
+@font-face
+{
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins-Regular.ttf') format('ttf');
+    font-weight: 600;
+    font-style: normal;
+}
+
+:root
+{
+    /* palette */
+    --color-moutarde-normal: 221, 204, 109;
+    --color-moutarde-sature: 235, 214, 95;
+    --color-moutarde-light: 237, 227, 176;
+
+    /* spaces */
+    --space_5: 5px;
+    --space_10: 10px;
+    --space_15: 15px;
+    --space_60: 60px;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* BUTTON */
+
+.root.button
+{
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: .1px;
+    line-height: 24px;
+    align-items: center;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    padding: 12px 24px 11px !important; /* override */
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    transition: background-color .2s,box-shadow .2s,color .2s;  
+}
+.root.button.default
+{
+    border-color: #dadce0;
+    background-color: rgba(0,0,0,0);
+    color: rgb(var(--color-moutarde-normal));
+}
+.root.button.default:hover
+{
+    box-shadow: none;
+    background-color: #f1f3f4;
+    border-color: rgb(var(--color-moutarde-light));
+    color: rgb(var(--color-moutarde-sature));
+}
+.root.button.colored
+{
+    background-color: rgb(var(--color-moutarde-normal));
+    color: #fff;
+}
+.root.button.colored:hover
+{
+    background-color: rgb(var(--color-moutarde-sature));
+    box-shadow: none;
+    color: #fff;
+}
+
+/* INPUT */
+
+.root.input
+{
+    padding: 12px 20px;
+    border: 1px solid black;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+}

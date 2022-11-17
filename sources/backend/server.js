@@ -14,6 +14,9 @@ const APP_PORT = process.env.APP_PORT || 5000
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+// DATABASE
+const db = require('./postgres')
+
 if(process.env.NODE_ENV === 'development')
 {
     const webpack = require('webpack')
@@ -24,7 +27,11 @@ if(process.env.NODE_ENV === 'development')
     const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {publicPath: webpackConfig.output.publicPath, writeToDisk: true})
     const webpackHotMiddleware = require('webpack-hot-middleware')(compiler, {log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000})
     const sourcesFiles = `${path.resolve('sources', 'frontend')}/**/*`
-    const watcher = chokidar.watch(sourcesFiles)
+    const rootCssFile = path.resolve('sources', 'backend', 'public', 'css', 'root.css')
+    const watcher = chokidar.watch([
+        sourcesFiles,
+        rootCssFile
+    ])
 
     watcher.on('ready', () =>
     {
@@ -40,30 +47,23 @@ if(process.env.NODE_ENV === 'development')
 
     app.use(webpackDevMiddleware)
     app.use(webpackHotMiddleware)
+
+    //db.sequelize.sync({force: true})
+    db.sequelize.sync()
 }
 else
 {
     app.use(express.static(path.resolve('_build')))
+
+    db.sequelize.sync()
 }
 
 // PUBLIC FILES (like images)
 app.use('/static', express.static(path.resolve('sources', 'backend', 'public')))
 
-// DATABASE
-const db = require('./postgres')
-
-db.sequelize.sync()
-
 // ROUTES
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
-
-app.get('*', (req, res) =>
-{
-    res.sendFile(path.resolve('_build', 'index.html'))
-})
-
-
 
 server.listen(APP_PORT, '127.0.0.1', () => 
 {

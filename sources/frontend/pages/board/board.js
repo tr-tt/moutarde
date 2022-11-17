@@ -1,4 +1,3 @@
-import '../../common/style.css'
 import './board.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
 import AuthService from '../../services/auth.service.js'

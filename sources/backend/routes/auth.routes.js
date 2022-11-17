@@ -1,4 +1,4 @@
-const {verifySignUp} = require('../middlewares')
+const {checkUp} = require('../middlewares')
 const controller = require('../controllers/auth.controller')
 
 module.exports = (app) =>
@@ -13,24 +13,55 @@ module.exports = (app) =>
         next()
     })
 
+    // api REST for USERS
+    
     app.get(
-        '/signin',
-        controller.signinPage
+        '/api/users',
+        controller.getApiUsers
     )
 
     app.get(
-        '/signup',
-        controller.signupPage
+        '/api/users/:id',
+        [
+            checkUp.userIdExist
+        ],
+        controller.getApiUsersId
     )
 
     app.post(
-        '/api/auth/signup',
-        [verifySignUp.checkDuplicateUsernameOrEmail],
-        controller.signup
+        '/api/users',
+        [
+            checkUp.usernameExist,
+            checkUp.emailExist,
+            checkUp.passwordExist,
+            checkUp.usernameDuplicated,
+            checkUp.emailDuplicated
+        ],
+        controller.postApiUsers
     )
+
+    app.put(
+        '/api/users/:id',
+        [
+            checkUp.usernameDuplicated,
+            checkUp.emailDuplicated
+        ],
+        controller.putApiUsersId
+    )
+
+    app.delete(
+        '/api/users/:id',
+        controller.deleteApiUsersId
+    )
+
+    // SIGNIN
 
     app.post(
         '/api/auth/signin',
-        controller.signin
-    )
+        [
+            checkUp.usernameExist,
+            checkUp.passwordExist
+        ],
+        controller.postApiAuthSignin
+    )    
 }

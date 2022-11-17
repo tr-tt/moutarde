@@ -1,4 +1,3 @@
-import '../../common/style.css'
 import './signin.css'
 import '../../components/MOU_signin/MOU_signin'
 

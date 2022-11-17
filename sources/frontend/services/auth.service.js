@@ -2,7 +2,7 @@ import axios from 'axios'
 
 class AuthService
 {
-    signin(username, password)
+    postApiAuthSignin(username, password)
     {
         return axios
             .post('api/auth/signin',
@@ -26,10 +26,10 @@ class AuthService
         localStorage.removeItem('user')
     }
 
-    signup(username, email, password)
+    postApiUsers(username, email, password)
     {
         return axios
-            .post('api/auth/signup',
+            .post('api/users',
             {
                 username,
                 email,

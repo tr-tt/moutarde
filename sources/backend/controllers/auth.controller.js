@@ -4,53 +4,163 @@ const config = require(path.resolve('setups', 'auth.config.js'))
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
-exports.signinPage = (req, res) =>
+const checkExistUserData = (req) =>
 {
-    res.sendFile(path.resolve('_build', 'signin.html'))
+    const updateData = {}
+
+    if (req.body.username)
+    {
+        updateData.username = req.body.username
+    }
+
+    if (req.body.email)
+    {
+        updateData.email = req.body.email
+    }
+
+    if (req.body.password)
+    {
+        updateData.password = bcrypt.hashSync(req.body.password, 8)
+    }
+
+    return updateData
 }
 
-exports.signupPage = (req, res) =>
+exports.getApiUsers = (req, res) =>
 {
-    res.sendFile(path.resolve('_build', 'signup.html'))
+    db.User.findAll().then((users) =>
+    {
+        return res.status(200).send({
+            message: users
+        })
+    }).catch((exception) =>
+    {
+        console.error(`[ERROR] getApiUsers - ${exception.message}`)
+
+        return res.status(500).send({
+            message: `Impossible d'accéder aux données utilisateur`,
+        })
+    })
 }
 
-exports.signup = (req, res) =>
+exports.getApiUsersId = (req, res) =>
 {
-    db.Userscreate({
+    return res.status(200).send({
+        message: req.user
+    })
+}
+
+exports.postApiUsers = (req, res) =>
+{
+    db.User.create({
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8)
-    })
-    .then((user) =>
+    }).then((user) =>
     {
-        res.send({
-            message: '[INFO] User was registered successfully.'
+        console.log('[DEBUG] postApiUsers new user created')
+        console.log(user)
+
+        return res.status(200).send({
+            message: `L'utilisateur ${req.body.username} a été enregistré`
         })
-    })
-    .catch((err) =>
+    }).catch((exception) =>
     {
-        res.status(500).send({
-            message: `[ERROR] When registering new user - ${err.message}`,
-            code: 5
+        console.error(`[ERROR] postApiUsers ${req.body.username} ${req.body.email} ${req.body.password} - ${exception.message}`)
+
+        return res.status(500).send({
+            message: `L'utilisateur ${req.body.username} n'a pas pu être enregistré`,
         })
     })
 }
 
-exports.signin = (req, res) =>
+exports.putApiUsersId = (req, res) =>
+{
+    const userData = checkExistUserData(req)
+
+    db.User.update(userData,
+    {
+        where:
+        {
+            id: req.params.id
+        }
+    }).then((count) =>
+    {
+        console.log(`[DEBUG] putApiUsersId ${count} row(s) updated`)
+
+        if(count != '0')
+        {
+            return res.status(200).send({
+                message: `L'utilisateur ${req.params.id} a été mis à jour`
+            })
+        }
+        else
+        {
+            return res.status(400).send({
+                message: `L'utilisateur ${req.params.id} n'a pas été mis à jour`
+            })
+        }
+        
+    }).catch((exception) =>
+    {
+        console.error(`[ERROR] putApiUsersId ${req.params.id} ${userData} - ${exception.message}`)
+
+        return res.status(500).send({
+            message: `L'utilisateur ${req.params.id} n'a pas pu être mis à jour`,
+        })
+    })
+}
+
+exports.deleteApiUsersId = (req, res) =>
+{
+    db.User.destroy({
+        where:
+        {
+            id: req.params.id
+        }
+    }).then((count) =>
+    {
+        console.log(`[DEBUG] deleteApiUsersId ${count} row(s) deleted`)
+
+        if(count != '0')
+        {
+            return res.status(200).send({
+                message: `L'utilisateur numéro ${req.params.id} a été supprimé`
+            })
+        }
+        else
+        {
+            return res.status(400).send({
+                message: `L'utilisateur numéro ${req.params.id} a déjà été supprimé`
+            })
+        }
+
+        
+    }).catch((exception) =>
+    {
+        console.error(`[ERROR] deleteApiUsersId ${req.params.id} - ${exception.message}`)
+
+        return res.status(500).send({
+            message: `L'utilisateur numéro ${req.params.id} n'a pas pu être supprimé`,
+        })
+    })
+}
+
+exports.postApiAuthSignin = (req, res) =>
 {
     db.User.findOne({
         where:
         {
             username: req.body.username
         }
-    })
-    .then((user) =>
+    }).then((user) =>
     {
         if (!user)
         {
+            console.error(`[ERROR] postApiAuthSignin user ${req.body.username} not found`)
+
             return res.status(404).send({
-                message: `[ERROR] User ${req.body.username} not found.`,
-                code: 1
+                message: `L'utilisateur ${req.body.username} n'a pas été trouvé`,
             })
         }
 
@@ -61,28 +171,31 @@ exports.signin = (req, res) =>
 
         if (!passwordIsValid)
         {
+            console.error(`[ERROR] postApiAuthSignin user ${req.body.username} password ${req.body.password} invalid`)
+
             return res.status(401).send({
                 accessToken: null,
-                message: '[ERROR] Invalid password.',
-                code: 2
+                message: 'Le mot de passe est invalide',
             })
         }
 
-        const token = jwt.sign({ id: user.id }, config.secret, {
+        const token = jwt.sign({id: user.id}, config.secret,
+        {
             expiresIn: 86400 // 24 hours
         })
 
-        res.status(200).send({
+        return res.status(200).send({
           id: user.id,
           username: user.username,
           email: user.email,
           accessToken: token
         })
-    })
-    .catch((err) =>
+    }).catch((exception) =>
     {
-        res.status(500).send({
-            message: `[ERROR] When login - ${err.message}`
+        console.error(`[ERROR] postApiAuthSignin user ${req.body.username} password ${req.body.password} - ${exception.message}`)
+
+        return res.status(500).send({
+            message: `Impossible de se connceter avec l'utilisateur ${req.body.username}`
         })
     })
 }

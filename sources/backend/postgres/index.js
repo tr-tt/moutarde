@@ -27,5 +27,6 @@ db.sequelize = sequelize
 db.DataTypes = DataTypes
 
 db.User = require('./user.model.js')(sequelize, DataTypes)
+db.Post = require('./post.model.js')(sequelize, DataTypes)
 
 module.exports = db
