@@ -34,6 +34,7 @@ class MOUsignup extends HTMLElement
 
     _onClickHandler()
     {
+        this._subtitle.textContent = 'Créer un compte utilisateur.'
         this._subtitle.classList.remove('error')
 
         const username = this._username.value
@@ -46,7 +47,7 @@ class MOUsignup extends HTMLElement
                 .postApiUsers(username, email, password)
                 .then(() =>
                 {
-                    this._subtitle.textContent = `Votre compte a été crée, vous pouvez dès à présent vous connecter en cliquant sur le bouton ci dessus`
+                    this._subtitle.textContent = `Votre compte a été crée, vous pouvez dès à présent vous connecter en cliquant sur le bouton ci dessus :`
                     this._subtitle.classList.add('success')
                     this._form.style.display = 'none'
                     this._signin.style.display = 'block'

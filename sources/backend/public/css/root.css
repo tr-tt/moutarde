@@ -12,16 +12,38 @@ This file include generic style that can be used inside shadowdom of webcomponen
 
 :root
 {
-    /* palette */
-    --color-moutarde-normal: 221, 204, 109;
-    --color-moutarde-sature: 235, 214, 95;
-    --color-moutarde-light: 237, 227, 176;
+    /*===============================================//
+    // COLOR PALETTE
+    //===============================================*/
+
+    --color-1: 248, 172, 0  ; /* #F8AC00 */
+    --color-2: 149, 172, 32 ; /* #95AC20 */
+    --color-3: 57 , 155, 83 ; /* #399B53 */
+    --color-4: 0  , 131, 113; /* #008371 */
+    --color-5: 0  , 101, 115; /* #006573 */
+    --color-6: 47 , 72 , 88 ; /* #2F4858 */
+
+    --color-1-shade-1: 255, 247, 229; /* #fff7e5 */
+    --color-1-shade-2: 255, 232, 179; /* #ffe8b3 */
+    --color-1-shade-3: 255, 216, 128; /* #ffd880 */
+    --color-1-shade-4: 255, 200, 77 ; /* #ffc84d */
+    --color-1-shade-5: 255, 185, 26 ; /* #ffb91a */
+    --color-1-shade-6: 230, 159, 0  ; /* #e69f00 */
+    --color-1-shade-7: 179, 124, 0  ; /* #b37c00 */
+
+    --dark-text:  95 , 99 , 104; /* #5f6368 */
 
     /* spaces */
     --space_5: 5px;
     --space_10: 10px;
     --space_15: 15px;
     --space_60: 60px;
+
+    /*===============================================//
+    // BORDER RADIUS
+    //===============================================*/
+
+    --border-radius: 20px;
 }
 
 *
@@ -30,6 +52,7 @@ This file include generic style that can be used inside shadowdom of webcomponen
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    letter-spacing: .1px;
 }
 
 /* BUTTON */
@@ -38,12 +61,11 @@ This file include generic style that can be used inside shadowdom of webcomponen
 {
     font-size: 16px;
     font-weight: 600;
-    letter-spacing: .1px;
     line-height: 24px;
     align-items: center;
     appearance: none;
     -webkit-appearance: none;
-    border: 1px solid rgba(0,0,0,0);
+    border: 1px solid rgba(0, 0, 0, 0);
     border-radius: 4px;
     cursor: pointer;
     display: inline-flex;
@@ -51,30 +73,28 @@ This file include generic style that can be used inside shadowdom of webcomponen
     padding: 12px 24px 11px !important; /* override */
     text-decoration: none;
     text-rendering: optimizeLegibility;
-    transition: background-color .2s,box-shadow .2s,color .2s;  
+    transition: background-color .2s, color .2s;  
 }
 .root.button.default
 {
     border-color: #dadce0;
-    background-color: rgba(0,0,0,0);
-    color: rgb(var(--color-moutarde-normal));
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(var(--color-1));
 }
 .root.button.default:hover
 {
-    box-shadow: none;
     background-color: #f1f3f4;
-    border-color: rgb(var(--color-moutarde-light));
-    color: rgb(var(--color-moutarde-sature));
+    border-color: rgb(var(--color-1-shade-3));
+    color: rgb(var(--color-1-shade-4));
 }
 .root.button.colored
 {
-    background-color: rgb(var(--color-moutarde-normal));
+    background-color: rgb(var(--color-1));
     color: #fff;
 }
 .root.button.colored:hover
 {
-    background-color: rgb(var(--color-moutarde-sature));
-    box-shadow: none;
+    background-color: rgb(var(--color-1-shade-4));
     color: #fff;
 }
 
@@ -83,7 +103,7 @@ This file include generic style that can be used inside shadowdom of webcomponen
 .root.input
 {
     padding: 12px 20px;
-    border: 1px solid black;
+    border: 1px solid rgb(var(--dark-text));
     border-radius: 4px;
     width: 100%;
     font-size: 16px;

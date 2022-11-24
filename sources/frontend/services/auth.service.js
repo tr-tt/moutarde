@@ -10,20 +10,12 @@ class AuthService
                 username,
                 password
             })
-            .then((response) =>
-            {
-                if (response.data.accessToken)
-                {
-                    localStorage.setItem('user', JSON.stringify(response.data))
-                }
-
-                return response.data
-            })
     }
 
-    logout()
+    getApiAuthSignout()
     {
-        localStorage.removeItem('user')
+        return axios
+            .get('api/auth/signout')
     }
 
     postApiUsers(username, email, password)
@@ -35,11 +27,6 @@ class AuthService
                 email,
                 password
             })
-    }
-
-    getCurrentUser()
-    { 
-        return JSON.parse(localStorage.getItem('user'))
     }
 }
 

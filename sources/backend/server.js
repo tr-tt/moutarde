@@ -2,6 +2,8 @@ const dotenv = require('dotenv')
 const express = require('express')
 const http = require('http')
 const path = require('path')
+const cookieParser = require('cookie-parser')
+const favicon = require('serve-favicon')
 
 dotenv.config({
     path: path.resolve(`.env.${process.env.NODE_ENV}`)
@@ -13,6 +15,8 @@ const APP_PORT = process.env.APP_PORT || 5000
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cookieParser())
+app.use(favicon(path.resolve('sources', 'backend', 'public', 'images', 'favicon.ico')))
 
 // DATABASE
 const db = require('./postgres')
@@ -64,6 +68,8 @@ app.use('/static', express.static(path.resolve('sources', 'backend', 'public')))
 // ROUTES
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
+require('./routes/post.routes')(app)
+require('./routes/pages.routes')(app)
 
 server.listen(APP_PORT, '127.0.0.1', () => 
 {

@@ -47,7 +47,12 @@ module.exports = merge(
                         'style-loader',
                         {
                             loader: 'css-loader',
-                            options: {sourceMap: true},
+                            options:
+                            {
+                                sourceMap: true,
+                                modules: false,
+                                url: false
+                            },
                         }
                     ],
                 }

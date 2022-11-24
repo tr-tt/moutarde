@@ -1,0 +1,56 @@
+body
+{
+    height: 100vh;
+    display: flex;
+}
+
+mou-headerbar
+{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 1;
+}
+
+#button
+{
+    border: 1px solid;
+    border-color: #dadce0;
+    border-radius: 4px;
+    padding: 6px 20px;
+    cursor: pointer;
+    transition: background-color .2s, color .2s;
+}
+#button:hover,
+#button.active
+{
+    background-color: #f1f3f4;
+    border-color: rgb(var(--color-1-shade-3));
+    color: rgb(var(--color-1-shade-4));
+}
+#button:hover img,
+#button.active img
+{
+    filter: invert(86%) sepia(60%) saturate(3093%) hue-rotate(316deg) brightness(101%) contrast(103%);
+}
+
+#button img
+{
+    filter: invert(61%) sepia(68%) saturate(695%) hue-rotate(3deg) brightness(101%) contrast(99%);
+}
+
+mou-usermenu
+{
+    position: fixed;
+    top: 70px;
+    right: 60px;
+    display: none;
+}
+
+mou-board
+{
+    position: absolute;
+    top: 60px;
+    width: 100%;
+}

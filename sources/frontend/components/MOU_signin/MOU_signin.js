@@ -29,6 +29,7 @@ class MOUsignin extends HTMLElement
 
     _onClickHandler()
     {
+        this._subtitle.textContent = `Se connecter sur l'api HERCULE.`
         this._subtitle.classList.remove('error')
 
         const username = this._username.value
@@ -40,13 +41,7 @@ class MOUsignin extends HTMLElement
                 .postApiAuthSignin(username, password)
                 .then(() =>
                 {
-                    this._subtitle.textContent = `Bienvenu ${username}, vous allez être redirigé vers la page des tableaux`
-                    this._subtitle.classList.add('success')
-
-                    setTimeout(() =>
-                    {
-                        window.location.replace('board') // Redirect to login page with no ability to return back.
-                    }, 1500)                    
+                    window.location.href = '/board'
                 })
                 .catch((exception) =>
                 {

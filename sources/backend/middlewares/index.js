@@ -1,8 +1,10 @@
-const authJwt = require('./authJwt')
-const checkUp = require('./checkUp')
+const authMiddleware = require('./auth.middleware')
+const userMiddleware = require('./user.middleware')
+const postMiddleware = require('./post.middleware')
 
 module.exports =
 {
-    authJwt,
-    checkUp
+    authMiddleware,
+    userMiddleware,
+    postMiddleware
 }

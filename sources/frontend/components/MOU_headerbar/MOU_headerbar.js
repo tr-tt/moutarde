@@ -9,6 +9,23 @@ class MOUheaderbar extends HTMLElement
         this.attachShadow({mode: "open"})
 
         this.shadowRoot.innerHTML = template
+
+        this._header__logo = this.shadowRoot.querySelector('#header__logo')
+    }
+
+    connectedCallback()
+    {
+        this._header__logo.addEventListener('click', this._onClickHandler.bind(this))
+    }
+
+    disconnectedCallback()
+    {
+        this._header__logo.removeEventListener('click', this._onClickHandler)
+    }
+
+    _onClickHandler()
+    {
+        window.location.href = '/'
     }
 }
 

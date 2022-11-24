@@ -33,7 +33,8 @@ module.exports = merge(
                             options:
                             {
                                 sourceMap: false,
-                                modules: false
+                                modules: false,
+                                url: false
                             },
                         }
                     ]

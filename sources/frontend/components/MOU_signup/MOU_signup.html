@@ -3,10 +3,11 @@
 
 #signup
 {
-    border-radius: 8px;
-    border: 1px solid #dadce0;
+    border-radius: var(--border-radius);
+    border: 1px solid rgb(var(--color-1));
     padding: 40px;
     width: 100%;
+    color: rgb(var(--dark-text));
 }
 #signup__container
 {
@@ -19,16 +20,16 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 300px;
+    width: 400px;
     gap: 20px;
 }
-#title
+h2
 {
-    font-size: 30px;
-    font-weight: 400;
+    font-size: 40px;
 }
-#subtitle
+p
 {
+    font-size: 18px;
     transition: color .2s;
 }
 #signup__form
@@ -56,8 +57,8 @@
 <div id="signup">
   <div id="signup__container">
       <div id="signup__field">
-          <span id="title">Créer votre compte</span>
-          <span id="subtitle">Créer un compte sur l'api moutarde</span>
+          <h2>Créer votre compte</h2>
+          <p id="subtitle">Créer un compte utilisateur.</p>
           <form id="signup__form" action="#" onsubmit="return false">
               <input id="username" class="root input" type="text" placeholder="Nom d'utilisateur" required>
               <input id="email" class="root input" type="text" placeholder="Adresse email" required>
@@ -67,7 +68,7 @@
           <a href="/signin" id="signin" class="root button default">Connexion</a>
       </div>
       <div id="signup__logo">
-          <img src="/static/images/Moutarde.png" width="120px" height="120px">
+          <img src="/static/images/logo.jpg" width="120px" height="120px">
       </div>
   </div>
 </div>
