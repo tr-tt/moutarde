@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/root.css">
+    <title>HERCULE</title>
+</head>
+<body>
+    <mou-headerbar>
+        <mou-usermenu></mou-usermenu>
+    </mou-headerbar>
+    
+    <div class="root frame">
+        <div id="edit">
+            <h2>Mon profil</h2>
+            <p id="subtitle">Modifier mon profil utilisateur.</p>
+            <form id="edit__form" action="#" onsubmit="return false">
+                <mou-input id="username" placeholder="Nom d'utilisateur" type="text"></mou-input>
+                <mou-input id="email" placeholder="Addresse email" type="text"></mou-input>
+            </form>
+            <div id="edit__controls">
+                <mou-link href="/posts" label="Annuler" css="basic"></mou-link>
+                <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

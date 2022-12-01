@@ -1,19 +1,30 @@
 <style>
 @import "/static/css/root.css";
 
-#usermenu
+:host
 {
-    border-radius: var(--border-radius);
-    border: 1px solid rgb(var(--color-1));
-    padding: 40px;
+    position: relative;
+}
+#usermenu__frame
+{
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+}
+#usermenu__frame.hide
+{
+    display: none;
 }
 
 </style>
-<div id="usermenu">
-    <a href="#" class="root button default">Mon profil</a>
-    <a id="logout" href="/" class="root button colored">Se déconnecter</a>
+<mou-link id="usermenu" label="Menu" css="colored"></mou-link>
+
+<div id="usermenu__frame" class="root frame hide">
+    <mou-link href="/users/edit" label="Mon profil" css="default"></mou-link>
+    <mou-link href="/posts" label="Mes formulaires" css="default"></mou-link>
+    <mou-link id="logout" href="/" label="Se déconnecter" css="colored"></mou-link>
 </div>

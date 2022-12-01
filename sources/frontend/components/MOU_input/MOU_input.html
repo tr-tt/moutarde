@@ -1,0 +1,64 @@
+<style>
+@import "/static/css/root.css";
+
+.text-field
+{
+    position: relative;
+}
+
+input
+{
+    display: inline-block;
+    border: 1px solid rgb(var(--dark-text));
+    color: rgb(var(--dark-text));
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+    width: 100%;
+}
+input.error
+{
+    border-color: rgb(var(--color-error));
+}
+input:focus
+{
+    border-color: rgb(var(--color-1));
+}
+input:focus ~ label
+{
+    top: -9px;
+    left: 5px;
+    font-size: small;
+    color: rgb(var(--color-1));
+    background-color:#fff;
+    padding: 0 5px;
+}
+input:valid ~ label
+{
+    top: -9px;
+    left: 5px;
+    font-size: small;
+    background-color:#fff;
+    padding: 0 5px;
+}
+
+label
+{
+    color: rgb(var(--dark-text));
+    position: absolute;
+    pointer-events: none;
+    left: 10px;
+    top: 10px;
+    transition: 0.2s;
+}
+label.error
+{
+    color: rgb(var(--color-error));
+}
+
+</style>
+<div class="text-field">
+    <input type="text" required>
+    <label>Input field 2</label>
+</div>

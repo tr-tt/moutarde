@@ -33,11 +33,7 @@ This file include generic style that can be used inside shadowdom of webcomponen
 
     --dark-text:  95 , 99 , 104; /* #5f6368 */
 
-    /* spaces */
-    --space_5: 5px;
-    --space_10: 10px;
-    --space_15: 15px;
-    --space_60: 60px;
+    --color-error: 217, 48, 37; /* #d93025 */
 
     /*===============================================//
     // BORDER RADIUS
@@ -55,56 +51,45 @@ This file include generic style that can be used inside shadowdom of webcomponen
     letter-spacing: .1px;
 }
 
-/* BUTTON */
+/*===============================================//
+// BUTTONS
+//===============================================*/
 
-.root.button
+.root.button1
 {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-    align-items: center;
-    appearance: none;
-    -webkit-appearance: none;
-    border: 1px solid rgba(0, 0, 0, 0);
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    padding: 12px 24px 11px !important; /* override */
-    text-decoration: none;
-    text-rendering: optimizeLegibility;
-    transition: background-color .2s, color .2s;  
-}
-.root.button.default
-{
+    border: 1px solid;
     border-color: #dadce0;
-    background-color: rgba(0, 0, 0, 0);
-    color: rgb(var(--color-1));
+    border-radius: 4px;
+    padding: 6px 20px;
+    cursor: pointer;
+    transition: background-color .2s, color .2s;
+    user-select: none;
 }
-.root.button.default:hover
+.root.button1:hover,
+.root.button1.active
 {
     background-color: #f1f3f4;
     border-color: rgb(var(--color-1-shade-3));
     color: rgb(var(--color-1-shade-4));
 }
-.root.button.colored
+.root.button1:hover img,
+.root.button1.active img
 {
-    background-color: rgb(var(--color-1));
-    color: #fff;
+    filter: invert(86%) sepia(60%) saturate(3093%) hue-rotate(316deg) brightness(101%) contrast(103%);
 }
-.root.button.colored:hover
+.root.button1 img
 {
-    background-color: rgb(var(--color-1-shade-4));
-    color: #fff;
+    filter: invert(61%) sepia(68%) saturate(695%) hue-rotate(3deg) brightness(101%) contrast(99%);
 }
 
-/* INPUT */
+/*===============================================//
+// FRAMES
+//===============================================*/
 
-.root.input
+.root.frame
 {
-    padding: 12px 20px;
-    border: 1px solid rgb(var(--dark-text));
-    border-radius: 4px;
-    width: 100%;
-    font-size: 16px;
+    border-radius: var(--border-radius);
+    border: 1px solid rgb(var(--color-1));
+    padding: 40px;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
 }

@@ -8,6 +8,30 @@
     <title>HERCULE</title>
 </head>
 <body>
-    <mou-signup></mou-signup>
+    <div class="root frame">
+        <div id="signup">
+            <div id="signup__field">
+                <h2>Créer votre compte</h2>
+                <p id="subtitle">Créer un compte utilisateur.</p>
+                <form id="signup__form" action="#" onsubmit="return false">
+                    <mou-input id="username" placeholder="Nom d'utilisateur" type="text"></mou-input>
+                    <mou-input id="email" placeholder="Addresse email" type="text"></mou-input>
+                    <mou-input id="password" placeholder="Mot de passe" type="password"></mou-input>
+                    <mou-input id="confirm__password" placeholder="Confirmation du mot de passe" type="password"></mou-input>
+                    <div id="signup__password">
+                        <input id="show" type="checkbox">
+                        <span>Voir le mot de passe</span>
+                    </div>
+                </form>
+                <div id="signup__controls">
+                    <mou-link id="signin" href="/signin" label="Se connecter" css="basic"></mou-link>
+                    <mou-link id="button" label="Créer un compte" css="colored"></mou-link>
+                </div>
+            </div>
+            <div id="signup__logo">
+                <img src="/static/images/logo.jpg" width="120px" height="120px">
+            </div>
+        </div>
+    </div>
 </body>
 </html>

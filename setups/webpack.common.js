@@ -18,9 +18,21 @@ module.exports =
         [
             path.resolve('sources', 'frontend', 'pages', 'signup', 'signup.js')
         ],
-        board:
+        posts:
         [
-            path.resolve('sources', 'frontend', 'pages', 'board', 'board.js')
+            path.resolve('sources', 'frontend', 'pages', 'posts', 'posts.js')
+        ],
+        users_edit:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'users_edit', 'users_edit.js')
+        ],
+        password_forgot:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'password_forgot', 'password_forgot.js')
+        ],
+        password_reset:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'password_reset', 'password_reset.js')
         ]
     },
 
@@ -60,10 +72,31 @@ module.exports =
 
         new htmlWebpackPlugin(
         {
-            filename: 'board.html',
-            template: path.resolve('sources', 'frontend', 'pages', 'board', 'board.html'),
-            chunks: ['board']
+            filename: 'posts.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'posts', 'posts.html'),
+            chunks: ['posts']
         }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'users_edit.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'users_edit', 'users_edit.html'),
+            chunks: ['users_edit']
+        }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'password_forgot.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'password_forgot', 'password_forgot.html'),
+            chunks: ['password_forgot']
+        }),
+    
+        new htmlWebpackPlugin(
+        {
+            filename: 'password_reset.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'password_reset', 'password_reset.html'),
+            chunks: ['password_reset']
+        })
     ],
 
     module:

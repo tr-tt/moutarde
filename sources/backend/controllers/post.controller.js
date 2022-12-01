@@ -1,6 +1,7 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 
+/*
 const checkExistPostData = (req) =>
 {
     const updateData = {}
@@ -186,3 +187,4 @@ exports.getApiAuthPosts = (req, res) =>
             })
     })
 }
+*/

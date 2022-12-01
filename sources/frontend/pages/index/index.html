@@ -9,8 +9,8 @@
 </head>
 <body>
     <mou-headerbar>
-        <a href="/board" class="root button default">Connexion</a>
-        <a href="/signup" class="root button colored">Créer un compte</a>
+        <mou-link href="/posts" label="Connexion" css="default"></mou-link>
+        <mou-link href="/signup" label="Créer un compte" css="colored"></mou-link>
     </mou-headerbar>
 
     <section id="home">
@@ -26,7 +26,7 @@
             <p>
                 Pour commencer à participer au programme de recherche vous pouvez <strong>créer votre compte utilisateur</strong> en cliquant sur le bouton ci-dessous :
             </p>
-            <a href="/signup" class="root button colored" style="margin: auto auto auto 0;">Créer un compte</a>
+            <mou-link href="/signup" label="Créer un compte" css="colored"></mou-link>
         </div>
 
         <div id="home__right">
@@ -73,31 +73,39 @@
         <h2>Tutoriel</h2>
         <p>Vous trouverez ici les différentes étapes pour utiliser l'application.</p>
         <div id="tutorial__container">
+
             <div class="tutorial__box">
                 <h3>Etape 0 - Créer un compte utilisateur</h3>
                 <p>C'est la première fois que vous vous rendez sur le site ? Commencez par créer votre compte utilisateur.</p>
-                <img src="/static/images/background.jpg">
+                <mou-link href="/signup" label="Créer un compte" css="colored"></mou-link>
+                <img src="/static/images/etape0.jpg">
             </div>
+
             <div class="tutorial__box">
                 <h3>Etape 1 - Se connecter</h3>
                 <p>Vous disposez d'un compte utilisateur, il vous suffit de vous connecter pour acceder à la page des formulaires.</p>
-                <img src="/static/images/background.jpg">
+                <mou-link href="/posts" label="Connexion" css="colored"></mou-link>
+                <img src="/static/images/etape1.jpg">
             </div>
+
             <div class="tutorial__box">
                 <h3>Etape 3a - Creer un formulaire</h3>
                 <p></p>
                 <img src="/static/images/background.jpg">
             </div>
+
             <div class="tutorial__box">
                 <h3>Etape 3b - Modifier un formulaire</h3>
                 <p></p>
                 <img src="/static/images/background.jpg">
             </div>
+
             <div class="tutorial__box">
                 <h3>Etape 3c - Supprimer un formulaire</h3>
                 <p></p>
                 <img src="/static/images/background.jpg">
             </div>
+
             <div class="tutorial__box">
                 <h3>Etape 4 - Se déconnecter</h3>
                 <p></p>

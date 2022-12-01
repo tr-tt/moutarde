@@ -14,9 +14,9 @@ tokenExistVerify = (req, res, next) =>
         return next()
     }
 
-    jwt.verify(token, process.env.APP_SECRET, (err, decoded) =>
+    jwt.verify(token, process.env.APP_SECRET, (error, decoded) =>
     {
-        if(err)
+        if(error)
         {
             console.error('[ERROR] tokenExistVerify - Unauthorized')
 
@@ -28,7 +28,7 @@ tokenExistVerify = (req, res, next) =>
         req.status = httpCodes.OK
         req.user_id = decoded.id
 
-        next()
+        return next()
     })
 }
 

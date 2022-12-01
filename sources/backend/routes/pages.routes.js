@@ -14,15 +14,49 @@ module.exports = (app) =>
     )
 
     app.get(
-        '/board',
+        '/users/edit',
         [
             authMiddleware.tokenExistVerify
         ],
-        controller.getBoard
+        controller.getUsersEdit
     )
 
     app.get(
-        '*',
+        '/posts',
+        [
+            authMiddleware.tokenExistVerify
+        ],
+        controller.getPosts
+    )
+
+    app.get(
+        '/password/forgot',
+        controller.getPasswordForgot
+    )
+
+    app.get(
+        '/password/reset/:id/:token',
+        controller.getPasswordReset
+    )
+/*
+    app.get(
+        '/posts/new',
+        [
+            authMiddleware.tokenExistVerify
+        ],
+        controller.getPostsNew
+    )
+
+    app.get(
+        '/posts/edit',
+        [
+            authMiddleware.tokenExistVerify
+        ],
+        controller.getPostsEdit
+    )
+*/
+    app.get(
+        '/',
         controller.getIndex
     )
 }

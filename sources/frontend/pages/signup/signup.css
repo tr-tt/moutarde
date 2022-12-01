@@ -5,3 +5,71 @@ body
     justify-content: center;
     height: 100vh;
 }
+
+#signup
+{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    color: rgb(var(--dark-text));
+}
+
+#signup__field
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 400px;
+    gap: 20px;
+}
+
+#subtitle.error
+{
+    color: rgb(var(--color-error));
+}
+
+h2
+{
+    font-size: 40px;
+}
+
+p
+{
+    font-size: 18px;
+    transition: color .2s;
+}
+
+#signup__form
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+#signup__password
+{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#show
+{
+    height: 37px;
+    width: 37px;
+}
+
+#signup__controls
+{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#signup__logo
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

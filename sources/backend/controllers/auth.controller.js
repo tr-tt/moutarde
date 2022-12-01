@@ -39,13 +39,11 @@ exports.postApiAuthSignin = (req, res) =>
                 })
         }
 
-        const token = jwt.sign({
-                id: user.id
-            },
-            process.env.APP_SECRET,
-            {
-                expiresIn: 3600 // 1 hour
-            })
+        const payload =
+        {
+            id: user.id
+        }
+        const token = jwt.sign(payload, process.env.APP_SECRET, {expiresIn: '2h'})
 
         return res
             .cookie('access_token', token,

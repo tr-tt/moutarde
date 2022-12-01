@@ -1,9 +1,67 @@
-const {userMiddleware} = require('../middlewares')
+const {authMiddleware, userMiddleware} = require('../middlewares')
 const controller = require('../controllers/user.controller')
 
 module.exports = (app) =>
 {
     app.get(
+        '/api/user',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken
+        ],
+        controller.getApiUser
+    )
+
+    app.post(
+        '/api/user',
+        [
+            userMiddleware.usernameExist,
+            userMiddleware.emailExist,
+            userMiddleware.passwordExist,
+            userMiddleware.usernameDuplicated,
+            userMiddleware.emailDuplicated
+        ],
+        controller.postApiUser
+    )
+
+    app.put(
+        '/api/user',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken,
+            userMiddleware.usernameDuplicated,
+            userMiddleware.emailDuplicated
+        ],
+        controller.putApiUser
+    )
+
+    app.post(
+        '/api/user/password/forgot',
+        [
+            userMiddleware.emailOrUsernameExist,
+            userMiddleware.emailOrUsernameExistInDB
+        ],
+        controller.postApiUserPasswordForgot
+    )
+
+    app.post(
+        '/api/user/password/reset/:id/:token',
+        [
+            userMiddleware.userIdExist,
+            userMiddleware.tokenExistVerify,
+            userMiddleware.passwordExist,
+            userMiddleware.confirmPasswordExist,
+            userMiddleware.passwordAndConfirmPasswordIdentity
+        ],
+        controller.postApiUserPasswordReset
+    )
+
+    
+    //===============================================//
+    // REST api for USERS
+    //===============================================//
+
+    /*app.get(
         '/api/users',
         controller.getApiUsers
     )
@@ -16,17 +74,7 @@ module.exports = (app) =>
         controller.getApiUsersId
     )
 
-    app.post(
-        '/api/users',
-        [
-            userMiddleware.usernameExist,
-            userMiddleware.emailExist,
-            userMiddleware.passwordExist,
-            userMiddleware.usernameDuplicated,
-            userMiddleware.emailDuplicated
-        ],
-        controller.postApiUsers
-    )
+    
 
     app.put(
         '/api/users/:id',
@@ -40,5 +88,11 @@ module.exports = (app) =>
     app.delete(
         '/api/users/:id',
         controller.deleteApiUsersId
-    )    
+    )*/
+    
+    //===============================================//
+    // OTHER api for USERS
+    //===============================================//
+
+    
 }

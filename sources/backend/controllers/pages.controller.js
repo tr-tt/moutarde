@@ -23,15 +23,40 @@ exports.getSignup = (req, res) =>
         .sendFile(path.resolve('_build', 'signup.html'))
 }
 
-exports.getBoard = (req, res) =>
+exports.getUsersEdit = (req, res) =>
 {
     switch(req.status)
     {
         case httpCodes.OK:
             return res
-                .sendFile(path.resolve('_build', 'board.html'))            
+                .sendFile(path.resolve('_build', 'users_edit.html'))            
         default:
             return res
                 .sendFile(path.resolve('_build', 'signin.html'))
     }
+}
+
+exports.getPosts = (req, res) =>
+{
+    switch(req.status)
+    {
+        case httpCodes.OK:
+            return res
+                .sendFile(path.resolve('_build', 'posts.html'))            
+        default:
+            return res
+                .sendFile(path.resolve('_build', 'signin.html'))
+    }
+}
+
+exports.getPasswordForgot = (req, res) =>
+{
+    return res
+        .sendFile(path.resolve('_build', 'password_forgot.html'))
+}
+
+exports.getPasswordReset = (req, res) =>
+{
+    return res
+        .sendFile(path.resolve('_build', 'password_reset.html'))
 }

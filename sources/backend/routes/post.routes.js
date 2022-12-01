@@ -3,6 +3,7 @@ const controller = require('../controllers/post.controller')
 
 module.exports = (app) =>
 {
+    /*
     app.get(
         '/api/posts',
         controller.getApiPosts
@@ -35,4 +36,5 @@ module.exports = (app) =>
         '/api/posts/:id',
         controller.deleteApiPostsId
     )
+    */
 }

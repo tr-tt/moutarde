@@ -1,0 +1,60 @@
+<style>
+@import "/static/css/root.css";
+
+a
+{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    align-items: center;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    padding: 12px 24px 11px;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    transition: background-color .2s, color .2s;
+    width: 100%;
+}
+
+a.basic
+{
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(var(--color-1));
+}
+a.basic:hover
+{
+    background-color: #f1f3f4;
+    color: rgb(var(--color-1-shade-4));
+}
+
+a.default
+{
+    border-color: #dadce0;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(var(--color-1));
+}
+a.default:hover
+{
+    background-color: #f1f3f4;
+    border-color: rgb(var(--color-1-shade-3));
+    color: rgb(var(--color-1-shade-4));
+}
+
+a.colored
+{
+    background-color: rgb(var(--color-1));
+    color: #fff;
+}
+a.colored:hover
+{
+    background-color: rgb(var(--color-1-shade-4));
+    color: #fff;
+}
+
+</style>
+<a href="#">Link</a>

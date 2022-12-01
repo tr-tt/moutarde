@@ -5,7 +5,7 @@ class AuthService
     postApiAuthSignin(username, password)
     {
         return axios
-            .post('api/auth/signin',
+            .post('/api/auth/signin',
             {
                 username,
                 password
@@ -14,19 +14,9 @@ class AuthService
 
     getApiAuthSignout()
     {
+        console.log('disconnect');
         return axios
-            .get('api/auth/signout')
-    }
-
-    postApiUsers(username, email, password)
-    {
-        return axios
-            .post('api/users',
-            {
-                username,
-                email,
-                password
-            })
+            .get('/api/auth/signout')
     }
 }
 

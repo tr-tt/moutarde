@@ -23,7 +23,19 @@ module.exports = merge(
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ],
-            board:
+            posts:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            users_edit:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            password_forgot:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            password_reset:
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ]
