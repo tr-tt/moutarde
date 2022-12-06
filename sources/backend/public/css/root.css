@@ -51,45 +51,22 @@ This file include generic style that can be used inside shadowdom of webcomponen
     letter-spacing: .1px;
 }
 
-/*===============================================//
-// BUTTONS
-//===============================================*/
-
-.root.button1
+::-webkit-scrollbar
 {
-    border: 1px solid;
-    border-color: #dadce0;
-    border-radius: 4px;
-    padding: 6px 20px;
-    cursor: pointer;
-    transition: background-color .2s, color .2s;
-    user-select: none;
+    width: 20px;
 }
-.root.button1:hover,
-.root.button1.active
+  
+::-webkit-scrollbar-track
 {
-    background-color: #f1f3f4;
-    border-color: rgb(var(--color-1-shade-3));
-    color: rgb(var(--color-1-shade-4));
+    background: #f1f1f1; 
 }
-.root.button1:hover img,
-.root.button1.active img
+   
+::-webkit-scrollbar-thumb
 {
-    filter: invert(86%) sepia(60%) saturate(3093%) hue-rotate(316deg) brightness(101%) contrast(103%);
+    background: rgb(var(--color-1)); 
 }
-.root.button1 img
+  
+::-webkit-scrollbar-thumb:hover
 {
-    filter: invert(61%) sepia(68%) saturate(695%) hue-rotate(3deg) brightness(101%) contrast(99%);
-}
-
-/*===============================================//
-// FRAMES
-//===============================================*/
-
-.root.frame
-{
-    border-radius: var(--border-radius);
-    border: 1px solid rgb(var(--color-1));
-    padding: 40px;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+    background: rgb(var(--color-1-shade-4));
 }

@@ -13,7 +13,7 @@ class MOUusermenu extends HTMLElement
         this.shadowRoot.innerHTML = template
 
         this._usermenu = this.shadowRoot.querySelector('#usermenu')
-        this._usermenu__frame = this.shadowRoot.querySelector('#usermenu__frame')
+        this._usermenuFields = this.shadowRoot.querySelector('#usermenu__fields')
         this._logout = this.shadowRoot.querySelector('#logout')
     }
 
@@ -21,23 +21,33 @@ class MOUusermenu extends HTMLElement
     {
         this._logout.addEventListener('click', this._onClickHandler.bind(this))
         this._usermenu.addEventListener('click', this._onMenuClickHandler.bind(this))
+        window.addEventListener('click', this._onWindowClickHandler.bind(this))
     }
 
     disconnectedCallback()
     {
         this._logout.removeEventListener('click', this._onClickHandler)
         this._usermenu.removeEventListener('click', this._onMenuClickHandler)
+        window.removeEventListener('click', this._onWindowClickHandler)
     }
 
     _onMenuClickHandler()
     {
-        this._usermenu__frame.classList.toggle('hide')
+        this._usermenuFields.classList.toggle('hide')
     }
 
     _onClickHandler()
     {
         AuthService
             .getApiAuthSignout()
+    }
+
+    _onWindowClickHandler(event)
+    {
+        if(event.target !== this)
+        {
+            this._usermenuFields.classList.add('hide')
+        }
     }
 }
 

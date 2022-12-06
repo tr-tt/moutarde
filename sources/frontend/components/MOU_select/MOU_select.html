@@ -6,7 +6,7 @@
     position: relative;
 }
 
-input
+select
 {
     border: 1px solid rgb(var(--dark-text));
     color: rgb(var(--dark-text));
@@ -16,11 +16,11 @@ input
     outline: none;
     width: 100%;
 }
-input:focus
+select:focus
 {
     border-color: rgb(var(--color-1));
 }
-input:focus ~ label
+select:focus ~ label
 {
     top: -9px;
     left: 5px;
@@ -29,7 +29,7 @@ input:focus ~ label
     background-color:#fff;
     padding: 0 5px;
 }
-input.notempty ~ label
+select.notempty ~ label
 {
     top: -9px;
     left: 5px;
@@ -37,11 +37,11 @@ input.notempty ~ label
     background-color:#fff;
     padding: 0 5px;
 }
-input.error
+select.error
 {
     border-color: rgb(var(--color-error));
 }
-input.error ~ label
+select.error ~ label
 {
     color: rgb(var(--color-error));
 }
@@ -57,8 +57,13 @@ label
     background-color:#fff;
 }
 
+
 </style>
+
 <div id="field">
-    <input>
+    <select>
+        <option value=""></option>
+    </select>
+    <slot></slot>
     <label>Placeholder</label>
 </div>

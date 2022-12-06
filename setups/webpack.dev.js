@@ -27,6 +27,10 @@ module.exports = merge(
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ],
+            posts_new:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
             users_edit:
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')

@@ -16,15 +16,45 @@ class MOUinput extends HTMLElement
 
     connectedCallback()
     {
-        this._input.type = this.getAttribute('type') || 'text'
-        this._label.textContent = this.getAttribute('placeholder') || 'Placeholder'
+        if(this.hasAttribute('type'))
+        {
+            this._input.type = this.getAttribute('type')
+        }
+
+        if(this.hasAttribute('maxlength'))
+        {
+            this._input.maxLength = this.getAttribute('maxlength')
+        }
+
+        if(this.hasAttribute('min'))
+        {
+            this._input.min = this.getAttribute('min')
+        }
+
+        if(this.hasAttribute('max'))
+        {
+            this._input.max = this.getAttribute('max')
+        }
+
+        if(this.hasAttribute('required'))
+        {
+            this._input.required = true
+        }
+
+        if(this.hasAttribute('placeholder'))
+        {
+            this._label.textContent = this.getAttribute('placeholder')
+        }
+        
 
         this._input.addEventListener('focus', this._onFocusHandler.bind(this))
+        this._input.addEventListener('blur', this._onBlurHandler.bind(this))
     }
 
     disconnectedCallback()
     {
         this._input.removeEventListener('focus', this._onFocusHandler)
+        this._input.removeEventListener('blur', this._onBlurHandler)
     }
 
     static get observedAttributes()
@@ -48,17 +78,31 @@ class MOUinput extends HTMLElement
     _onFocusHandler()
     {
         this._input.classList.remove('error')
-        this._label.classList.remove('error')
+        this._input.classList.add('notempty')
+    }
+
+    _onBlurHandler()
+    {
+        if(!this._input.value)
+        {
+            this._input.classList.remove('notempty')
+        }
     }
 
     get value()
     {
-        const value = this._input.value
+        let value = this._input.value
 
-        if(!value)
+        if(this._input.required && !value)
         {
             this._input.classList.add('error')
-            this._label.classList.add('error')
+        }
+        
+        if(!this._input.validity.valid)
+        {
+            this._input.classList.add('error')
+
+            value = ''
         }
 
         return value
@@ -66,6 +110,11 @@ class MOUinput extends HTMLElement
 
     set value(value)
     {
+        if(value)
+        {
+            this._input.classList.add('notempty')
+        }
+        
         this._input.value = value
     }
 }

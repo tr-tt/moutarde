@@ -8,28 +8,30 @@
     <title>HERCULE</title>
 </head>
 <body>
-    <div class="root frame">
-        <div id="signin">
-            <div id="signin__field">
+    <div id="signin">
+        <div id="signin__frame">
+            <div id="signin__title">
+                <img src="/static/images/logo.jpg" width="40px" height="40px">
                 <h2>Connexion</h2>
-                <p id="subtitle">Se connecter sur l'api HERCULE.</p>
-                <form id="signin__form" action="#" onsubmit="return false">
-                    <mou-input id="username" placeholder="Nom d'utilisateur" type="text"></mou-input>
-                    <mou-input id="password" placeholder="Mot de passe" type="password"></mou-input>
-                    <div id="signin__password">
-                        <input id="show" type="checkbox">
-                        <span>Voir le mot de passe</span>
-                    </div>
-                </form>
-                <div id="signin__controls">
-                    <mou-link href="/password/forgot" label="J'ai oublié mon mot de passe" css="basic"></mou-link>
-                    <mou-link id="button" label="Se connecter" css="colored"></mou-link>
+            </div>
+            <p id="subtitle">Se connecter sur l'api HERCULE.</p>
+
+            <div id="signin__fields">
+                <mou-input id="username" placeholder="Nom d'utilisateur" type="text"></mou-input>
+                <mou-input id="password" placeholder="Mot de passe" type="password"></mou-input>
+                <div id="signin__password">
+                    <input id="show" type="checkbox">
+                    <span>Voir le mot de passe</span>
                 </div>
             </div>
-            <div id="signin__logo">
-                <img src="/static/images/logo.jpg" width="120px" height="120px">
+
+            <div id="signin__controls">
+                <mou-link href="/password/forgot" label="J'ai oublié mon mot de passe" css="basic"></mou-link>
+                <mou-link id="button" label="Se connecter" css="colored"></mou-link>
             </div>
         </div>
+
+        <div id="signin__bar"></div>
     </div>
 </body>
 </html>

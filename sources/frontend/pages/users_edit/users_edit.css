@@ -4,21 +4,7 @@ body
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 60px);
-}
-
-#edit
-{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 400px;
-    gap: 20px;
-}
-
-#subtitle.error
-{
-    color: rgb(var(--color-error));
+    color: rgb(var(--dark-text));
 }
 
 h2
@@ -32,17 +18,73 @@ p
     transition: color .2s;
 }
 
-#edit__form
+.separator
+{
+    background-color: rgb(var(--color-1));
+    height: 3px;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+}
+
+#page
+{
+    width: 100%;
+    height: calc(100vh - 60px);
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profile
+{
+    border-radius: var(--border-radius);
+    border: 1px solid rgb(var(--color-1));
+    padding: 40px;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+    margin: 40px;
+    width: 700px;
+
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    gap: 40px;
+}
+
+#profile__title
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#subtitle.error
+{
+    color: rgb(var(--color-error));
+}
+
+#profile__frame
 {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 100%;
 }
 
-#edit__controls
+#profile__fields
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#profile__controls
 {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+#profile__bar
+{
+    background-color: rgb(var(--color-5));
+    border-radius: 4px;
 }

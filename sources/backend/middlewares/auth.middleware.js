@@ -42,19 +42,19 @@ rejectIfBadToken = (req, res, next) =>
             return res
                 .status(httpCodes.FORBIDDEN)
                 .json({
-                    message: `L'accès aux données est réservé aux utilisateurs connectés.`
+                    message: `Vous devez vous enregistrer sur la plateforme et vous connecter avant d'avoir accès aux données.`
                 })
         case httpCodes.UNAUTHORIZED:
             return res
                 .status(httpCodes.UNAUTHORIZED)
                 .json({
-                    message: `Vous n'avez pas accès à ces données.`
+                    message: `Votre accès aux données a expiré.`
                 })
         default:
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Une erreur interne s'est produite.`
+                    message: `Une erreur est survenue lors de la vérification des accès.`
                 })
     }
 }

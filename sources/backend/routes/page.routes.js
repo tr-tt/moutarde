@@ -1,5 +1,5 @@
-const {authMiddleware} = require('../middlewares')
-const controller = require('../controllers/pages.controller')
+const {authMiddleware, pageMiddleware} = require('../middlewares')
+const controller = require('../controllers/page.controller')
 
 module.exports = (app) =>
 {
@@ -30,16 +30,6 @@ module.exports = (app) =>
     )
 
     app.get(
-        '/password/forgot',
-        controller.getPasswordForgot
-    )
-
-    app.get(
-        '/password/reset/:id/:token',
-        controller.getPasswordReset
-    )
-/*
-    app.get(
         '/posts/new',
         [
             authMiddleware.tokenExistVerify
@@ -48,13 +38,19 @@ module.exports = (app) =>
     )
 
     app.get(
-        '/posts/edit',
-        [
-            authMiddleware.tokenExistVerify
-        ],
-        controller.getPostsEdit
+        '/password/forgot',
+        controller.getPasswordForgot
     )
-*/
+
+    app.get(
+        '/password/reset/:id/:token',
+        [
+            pageMiddleware.userIdExist,
+            pageMiddleware.tokenExistVerify
+        ],
+        controller.getPasswordReset
+    )
+
     app.get(
         '/',
         controller.getIndex

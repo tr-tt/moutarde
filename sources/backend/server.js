@@ -53,7 +53,7 @@ if(process.env.NODE_ENV === 'development')
     app.use(webpackHotMiddleware)
 
     //db.sequelize.sync({force: true})
-    db.sequelize.sync()
+    db.sequelize.sync({alter: true})
 }
 else
 {
@@ -69,9 +69,9 @@ app.use('/static', express.static(path.resolve('sources', 'backend', 'public')))
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
 require('./routes/post.routes')(app)
-require('./routes/pages.routes')(app)
+require('./routes/page.routes')(app)
 
-server.listen(APP_PORT, '127.0.0.1', () => 
+server.listen(APP_PORT, () => 
 {
     console.log(`[INFO] Server is running at http://${server.address().address}:${server.address().port}`)
 })

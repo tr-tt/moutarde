@@ -16,10 +16,14 @@ module.exports = (app) =>
         '/api/user',
         [
             userMiddleware.usernameExist,
-            userMiddleware.emailExist,
-            userMiddleware.passwordExist,
             userMiddleware.usernameDuplicated,
-            userMiddleware.emailDuplicated
+            userMiddleware.emailExist,
+            userMiddleware.emailDuplicated,
+            userMiddleware.schoolExist,
+            userMiddleware.schoolYearExist,
+            userMiddleware.passwordExist,
+            userMiddleware.confirmPasswordExist,
+            userMiddleware.passwordAndConfirmPasswordIdentity          
         ],
         controller.postApiUser
     )
@@ -55,44 +59,4 @@ module.exports = (app) =>
         ],
         controller.postApiUserPasswordReset
     )
-
-    
-    //===============================================//
-    // REST api for USERS
-    //===============================================//
-
-    /*app.get(
-        '/api/users',
-        controller.getApiUsers
-    )
-
-    app.get(
-        '/api/users/:id',
-        [
-            userMiddleware.userIdExist
-        ],
-        controller.getApiUsersId
-    )
-
-    
-
-    app.put(
-        '/api/users/:id',
-        [
-            userMiddleware.usernameDuplicated,
-            userMiddleware.emailDuplicated
-        ],
-        controller.putApiUsersId
-    )
-
-    app.delete(
-        '/api/users/:id',
-        controller.deleteApiUsersId
-    )*/
-    
-    //===============================================//
-    // OTHER api for USERS
-    //===============================================//
-
-    
 }

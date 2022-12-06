@@ -1,10 +1,6 @@
 const httpCodes = require('../httpCodes')
 const path = require('path')
 
-//===============================================//
-// Availables web pages
-//===============================================//
-
 exports.getIndex = (req, res) =>
 {
     return res
@@ -49,6 +45,19 @@ exports.getPosts = (req, res) =>
     }
 }
 
+exports.getPostsNew = (req, res) =>
+{
+    switch(req.status)
+    {
+        case httpCodes.OK:
+            return res
+                .sendFile(path.resolve('_build', 'posts_new.html'))            
+        default:
+            return res
+                .sendFile(path.resolve('_build', 'signin.html'))
+    }
+}
+
 exports.getPasswordForgot = (req, res) =>
 {
     return res
@@ -57,6 +66,13 @@ exports.getPasswordForgot = (req, res) =>
 
 exports.getPasswordReset = (req, res) =>
 {
-    return res
-        .sendFile(path.resolve('_build', 'password_reset.html'))
+    switch(req.status)
+    {
+        case httpCodes.OK:
+            return res
+                .sendFile(path.resolve('_build', 'password_reset.html'))
+        default:
+            return res
+                .sendFile(path.resolve('_build', 'index.html'))
+    }
 }

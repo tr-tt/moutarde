@@ -12,18 +12,41 @@
         <mou-usermenu></mou-usermenu>
     </mou-headerbar>
     
-    <div class="root frame">
-        <div id="edit">
-            <h2>Mon profil</h2>
-            <p id="subtitle">Modifier mon profil utilisateur.</p>
-            <form id="edit__form" action="#" onsubmit="return false">
-                <mou-input id="username" placeholder="Nom d'utilisateur" type="text"></mou-input>
-                <mou-input id="email" placeholder="Addresse email" type="text"></mou-input>
-            </form>
-            <div id="edit__controls">
-                <mou-link href="/posts" label="Annuler" css="basic"></mou-link>
-                <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+    <div id="page">
+        <div id="profile">
+            <div id="profile__frame">
+                <div id="profile__title">
+                    <img src="/static/images/logo.jpg" width="40px" height="40px">
+                    <h2>Mon profil</h2>
+                </div>
+                <p id="subtitle">Modifier mon profil utilisateur.</p>
+
+                <div id="profile__fields">
+                    <mou-input id="username" placeholder="Nom d'utilisateur" type="text" required></mou-input>
+                    <mou-input id="email" placeholder="Addresse email" type="text" required></mou-input>
+                    <mou-input id="birthday" placeholder="Date de naissance" type="date" min="1950-01-01" max="2023-01-01"></mou-input>
+                    <mou-select id="sex" placeholder="Sexe">
+                        <option value="Homme">Homme</option>
+                        <option value="Femme">Femme</option>
+                    </mou-select>
+
+                    <div class="separator"></div>
+
+                    <mou-input id="school" placeholder="Ecole" type="text" required></mou-input>
+                    <mou-input id="school__year" placeholder="Année de formation" type="number" min="2000" max="2023" required></mou-input>
+
+                    <div class="separator"></div>
+
+                    <mou-link href="/password/forgot" label="Changer mon mot de passe" css="basic"></mou-link>
+                </div>
+
+                <div id="profile__controls">
+                    <mou-link href="/posts" label="Annuler" css="basic"></mou-link>
+                    <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+                </div>
             </div>
+
+            <div id="profile__bar"></div>
         </div>
     </div>
 </body>

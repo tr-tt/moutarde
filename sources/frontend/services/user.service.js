@@ -8,24 +8,49 @@ class UserService
             .get('/api/user')
     }
 
-    postApiUser(username, email, password)
+    postApiUser(
+        username,
+        email,
+        birthday,
+        sex,
+        school,
+        schoolYear,
+        password,
+        confirmPassword
+    )
     {
         return axios
             .post('/api/user',
             {
                 username,
                 email,
-                password
+                birthday,
+                sex,
+                school,
+                schoolYear,
+                password,
+                confirmPassword
             })
     }
 
-    putApiUser(username, email)
+    putApiUser(
+        username,
+        email,
+        birthday,
+        sex,
+        school,
+        schoolYear
+    )
     {
         return axios
             .put('/api/user',
             {
                 username,
-                email
+                email,
+                birthday,
+                sex,
+                school,
+                schoolYear
             })
     }
 

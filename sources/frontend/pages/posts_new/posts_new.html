@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/root.css">
+    <title>HERCULE</title>
+</head>
+<body>
+    <mou-headerbar>
+        <mou-usermenu></mou-usermenu>
+    </mou-headerbar>
+
+    <div id="page">
+        <div id="form">
+            <div id="form__frame">
+                <div id="form__title">
+                    <img src="/static/images/logo.jpg" width="40px" height="40px">
+                    <h2>Nouveau formulaire</h2>
+                </div>
+                <p id="subtitle">Décrire une nouvelle situation.</p>
+    
+                <div id="form__fields">
+                    <mou-input placeholder="Titre de la situation vécue" type="text"></mou-input>
+                    <mou-input placeholder="Outil cible utilisé" type="text"></mou-input>
+    
+                    <div class="separator"></div>
+    
+                    <mou-textarea placeholder="Description de la situation"></mou-textarea>
+                    <mou-textarea placeholder="Lieux, personne(s) présente(s), déroulement"></mou-textarea>
+                    <mou-textarea placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)"></mou-textarea>
+                    <mou-textarea placeholder="Difficulté et/ou satisfaction rencontrées"></mou-textarea>
+                    <mou-textarea placeholder="Astuce et futurs imaginés par la situation"></mou-textarea>
+                    <mou-textarea placeholder="En dire plus"></mou-textarea>
+    
+                    <div class="separator"></div>
+    
+                    <mou-upload></mou-upload>
+                </div>
+    
+                <div id="form__controls">
+                    <mou-link href="/posts" label="Annuler" css="basic"></mou-link>
+                    <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+                </div>
+            </div>
+               
+            <div id="form__bar"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -4,28 +4,7 @@ body
     align-items: center;
     justify-content: center;
     height: 100vh;
-}
-
-#signin
-{
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 40px;
     color: rgb(var(--dark-text));
-}
-
-#signin__field
-{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 500px;
-    gap: 20px;
-}
-
-#subtitle.error
-{
-    color: rgb(var(--color-error));
 }
 
 h2
@@ -39,12 +18,44 @@ p
     transition: color .2s;
 }
 
-#signin__form
+#signin
+{
+    border-radius: var(--border-radius);
+    border: 1px solid rgb(var(--color-1));
+    padding: 40px;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+    margin: 40px;
+    width: 700px;
+
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    gap: 40px;
+}
+
+#signin__title
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#subtitle.error
+{
+    color: rgb(var(--color-error));
+}
+
+#signin__frame
 {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 100%;
+}
+
+#signin__fields
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 #signin__password
@@ -67,9 +78,8 @@ p
     width: 100%;
 }
 
-#signin__logo
+#signin__bar
 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: rgb(var(--color-5));
+    border-radius: 4px;
 }

@@ -2,16 +2,14 @@ module.exports = (sequelize, DataTypes) =>
 {
     const Post = sequelize.define('Post',
     {
-        user_id:
-        {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        text:
+        title:
         {
             type: DataTypes.STRING,
             allowNull: false
         }
+    },
+    {
+        tableName: 'Posts'
     })
   
     return Post

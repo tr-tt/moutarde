@@ -1,4 +1,4 @@
-const {Sequelize, DataTypes} = require('sequelize')
+const {Sequelize, DataTypes, Op} = require('sequelize')
 
 const sequelize = new Sequelize(
     process.env.POSTGRES_DATABASE,
@@ -25,8 +25,18 @@ const db = {}
 
 db.sequelize = sequelize
 db.DataTypes = DataTypes
+db.Op = Op
 
 db.User = require('./user.model.js')(sequelize, DataTypes)
 db.Post = require('./post.model.js')(sequelize, DataTypes)
+
+db.User.hasMany(db.Post,
+    {
+        foreignKey:
+        {
+            allowNull: false
+        }
+    })
+db.Post.belongsTo(db.User)
 
 module.exports = db

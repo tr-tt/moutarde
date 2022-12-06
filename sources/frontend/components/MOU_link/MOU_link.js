@@ -15,14 +15,17 @@ class MOUlink extends HTMLElement
 
     connectedCallback()
     {
-        this._link.href = this.getAttribute('href') || '#'
-        this._link.textContent = this.getAttribute('label') || 'Link'
-        this._link.classList.add(this.getAttribute('css') || 'default')
-    }
-
-    disconnectedCallback()
-    {
+        if(this.hasAttribute('href'))
+        {
+            this._link.href = this.getAttribute('href')
+        }
         
+        if(this.hasAttribute('label'))
+        {
+            this._link.textContent = this.getAttribute('label')
+        }
+        
+        this._link.classList.add(this.getAttribute('css') || 'default')
     }
 
     static get observedAttributes()

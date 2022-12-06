@@ -1,18 +1,12 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 exports.getApiUser = (req, res) =>
 {
-    if(req.user_id)
-    {
-        db.User.findOne({
-            where:
-            {
-                id: req.user_id
-            }
-        }).then((user) =>
+    db.User
+        .findByPk(req.user_id)
+        .then((user) =>
         {
             if(user)
             {
@@ -22,7 +16,11 @@ exports.getApiUser = (req, res) =>
                         message: 
                         {
                             username: user.username,
-                            email: user.email
+                            email: user.email,
+                            birthday: user.birthday,
+                            sex: user.sex,
+                            school: user.school,
+                            schoolYear: user.schoolYear
                         }
                     })
             }
@@ -36,56 +34,59 @@ exports.getApiUser = (req, res) =>
                         message: `L'utilisateur numéro ${req.user_id} n'a pas été trouvé.`,
                     })
             }
-        }).catch((exception) =>
+        })
+        .catch((exception) =>
         {
             console.error(`[ERROR] getApiUser ${req.user_id} - ${exception.message}`)
     
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Le numéro ${req.user_id} est invalide.`,
+                    message: `Une erreur est survenue lors de la recherche de l'utilisateur.`,
                 })
         })
-    }
-    else
-    {
-        console.error(`[ERROR] getApiUser no user id provided.`)
-    
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un numéro d'utilisateur est requis.`,
-            })
-    }
-    
 }
 
 exports.postApiUser = (req, res) =>
 {
-    db.User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
-    }).then((user) =>
-    {
-        console.log('[DEBUG] postApiUser new user created')
-        console.log(user)
+    db.sequelize
+        .transaction((transaction) =>
+        {
+            return db.User
+                .create({
+                    username: req.body.username,
+                    email: req.body.email,
+                    birthday: req.body.birthday || null,
+                    sex: req.body.sex || null,
+                    school: req.body.school,
+                    schoolYear: req.body.schoolYear,
+                    password: req.body.password
+                },
+                {
+                    transaction: transaction
+                })
+        })
+        .then((user) =>
+        {
+            console.log('[DEBUG] postApiUser new user created')
+            console.log(user)
 
-        return res
-            .status(httpCodes.OK)
-            .json({
-                message: `L'utilisateur ${req.body.username} a été enregistré.`
-            })
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] postApiUser ${req.body.username} ${req.body.email} ${req.body.password} - ${exception.message}`)
+            return res
+                .status(httpCodes.OK)
+                .json({
+                    message: `L'utilisateur ${req.body.username} a été enregistré.`
+                })
+        })
+        .catch((exception) =>
+        {
+            console.error(`[ERROR] postApiUser ${req.body.username} ${req.body.email} ${req.body.password} - ${exception.message}`)
 
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `L'utilisateur ${req.body.username} n'a pas pu être enregistré.`,
-            })
-    })
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de l'enregistrement de l'utilisateur.`,
+                })
+        })
 }
 
 exports.putApiUser = (req, res) =>
@@ -94,57 +95,46 @@ exports.putApiUser = (req, res) =>
 
     req.body.username ? userData.username = req.body.username : ''
     req.body.email ? userData.email = req.body.email : ''
+    userData.birthday = req.body.birthday || null
+    userData.sex = req.body.sex || null
+    req.body.school ? userData.school = req.body.school : ''
+    req.body.schoolYear ? userData.schoolYear = req.body.schoolYear : ''
 
-    if(req.user_id)
-    {
-        db.User.update(userData,
+    db.sequelize
+        .transaction((transaction) =>
         {
-            where:
-            {
-                id: req.user_id
-            }
-        }).then((count) =>
+            return db.User
+                .update(userData,
+                {
+                    where:
+                    {
+                        id: req.user_id
+                    }
+                },
+                {
+                    transaction: transaction
+                })
+        })
+        .then((count) =>
         {
             console.log(`[DEBUG] putApiUser ${count} row(s) updated`)
-    
-            if(count != '0')
-            {
-                return res
+
+            return res
                     .status(httpCodes.OK)
                     .json({
                         message: `Votre profil a été mis à jour.`
                     })
-            }
-            else
-            {
-                return res
-                    .status(httpCodes.OK)
-                    .json({
-                        message: `Votre profil est déjà à jour.`
-                    })
-            }
-            
-        }).catch((exception) =>
+        })
+        .catch((exception) =>
         {
             console.error(`[ERROR] putApiUser ${req.user_id} ${userData} - ${exception.message}`)
-    
+
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `L'utilisateur numéro ${req.user_id} n'a pas pu être mis à jour.`,
+                    message: `Une erreur est survenue lors de la mise à jour de l'utilisateur.`,
                 })
         })
-    }
-    else
-    {
-        console.error(`[ERROR] putApiUser no user id provided.`)
-    
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un numéro d'utilisateur est requis.`,
-            })
-    }
 }
 
 
@@ -157,7 +147,8 @@ exports.postApiUserPasswordForgot = (req, res) =>
         email: req.user.email
     }
     const token = jwt.sign(payload, secret, {expiresIn: '15m'})
-    const link = `http://127.0.0.1:8000/password/reset/${req.user.id}/${token}`
+
+    const link = `${req.protocol}://${req.get('host')}/password/reset/${req.user.id}/${token}`
 
     console.log(link)
     // TODO : Send this link to the user email.
@@ -171,190 +162,41 @@ exports.postApiUserPasswordForgot = (req, res) =>
 
 exports.postApiUserPasswordReset = (req, res) =>
 {
-    db.User.update({
-        password: bcrypt.hashSync(req.body.password, 8)
-    },
-    {
-        where:
+    db.sequelize
+        .transaction((transaction) =>
         {
-            id: req.user_id
-        }
-    }).then((count) =>
-    {
-        console.log(`[DEBUG] postApiUserPasswordReset ${count} row(s) updated`)
-
-        if(count != '0')
+            return db.User
+                .update({
+                    password: req.body.password
+                },
+                {
+                    where:
+                    {
+                        id: req.user_id
+                    }
+                },
+                {
+                    transaction: transaction
+                })
+        })
+        .then((count) =>
         {
+            console.log(`[DEBUG] postApiUserPasswordReset ${count} row(s) updated`)
+  
             return res
                 .status(httpCodes.OK)
                 .json({
                     message: `Votre mot de passe à été mis à jour.`
                 })
-        }
-        else
+        })
+        .catch((exception) =>
         {
+            console.error(`[ERROR] postApiUserPasswordReset ${req.user_id} - ${exception.message}`)
+
             return res
-                .status(httpCodes.OK)
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Votre mot de passe est déjà à jour.`
+                    message: `Une erreur est survenue lors de la mise à jour du mot de passe.`,
                 })
-        }
-        
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] postApiUserPasswordReset ${req.user_id} - ${exception.message}`)
-
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Le mot de passe de l'utilisateur numéro ${req.user_id} n'a pas pu être mis à jour.`,
-            })
-    })
-}
-
-/*const checkExistUserData = (req) =>
-{
-    const updateData = {}
-
-    if(req.body.username)
-    {
-        updateData.username = req.body.username
-    }
-
-    if(req.body.email)
-    {
-        updateData.email = req.body.email
-    }
-
-    if(req.body.password)
-    {
-        updateData.password = bcrypt.hashSync(req.body.password, 8)
-    }
-
-    return updateData
-}
-
-//===============================================//
-// REST api for USERS
-//===============================================//
-
-exports.getApiUsers = (req, res) =>
-{
-    db.User.findAll().then((users) =>
-    {
-        return res
-            .status(httpCodes.OK)
-            .json({
-                message: users
-            })
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] getApiUsers - ${exception.message}`)
-
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Impossible d'accéder aux données utilisateur.`,
-            })
-    })
-}
-
-exports.getApiUsersId = (req, res) =>
-{
-    return res
-        .status(httpCodes.OK)
-        .json({
-            message: req.user
         })
 }
-
-
-
-exports.putApiUsersId = (req, res) =>
-{
-    const userData = checkExistUserData(req)
-
-    db.User.update(userData,
-    {
-        where:
-        {
-            id: req.params.id
-        }
-    }).then((count) =>
-    {
-        console.log(`[DEBUG] putApiUsersId ${count} row(s) updated`)
-
-        if(count != '0')
-        {
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `L'utilisateur numéro ${req.params.id} a été mis à jour.`
-                })
-        }
-        else
-        {
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `L'utilisateur numéro ${req.params.id} est déjà à jour.`
-                })
-        }
-        
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] putApiUsersId ${req.params.id} ${userData} - ${exception.message}`)
-
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `L'utilisateur numéro ${req.params.id} n'a pas pu être mis à jour.`,
-            })
-    })
-}
-
-exports.deleteApiUsersId = (req, res) =>
-{
-    db.User.destroy({
-        where:
-        {
-            id: req.params.id
-        }
-    }).then((count) =>
-    {
-        console.log(`[DEBUG] deleteApiUsersId ${count} row(s) deleted`)
-
-        if(count != '0')
-        {
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `L'utilisateur numéro ${req.params.id} a été supprimé.`
-                })
-        }
-        else
-        {
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `L'utilisateur numéro ${req.params.id} n'existe pas ou a déjà été supprimé.`
-                })
-        }
-
-        
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] deleteApiUsersId ${req.params.id} - ${exception.message}`)
-
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `L'utilisateur numéro ${req.params.id} n'a pas pu être supprimé.`,
-            })
-    })
-}*/
-
-//===============================================//
-// OTHER api for USERS
-//===============================================//
-

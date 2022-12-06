@@ -1,11 +1,22 @@
 body
 {
+    margin-top: 60px;
+    
+}
+
+#page
+{
+    width: 100%;
+    height: calc(100vh - 60px);
+    overflow: auto;
+
     display: grid;
     grid-template-areas:
         "home      "
         "objectives"
         "tutorial  "
         "copyright ";
+    grid-template-rows: calc(100vh - 60px) 1fr 1fr 1fr;
 }
 
 /*===============================================//
@@ -18,11 +29,11 @@ body
 
     background: url("/static/images/background2.jpg");
     background-size: cover;
-    padding: 200px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     color: #fff;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #home::before
 {
@@ -46,6 +57,7 @@ body
     flex-direction: column;
     gap: 20px;
     z-index: 1;
+    padding: 200px;
 }
 #home__left h1
 {
@@ -65,6 +77,7 @@ body
 {
     display: flex;
     z-index: 1;
+    padding: 200px 200px 200px 0;
 }
 #home__right img
 {
@@ -198,4 +211,5 @@ body
 #copyright
 {
     grid-area: copyright;
+    width: 100%;
 }

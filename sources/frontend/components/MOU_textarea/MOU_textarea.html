@@ -1,12 +1,12 @@
 <style>
 @import "/static/css/root.css";
 
-#field
+.text-field
 {
     position: relative;
 }
 
-input
+textarea
 {
     border: 1px solid rgb(var(--dark-text));
     color: rgb(var(--dark-text));
@@ -15,12 +15,18 @@ input
     border-radius: 4px;
     outline: none;
     width: 100%;
+    resize: vertical;
+    min-height: 100px;
 }
-input:focus
+textarea.error
+{
+    border-color: rgb(var(--color-error));
+}
+textarea:focus
 {
     border-color: rgb(var(--color-1));
 }
-input:focus ~ label
+textarea:focus ~ label
 {
     top: -9px;
     left: 5px;
@@ -29,21 +35,13 @@ input:focus ~ label
     background-color:#fff;
     padding: 0 5px;
 }
-input.notempty ~ label
+textarea:valid ~ label
 {
     top: -9px;
     left: 5px;
     font-size: small;
     background-color:#fff;
     padding: 0 5px;
-}
-input.error
-{
-    border-color: rgb(var(--color-error));
-}
-input.error ~ label
-{
-    color: rgb(var(--color-error));
 }
 
 label
@@ -54,11 +52,14 @@ label
     left: 10px;
     top: 10px;
     transition: 0.2s;
-    background-color:#fff;
+}
+label.error
+{
+    color: rgb(var(--color-error));
 }
 
 </style>
-<div id="field">
-    <input>
+<div class="text-field">
+    <textarea maxlength="1000" required></textarea>
     <label>Placeholder</label>
 </div>

@@ -22,6 +22,10 @@ module.exports =
         [
             path.resolve('sources', 'frontend', 'pages', 'posts', 'posts.js')
         ],
+        posts_new:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'posts_new', 'posts_new.js')
+        ],
         users_edit:
         [
             path.resolve('sources', 'frontend', 'pages', 'users_edit', 'users_edit.js')
@@ -75,6 +79,13 @@ module.exports =
             filename: 'posts.html',
             template: path.resolve('sources', 'frontend', 'pages', 'posts', 'posts.html'),
             chunks: ['posts']
+        }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'posts_new.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'posts_new', 'posts_new.html'),
+            chunks: ['posts_new']
         }),
 
         new htmlWebpackPlugin(

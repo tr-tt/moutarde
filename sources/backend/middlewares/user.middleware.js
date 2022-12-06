@@ -22,58 +22,43 @@ emailOrUsernameExist = (req, res, next) =>
 
 emailOrUsernameExistInDB = (req, res, next) =>
 {
-    db.User.findOne({
-        where:
-        {
-            username: req.body.emailOrUsername
-        }
-    }).then((user) =>
-    {
-        if(user)
-        {
-            req.user = user
-
-            return next()
-        }
-        else
-        {
-            db.User.findOne({
-                where:
-                {
-                    email: req.body.emailOrUsername
-                }
-            }).then((user) =>
+    db.User
+        .findOne({
+            where:
             {
-                if(user)
-                {
-                    req.user = user
+                [db.Op.or]: [{username: req.body.emailOrUsername}, {email: req.body.emailOrUsername}]
+            }
+        })
+        .then((user) =>
+        {
+            if(user)
+            {
+                req.user = user
 
-                    return next()
-                }
-                else
-                {
-                    console.error(`[ERROR] emailOrUsernameExistInDB ${req.body.emailOrUsername} not found`)
+                return next()
+            }
+            else
+            {
+                console.error(`[ERROR] emailOrUsernameExistInDB ${req.body.emailOrUsername} not found`)
 
-                    return res
-                        .status(httpCodes.NOT_FOUND)
-                        .json({
-                            message: `L'utilisateur avec cette addresse email ou ce nom d'utilisateur ${req.body.emailOrUsername} n'a pas été trouvé.`
-                        })
-                }
-            })
-        }
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] emailOrUsernameExistInDB ${req.body.emailOrUsername} - ${exception.message}`)
+                return res
+                    .status(httpCodes.NOT_FOUND)
+                    .json({
+                        message: `L'utilisateur avec l'addresse email ou le nom d'utilisateur ${req.body.emailOrUsername} n'a pas été trouvé.`
+                    })
+            }
+        })
+        .catch((exception) =>
+        {
+            console.error(`[ERROR] emailOrUsernameExistInDB ${req.body.emailOrUsername} - ${exception.message}`)
 
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `L'addresse email ou le nom d'utilisateur ${req.body.emailOrUsername} est invalide.`
-            })
-    })
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la recherche de l'utilisateur pour changer le mot de passe.`
+                })
+        })
 }
-
 
 usernameExist = (req, res, next) =>
 {
@@ -167,14 +152,20 @@ passwordAndConfirmPasswordIdentity = (req, res, next) =>
 
 userIdExist = (req, res, next) =>
 {
-    if(req.params.id)
+    if(!req.params.id)
     {
-        db.User.findOne({
-            where:
-            {
-                id: req.params.id
-            }
-        }).then((user) =>
+        console.error('[ERROR] userIdExist - No user id provided')
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Un id d'utilisateur est requis.`,
+            })
+    }
+
+    db.User
+        .findByPk(req.params.id)
+        .then((user) =>
         {
             if(user)
             {
@@ -199,34 +190,28 @@ userIdExist = (req, res, next) =>
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Le numéro ${req.params.id} est invalide.`,
+                    message: `Une erreur est survenue lors de la recherche de l'utilisateur`,
                 })
         })
-    }
-    else
-    {
-        console.error('[ERROR] userIdExist - No user id provided')
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un id d'utilisateur est requis.`,
-            })
-    }
 }
 
 usernameDuplicated = (req, res, next) =>
 {
-    if(req.body.username)
+    if(!req.body.username)
     {
-        db.User.findOne({
+        return next()
+    }
+
+    db.User
+        .findOne({
             where:
             {
                 username: req.body.username
             }
-        }).then((user) =>
+        })
+        .then((user) =>
         {
-            if (user)
+            if(user)
             {
                 console.error(`[ERROR] usernameDuplicated - Username ${req.body.username} already taken`)
 
@@ -240,35 +225,36 @@ usernameDuplicated = (req, res, next) =>
             {
                 return next()
             }
-        }).catch((exception) =>
+        })
+        .catch((exception) =>
         {
             console.error(`[ERROR] usernameDuplicated ${req.body.username} - ${exception.message}`)
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Le nom d'utilisateur ${req.body.username} est invalide.`,
+                    message: `Une erreur est survenue lors de la vérification de la duplication du nom d'utilisateur ${req.body.username}.`,
                 })
         })
-    }
-    else
-    {
-        return next()
-    }
 }
 
 emailDuplicated = (req, res, next) =>
 {
-    if(req.body.email)
+    if(!req.body.email)
     {
-        db.User.findOne({
+        return next()
+    }
+
+    db.User
+        .findOne({
             where:
             {
                 email: req.body.email
             }
-        }).then((user) =>
+        })
+        .then((user) =>
         {
-            if (user)
+            if(user)
             {
                 console.error(`[ERROR] emailDuplicated - Email ${req.body.email} already taken`)
 
@@ -282,56 +268,85 @@ emailDuplicated = (req, res, next) =>
             {
                 return next()
             }
-        }).catch((exception) =>
+        })
+        .catch((exception) =>
         {
             console.error(`[ERROR] emailDuplicated ${req.body.email} - ${exception.message}`)
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `L'adresse email ${req.body.email} est invalide.`
+                    message: `Une erreur est survenue lors de la vérification de la duplication de l'adresse email ${req.body.email}.`
                 })
         })
-    }
-    else
-    {
-        return next()
-    }
 }
 
 tokenExistVerify = (req, res, next) =>
 {
-    if(req.params.token)
-    {
-        const secret = process.env.APP_SECRET + req.user.password
-
-        jwt.verify(req.params.token, secret, (error, decoded) =>
-        {
-            if(error)
-            {
-                console.error('[ERROR] tokenExistVerify - Unauthorized')
-
-                return res
-                    .status(httpCodes.UNAUTHORIZED)
-                    .json({
-                        message: `Votre temps d'accès a expiré.`
-                    })
-            }
-
-            req.user_id = decoded.id
-
-            return next()
-
-        })
-    }
-    else
+    if(!req.params.token)
     {
         console.error('[ERROR] tokenExistVerify - No token provided')
 
         return res
             .status(httpCodes.FORBIDDEN)
             .json({
-                message: `Un token utilisateur est requis.`,
+                message: `Vous devez envoyer une requête sur la plateforme avant d'avoir accès aux données.`,
+            })
+    }
+
+    const secret = process.env.APP_SECRET + req.user.password
+
+    jwt.verify(req.params.token, secret, (error, decoded) =>
+    {
+        if(error)
+        {
+            console.error('[ERROR] tokenExistVerify - Unauthorized')
+
+            return res
+                .status(httpCodes.UNAUTHORIZED)
+                .json({
+                    message: `Votre accès aux données a expiré.`
+                })
+        }
+
+        req.user_id = decoded.id
+
+        return next()
+    })
+}
+
+schoolExist = (req, res, next) =>
+{
+    if(req.body.school)
+    {
+        return next()
+    }
+    else
+    {
+        console.error('[ERROR] schoolExist - No school provided')
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Un nom d'école est requis.`,
+            })
+    }
+}
+
+schoolYearExist = (req, res, next) =>
+{
+    if(req.body.schoolYear)
+    {
+        return next()
+    }
+    else
+    {
+        console.error('[ERROR] schoolYearExist - No schoolYear provided')
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Une année de formation est requise.`,
             })
     }
 }
@@ -348,7 +363,9 @@ const userMiddleware =
     userIdExist,
     usernameDuplicated,
     emailDuplicated,
-    tokenExistVerify
+    tokenExistVerify,
+    schoolExist,
+    schoolYearExist
 }
 
 module.exports = userMiddleware

@@ -14,7 +14,6 @@ class AuthService
 
     getApiAuthSignout()
     {
-        console.log('disconnect');
         return axios
             .get('/api/auth/signout')
     }

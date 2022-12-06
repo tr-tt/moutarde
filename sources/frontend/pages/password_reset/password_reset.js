@@ -2,6 +2,7 @@ import './password_reset.css'
 import '../../components/MOU_input/MOU_input'
 import '../../components/MOU_link/MOU_link'
 import UserService from '../../services/user.service'
+import AuthService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -56,6 +57,9 @@ _button.addEventListener('click', () =>
             {
                 _subtitle.textContent = response.data.message
                 _subtitle.classList.remove('error')
+
+                AuthService
+                    .getApiAuthSignout()
 
                 _form.style.display = 'none'
                 _button.style.display = 'none'
