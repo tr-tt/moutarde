@@ -10,6 +10,8 @@ exports.getApiUser = (req, res) =>
         {
             if(user)
             {
+                console.log(`[DEBUG] getApiUser - User found ${JSON.stringify(user)}`)
+
                 return res
                     .status(httpCodes.OK)
                     .json({
@@ -49,27 +51,28 @@ exports.getApiUser = (req, res) =>
 
 exports.postApiUser = (req, res) =>
 {
+    const userData = {}
+
+    userData.username = req.body.username
+    userData.email = req.body.email
+    userData.birthday = req.body.birthday || null
+    userData.sex = req.body.sex || null
+    userData.school = req.body.school
+    userData.schoolYear = req.body.schoolYear
+    userData.password = req.body.password
+
     db.sequelize
         .transaction((transaction) =>
         {
             return db.User
-                .create({
-                    username: req.body.username,
-                    email: req.body.email,
-                    birthday: req.body.birthday || null,
-                    sex: req.body.sex || null,
-                    school: req.body.school,
-                    schoolYear: req.body.schoolYear,
-                    password: req.body.password
-                },
+                .create(userData,
                 {
                     transaction: transaction
                 })
         })
         .then((user) =>
         {
-            console.log('[DEBUG] postApiUser new user created')
-            console.log(user)
+            console.log(`[DEBUG] postApiUser new user created ${JSON.stringify(user)}`)
 
             return res
                 .status(httpCodes.OK)
@@ -127,7 +130,7 @@ exports.putApiUser = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] putApiUser ${req.user_id} ${userData} - ${exception.message}`)
+            console.error(`[ERROR] putApiUser ${req.user_id} ${JSON.stringify(userData)} - ${exception.message}`)
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)

@@ -26,6 +26,10 @@ module.exports =
         [
             path.resolve('sources', 'frontend', 'pages', 'posts_new', 'posts_new.js')
         ],
+        posts_edit:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'posts_edit', 'posts_edit.js')
+        ],
         users_edit:
         [
             path.resolve('sources', 'frontend', 'pages', 'users_edit', 'users_edit.js')
@@ -37,6 +41,10 @@ module.exports =
         password_reset:
         [
             path.resolve('sources', 'frontend', 'pages', 'password_reset', 'password_reset.js')
+        ],
+        contact:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'contact', 'contact.js')
         ]
     },
 
@@ -90,6 +98,13 @@ module.exports =
 
         new htmlWebpackPlugin(
         {
+            filename: 'posts_edit.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'posts_edit', 'posts_edit.html'),
+            chunks: ['posts_edit']
+        }),
+
+        new htmlWebpackPlugin(
+        {
             filename: 'users_edit.html',
             template: path.resolve('sources', 'frontend', 'pages', 'users_edit', 'users_edit.html'),
             chunks: ['users_edit']
@@ -107,6 +122,13 @@ module.exports =
             filename: 'password_reset.html',
             template: path.resolve('sources', 'frontend', 'pages', 'password_reset', 'password_reset.html'),
             chunks: ['password_reset']
+        }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'contact.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'contact', 'contact.html'),
+            chunks: ['contact']
         })
     ],
 

@@ -3,38 +3,54 @@ const controller = require('../controllers/post.controller')
 
 module.exports = (app) =>
 {
-    /*
     app.get(
-        '/api/posts',
-        controller.getApiPosts
-    )
-
-    app.get(
-        '/api/posts/:id',
+        '/api/post',
         [
-            postMiddleware.postIdExist
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken
         ],
-        controller.getApiPostsId
+        controller.getApiPost
     )
 
     app.post(
-        '/api/posts',
+        '/api/post',
         [
             authMiddleware.tokenExistVerify,
             authMiddleware.rejectIfBadToken,
-            postMiddleware.textExist
+            postMiddleware.titleExist,
+            postMiddleware.toolExist
         ],
-        controller.postApiPosts
+        controller.postApiPost
     )
 
-    app.put(
-        '/api/posts/:id',
-        controller.putApiPostsId
+    app.get(
+        '/api/post/:id',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken,
+            postMiddleware.postIdExist
+        ],
+        controller.getApiPostId
     )
 
     app.delete(
-        '/api/posts/:id',
-        controller.deleteApiPostsId
+        '/api/post/:id',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken
+        ],
+        controller.deleteApiPostId
     )
-    */
+
+    app.put(
+        '/api/post/:id',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken,
+            postMiddleware.postIdExist,
+            postMiddleware.titleExist,
+            postMiddleware.toolExist
+        ],
+        controller.putApiPostId
+    )
 }

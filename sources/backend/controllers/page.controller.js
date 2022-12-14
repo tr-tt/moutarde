@@ -28,7 +28,7 @@ exports.getUsersEdit = (req, res) =>
                 .sendFile(path.resolve('_build', 'users_edit.html'))            
         default:
             return res
-                .sendFile(path.resolve('_build', 'signin.html'))
+                .redirect('/signin')
     }
 }
 
@@ -41,7 +41,7 @@ exports.getPosts = (req, res) =>
                 .sendFile(path.resolve('_build', 'posts.html'))            
         default:
             return res
-                .sendFile(path.resolve('_build', 'signin.html'))
+                .redirect('/signin')
     }
 }
 
@@ -54,7 +54,20 @@ exports.getPostsNew = (req, res) =>
                 .sendFile(path.resolve('_build', 'posts_new.html'))            
         default:
             return res
-                .sendFile(path.resolve('_build', 'signin.html'))
+                .redirect('/posts')
+    }
+}
+
+exports.getPostsEdit = (req, res) =>
+{
+    switch(req.status)
+    {
+        case httpCodes.OK:
+            return res
+                .sendFile(path.resolve('_build', 'posts_edit.html'))            
+        default:
+            return res
+                .redirect('/posts')
     }
 }
 
@@ -73,6 +86,19 @@ exports.getPasswordReset = (req, res) =>
                 .sendFile(path.resolve('_build', 'password_reset.html'))
         default:
             return res
-                .sendFile(path.resolve('_build', 'index.html'))
+                .redirect('/')
+    }
+}
+
+exports.getContact = (req, res) =>
+{
+    switch(req.status)
+    {
+        case httpCodes.OK:
+            return res
+                .sendFile(path.resolve('_build', 'contact.html'))            
+        default:
+            return res
+                .redirect('/signin')
     }
 }

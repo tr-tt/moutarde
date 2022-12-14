@@ -30,7 +30,7 @@ class MOUlink extends HTMLElement
 
     static get observedAttributes()
     {
-        return ['css', 'label']
+        return ['css', 'label', 'href']
     }
 
     attributeChangedCallback(name, oldValue, newValue)
@@ -49,6 +49,11 @@ class MOUlink extends HTMLElement
         if(name === 'label')
         {
             this._link.textContent = newValue || 'Link'
+        }
+
+        if(name === 'href')
+        {
+            this._link.href = newValue || ''
         }
     }
 }

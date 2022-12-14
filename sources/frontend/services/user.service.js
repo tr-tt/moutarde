@@ -8,69 +8,28 @@ class UserService
             .get('/api/user')
     }
 
-    postApiUser(
-        username,
-        email,
-        birthday,
-        sex,
-        school,
-        schoolYear,
-        password,
-        confirmPassword
-    )
+    postApiUser(formData)
     {
         return axios
-            .post('/api/user',
-            {
-                username,
-                email,
-                birthday,
-                sex,
-                school,
-                schoolYear,
-                password,
-                confirmPassword
-            })
+            .post('/api/user', formData)
     }
 
-    putApiUser(
-        username,
-        email,
-        birthday,
-        sex,
-        school,
-        schoolYear
-    )
+    putApiUser(formData)
     {
         return axios
-            .put('/api/user',
-            {
-                username,
-                email,
-                birthday,
-                sex,
-                school,
-                schoolYear
-            })
+            .put('/api/user', formData)
     }
 
-    postApiUserPasswordForgot(emailOrUsername)
+    postApiUserPasswordForgot(formData)
     {
         return axios
-            .post('/api/user/password/forgot',
-            {
-                emailOrUsername
-            })
+            .post('/api/user/password/forgot', formData)
     }
 
-    postApiUserPasswordReset(password, confirmPassword)
+    postApiUserPasswordReset(formData)
     {
         return axios
-            .post(`/api/user${window.location.pathname}`,
-            {
-                password,
-                confirmPassword
-            })
+            .post(`/api/user${window.location.pathname}`, formData)
     }
 }
 

@@ -19,8 +19,6 @@ sequelize.authenticate().then(() =>
     console.error(`[ERROR] Unable to connect with postgresql - ${error}`)
 })
 
-
-
 const db = {}
 
 db.sequelize = sequelize

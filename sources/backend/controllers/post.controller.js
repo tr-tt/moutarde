@@ -1,45 +1,94 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 
-/*
-const checkExistPostData = (req) =>
+exports.getApiPost = (req, res) =>
 {
-    const updateData = {}
+    db.User
+        .findByPk(req.user_id, {include: [db.Post]})
+        .then((user) =>
+        {
+            if(user)
+            {
+                const posts = user.Posts
 
-    if(req.body.text)
-    {
-        updateData.text = req.body.text
-    }
+                console.log(`[DEBUG] getApiPost - Posts found ${JSON.stringify(posts)}`)
 
-    return updateData
+                posts.forEach((post) =>
+                {
+                    post.dataValues.UserId && delete post.dataValues.UserId
+                    post.dataValues.updatedAt && delete post.dataValues.updatedAt
+                })
+
+                return res
+                    .status(httpCodes.OK)
+                    .json({
+                        message: posts
+                    })
+            }
+            else
+            {
+                console.error(`[ERROR] getApiPost - User id ${req.user_id} not found`)
+
+                return res
+                    .status(httpCodes.NOT_FOUND)
+                    .json({
+                        message: `Les formulaires de l'utilisateur numéro ${req.user_id} n'ont pas été trouvés.`,
+                    })
+            }
+        })
+        .catch((exception) =>
+        {
+            console.error(`[ERROR] getApiPost ${req.user_id} - ${exception.message}`)
+    
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la recherche des formulaires.`,
+                })
+        })
 }
 
-//===============================================//
-// REST api for POSTS
-//===============================================//
-
-exports.getApiPosts = (req, res) =>
+exports.postApiPost = (req, res) =>
 {
-    db.Post.findAll().then((posts) =>
-    {
-        return res
-            .status(httpCodes.OK)
-            .json({
-                message: posts
-            })
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] getApiPosts - ${exception.message}`)
+    const postData = {}
 
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Impossible d'accéder aux données des formulaires.`,
-            })
-    })
+    postData.UserId = req.user_id
+    postData.title = req.body.title
+    postData.tool = req.body.tool
+    postData.image = req.files && req.files.image ? req.files.image.data : null
+
+    db.sequelize
+        .transaction((transaction) =>
+        {
+             return db.Post
+                .create(postData,
+                {
+                    transaction: transaction
+                })
+        })
+        .then((post) =>
+        {
+            console.log(`[DEBUG] postApiPost new post created ${JSON.stringify(post)}`)
+
+            return res
+                .status(httpCodes.OK)
+                .json({
+                    message: `Le formulaire a été enregistré.`
+                })
+        })
+        .catch((exception) =>
+        {
+            console.error(`[ERROR] postApiPost ${req.user_id} ${req.body.title} - ${exception.message}`)
+
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de l'enregistrement du formulaire.`,
+                })
+        })
 }
 
-exports.getApiPostsId = (req, res) =>
+exports.getApiPostId = (req, res) =>
 {
     return res
         .status(httpCodes.OK)
@@ -48,143 +97,85 @@ exports.getApiPostsId = (req, res) =>
         })
 }
 
-exports.postApiPosts = (req, res) =>
+exports.deleteApiPostId = (req, res) =>
 {
-    db.Post.create({
-        user_id: req.user_id,
-        text: req.body.text
-    }).then((post) =>
-    {
-        console.log('[DEBUG] postApiPosts new user created')
-        console.log(post)
-
-        return res
-            .status(httpCodes.OK)
-            .json({
-            message: `Le formulaire de l'utilisateur numéro ${req.user_id} a été enregistré.`
-            })
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] postApiPosts ${req.user_id} - ${exception.message}`)
-
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Le formulaire de l'utilisateur numéro ${req.user_id} n'a pas pu être enregistré.`,
-            })
-    })
-}
-
-exports.putApiPostsId = (req, res) =>
-{
-    const postData = checkExistPostData(req)
-
-    db.Post.update(postData,
-    {
-        where:
+    db.sequelize
+        .transaction((transaction) =>
         {
-            id: req.params.id
-        }
-    }).then((count) =>
-    {
-        console.log(`[DEBUG] putApiPostsId ${count} row(s) updated`)
-
-        if(count != '0')
+            return db.Post
+                .destroy({
+                    where:
+                    {
+                        id: req.params.id
+                    }
+                },
+                {
+                    transaction: transaction
+                })
+        })
+        .then((count) =>
         {
+            console.log(`[DEBUG] deleteApiPostId ${count} row(s) deleted`)
+
             return res
                 .status(httpCodes.OK)
                 .json({
-                    message: `Le formulaire numéro ${req.params.id} a été mis à jour.`
+                    message: `Le formulaire a été supprimé.`
                 })
-        }
-        else
+        })
+        .catch((exception) =>
         {
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `Le formulaire numéro ${req.params.id} est déjà à jour.`
-                })
-        }
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] putApiPostsId ${req.params.id} ${postData} - ${exception.message}`)
+            console.error(`[ERROR] deleteApiPostId ${req.params.id} - ${exception.message}`)
 
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Le formulaire numéro ${req.params.id} n'a pas pu être mis à jour.`,
-            })
-    })
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la suppression d'un formulaire.`,
+                })
+        })
 }
 
-exports.deleteApiPostsId = (req, res) =>
+exports.putApiPostId = (req, res) =>
 {
-    db.Post.destroy({
-        where:
-        {
-            id: req.params.id
-        }
-    }).then((count) =>
-    {
-        console.log(`[DEBUG] deleteApiPostsId ${count} row(s) deleted`)
+    const postData = {}
 
-        if(count != '0')
+    req.body.title ? postData.title = req.body.title : ''
+    req.body.tool ? postData.tool = req.body.tool : ''
+    postData.image = req.files && req.files.image ? req.files.image.data : null
+
+    db.sequelize
+        .transaction((transaction) =>
         {
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `Le formulaire numéro ${req.params.id} a été supprimé.`
+            return db.Post
+                .update(postData,
+                {
+                    where:
+                    {
+                        id: req.params.id
+                    }
+                },
+                {
+                    transaction: transaction
                 })
-        }
-        else
+        })
+        .then((count) =>
         {
+            console.log(`[DEBUG] putApiPostId ${count} row(s) updated`)
+
             return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `Le formulaire numéro ${req.params.id} n'existe pas ou a déjà été supprimé`
-                })
-        }
-
-        
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] deleteApiPostsId ${req.params.id} - ${exception.message}`)
-
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Le formulaire numéro ${req.params.id} n'a pas pu être supprimé.`,
-            })
-    })
-}
-
-//===============================================//
-// Other api for POSTS
-//===============================================//
-
-exports.getApiAuthPosts = (req, res) =>
-{
-    db.Post.findAll({
-        where:
+                    .status(httpCodes.OK)
+                    .json({
+                        message: `Votre formulaire a été mis à jour.`
+                    })
+        })
+        .catch((exception) =>
         {
-            user_id: req.user_id
-        }
-    }).then((posts) =>
-    {
-        return res
-            .status(httpCodes.OK)
-            .json({
-                message: posts
-            })
-    }).catch((exception) =>
-    {
-        console.error(`[ERROR] getApiAuthPosts ${req.user_id} - ${exception.message}`)
+            console.error(`[ERROR] putApiPostId ${req.params.id} ${JSON.stringify(postData)} - ${exception.message}`)
 
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Impossible d'accéder aux données des formulaires pour l'utilisateur numéro ${req.user_id}.`,
-            })
-    })
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la mise à jour du formulaire.`,
+                })
+        })
 }
-*/

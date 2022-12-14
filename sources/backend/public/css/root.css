@@ -70,3 +70,18 @@ This file include generic style that can be used inside shadowdom of webcomponen
 {
     background: rgb(var(--color-1-shade-4));
 }
+
+.loading
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+
+    background-color: #fff;
+    background-image: url("/static/images/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}

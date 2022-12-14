@@ -31,6 +31,10 @@ module.exports = merge(
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ],
+            posts_edit:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
             users_edit:
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
@@ -40,6 +44,10 @@ module.exports = merge(
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ],
             password_reset:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            contact:
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ]

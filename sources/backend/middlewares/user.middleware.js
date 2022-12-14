@@ -180,7 +180,7 @@ userIdExist = (req, res, next) =>
                 return res
                     .status(httpCodes.NOT_FOUND)
                     .json({
-                        message: `L'utilisateur numéro ${req.params.id} n'a pas été trouvé.`,
+                        message: `L'utilisateur n'a pas été trouvé.`,
                     })
             }
         }).catch((exception) =>

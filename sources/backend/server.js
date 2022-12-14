@@ -4,6 +4,7 @@ const http = require('http')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
+const fileUpload = require('express-fileupload')
 
 dotenv.config({
     path: path.resolve(`.env.${process.env.NODE_ENV}`)
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(favicon(path.resolve('sources', 'backend', 'public', 'images', 'favicon.ico')))
+app.use(fileUpload())
 
 // DATABASE
 const db = require('./postgres')
@@ -52,7 +54,12 @@ if(process.env.NODE_ENV === 'development')
     app.use(webpackDevMiddleware)
     app.use(webpackHotMiddleware)
 
-    //db.sequelize.sync({force: true})
+    /*db.sequelize
+        .sync({force: true})
+        .then(() =>
+        {
+            console.log('[DEBUG] Drop and re-sync database')
+        })*/
     db.sequelize.sync({alter: true})
 }
 else

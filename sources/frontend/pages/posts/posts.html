@@ -8,8 +8,30 @@
     <title>HERCULE</title>
 </head>
 <body>
+    <div id="loading" class="loading"></div>
+
     <mou-headerbar>
-        <mou-usermenu></mou-usermenu>
-    </mou-headerbar>    
+        <label slot="path">/</label>
+        <a href="/" slot="path">Page d'accueil</a>
+        <label slot="path">/</label>
+        <a href="" slot="path">Mes formulaires</a>
+        
+        <mou-usermenu slot="controls"></mou-usermenu>
+    </mou-headerbar>
+
+    <div id="page">
+        <div id="empty">
+            <div id="empty__fields">
+                <p>
+                    Pour commencer à <strong>créer un formulaire</strong> vous pouvez cliquer sur le bouton ci dessous :
+                </p>
+                <div style="display: flex;">
+                    <mou-link href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 </body>
 </html>

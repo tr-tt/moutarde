@@ -42,6 +42,52 @@ userIdExist = (req, res, next) =>
         })
 }
 
+postIdExist = (req, res, next) =>
+{
+    if(req.status !== httpCodes.OK)
+    {
+        return next()
+    }
+    
+    if(!req.params.id)
+    {
+        console.error('[ERROR] postIdExist - No post id provided')
+
+        req.status = httpCodes.BAD_REQUEST
+
+        return next()
+    }
+
+    db.Post
+        .findByPk(req.params.id)
+        .then((post) =>
+        {
+            if(post)
+            {
+                req.status = httpCodes.OK
+                req.post = post
+
+                return next()
+            }
+            else
+            {
+                console.error(`[ERROR] postIdExist - Post id ${req.params.id} not found`)
+
+                req.status = httpCodes.NOT_FOUND
+
+                return next()
+            }
+        })
+        .catch((exception) =>
+        {
+            console.error(`[ERROR] postIdExist ${req.params.id} - ${exception.message}`)
+
+            req.status = httpCodes.INTERNAL_SERVER_ERROR
+
+            return next()
+        })
+}
+
 tokenExistVerify = (req, res, next) =>
 {
     if(req.status !== httpCodes.OK)
@@ -78,9 +124,12 @@ tokenExistVerify = (req, res, next) =>
     })
 }
 
+
+
 const pageMiddleware =
 {
     userIdExist,
+    postIdExist,
     tokenExistVerify
 }
 

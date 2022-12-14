@@ -8,8 +8,15 @@
     <title>HERCULE</title>
 </head>
 <body>
+    <div id="loading" class="loading"></div>
+    
     <mou-headerbar>
-        <mou-usermenu></mou-usermenu>
+        <label slot="path">/</label>
+        <a href="/" slot="path">Page d'accueil</a>
+        <label slot="path">/</label>
+        <a href="" slot="path">Mon profil</a>
+
+        <mou-usermenu slot="controls"></mou-usermenu>
     </mou-headerbar>
     
     <div id="page">
@@ -22,8 +29,8 @@
                 <p id="subtitle">Modifier mon profil utilisateur.</p>
 
                 <div id="profile__fields">
-                    <mou-input id="username" placeholder="Nom d'utilisateur" type="text" required></mou-input>
-                    <mou-input id="email" placeholder="Addresse email" type="text" required></mou-input>
+                    <mou-input id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input>
+                    <mou-input id="email" placeholder="Addresse email" type="text" maxlength="100" required></mou-input>
                     <mou-input id="birthday" placeholder="Date de naissance" type="date" min="1950-01-01" max="2023-01-01"></mou-input>
                     <mou-select id="sex" placeholder="Sexe">
                         <option value="Homme">Homme</option>
@@ -32,7 +39,7 @@
 
                     <div class="separator"></div>
 
-                    <mou-input id="school" placeholder="Ecole" type="text" required></mou-input>
+                    <mou-input id="school" placeholder="Ecole" type="text" maxlength="100" required></mou-input>
                     <mou-input id="school__year" placeholder="Année de formation" type="number" min="2000" max="2023" required></mou-input>
 
                     <div class="separator"></div>
@@ -41,7 +48,7 @@
                 </div>
 
                 <div id="profile__controls">
-                    <mou-link href="/posts" label="Annuler" css="basic"></mou-link>
+                    <mou-link id="posts" href="/posts" label="Annuler" css="basic"></mou-link>
                     <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
                 </div>
             </div>

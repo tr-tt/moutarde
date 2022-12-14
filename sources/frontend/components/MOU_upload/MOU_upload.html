@@ -1,11 +1,17 @@
 <style>
 @import "/static/css/root.css";
 
-.text-field
+#upload
 {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+#upload__controls
+{
+    display: flex;
+    justify-content: space-between;
 }
 
 input
@@ -26,7 +32,6 @@ label
     padding: 12px 24px 11px;
     text-rendering: optimizeLegibility;
     transition: background-color .2s, color .2s;
-    width: 100%;
     background-color: rgb(var(--color-1));
     color: #fff;
 }
@@ -36,18 +41,29 @@ label:hover
     color: #fff;
 }
 
+#upload__fields
+{
+    height: 400px;
+    display: flex;
+}
+
 img
 {
+    margin: auto;
     max-width: 100%;
-    border-radius: var(--border-radius);
-    border: 1px solid rgb(var(--color-1));
-    padding: 40px;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+    max-height: 100%;
 }
 </style>
-<div class="text-field">
-    <input id="input" type="file" accept="image/png, image/jpeg">
-    <label for="input">Choisir une image</label>
-    <img src="/static/images/jpgOrPng.jpg"/>
+<div id="upload">
+    <div id="upload__fields">
+        <img src="/static/images/jpgOrPng.jpg"/>
+    </div>
+    
+    <div id="upload__controls">
+        <mou-link id="delete" label="Supprimer" css="basic"></mou-link>
+
+        <input id="input" type="file" accept="image/png, image/jpeg">
+        <label for="input">Choisir une image</label>
+    </div>
 </div>
 

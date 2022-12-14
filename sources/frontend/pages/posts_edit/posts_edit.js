@@ -1,4 +1,4 @@
-import './posts_new.css'
+import './posts_edit.css'
 import '../../components/MOU_input/MOU_input'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_textarea/MOU_textarea'
@@ -12,6 +12,8 @@ if(process.env.NODE_ENV === 'development' && module.hot)
     module.hot.accept()
 }
 
+const post_id = window.location.pathname.replace('/posts/edit/', '')
+
 const _subtitle = document.querySelector('#subtitle')
 const _formFields = document.querySelector('#form__fields')
 
@@ -24,10 +26,23 @@ const _button = document.querySelector('#button')
 
 const _loading = document.querySelector('#loading')
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+postService.
+    getApiPostId(post_id)
+    .then((response) =>
+    {
+        _title.value = response.data.message.title || ''
+        _tool.value = response.data.message.tool || ''
+        _mouUpload.value = response.data.message.image || ''
+
+        _loading.style.display = 'none'
+    })
+    .catch((exception) =>
+    {
+        exception.response 
+            && exception.response.data
+            && exception.response.data.message
+            && console.log(exception.response.data.message)
+    })
 
 _button.addEventListener('click', () =>
 {
@@ -67,17 +82,16 @@ _button.addEventListener('click', () =>
     }
     
     postService
-        .postApiPost(formData)
-        .then(() =>
+        .putApiPostId(post_id, formData)
+        .then((response) =>
         {
-            _subtitle.textContent = `Votre formulaire a été enregistré, vous pouvez consulter la liste de vos formulaires.`
+            _subtitle.textContent = response.data.message
             _subtitle.classList.remove('error')
 
             _formFields.innerHTML = ''
             _button.style.display = 'none'
             _posts.setAttribute('label', 'Mes formulaires')
             _posts.setAttribute('css', 'colored')
-
         })
         .catch((exception) =>
         {

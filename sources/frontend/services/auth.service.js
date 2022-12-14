@@ -2,14 +2,10 @@ import axios from 'axios'
 
 class AuthService
 {
-    postApiAuthSignin(username, password)
+    postApiAuthSignin(formData)
     {
         return axios
-            .post('/api/auth/signin',
-            {
-                username,
-                password
-            })
+            .post('/api/auth/signin', formData)
     }
 
     getApiAuthSignout()

@@ -38,7 +38,21 @@
 {
     color: #5f6368;
 }
-#header__aside
+
+slot[name="path"]
+{
+    display: flex;
+    gap: 20px;
+}
+slot[name="path"]::slotted(a)
+{
+    color: rgb(var(--color-1));
+    appearance: none;
+    -webkit-appearance: none;
+    text-decoration: none;
+}
+
+slot[name="controls"]
 {
     display: flex;
     align-items: center;
@@ -50,7 +64,9 @@
         <div id="header__logo">
             <img src="/static/images/logo.jpg" width="30px" height="30px">
             <span>HERCULE</span>
+
+            <slot name="path"></slot>
         </div>
-        <slot id="header__aside"></slot>
+        <slot name="controls"></slot>
     </div> 
 </div>

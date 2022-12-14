@@ -1,63 +1,45 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 
-textExist = (req, res, next) =>
+titleExist = (req, res, next) =>
 {
-    if(req.body.text)
+    if(req.body.title)
     {
-        next()
+        return next()
     }
     else
     {
-        console.error('[ERROR] textExist - No text provided')
+        console.error('[ERROR] titleExist - No title provided')
 
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Le texte est requis.`,
+                message: `Le titre du formulaire est requis.`,
+            })
+    }
+}
+
+toolExist = (req, res, next) =>
+{
+    if(req.body.tool)
+    {
+        return next()
+    }
+    else
+    {
+        console.error('[ERROR] toolExist - No tool provided')
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `L' outil cible est requis.`,
             })
     }
 }
 
 postIdExist = (req, res, next) =>
-{
-    if(req.params.id)
-    {
-        db.Post.findOne({
-            where:
-            {
-                id: req.params.id
-            }
-        }).then((post) =>
-        {
-            if(post)
-            {
-                req.post = post
-
-                next()
-            }
-            else
-            {
-                console.error(`[ERROR] postIdExist - Post id ${req.params.id} not found`)
-
-                return res
-                    .status(httpCodes.NOT_FOUND)
-                    .json({
-                        message: `Le formulaire numéro ${req.params.id} n'a pas été trouvé.`,
-                    })
-            }
-        }).catch((exception) =>
-        {
-            console.error(`[ERROR] postIdExist ${req.params.id} - ${exception.message}`)
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Le numéro ${req.params.id} est invalide.`,
-                })
-        })
-    }
-    else
+{   
+    if(!req.params.id)
     {
         console.error('[ERROR] postIdExist - No post id provided')
 
@@ -67,11 +49,44 @@ postIdExist = (req, res, next) =>
                 message: `Un id de formulaire est requis.`,
             })
     }
+
+    db.Post
+        .findByPk(req.params.id)
+        .then((post) =>
+        {
+            if(post)
+            {
+                req.post = post
+
+                return next()
+            }
+            else
+            {
+                console.error(`[ERROR] postIdExist - Post id ${req.params.id} not found`)
+
+                return res
+                    .status(httpCodes.NOT_FOUND)
+                    .json({
+                        message: `Le formulaire n'a pas été trouvé.`,
+                    })
+            }
+        })
+        .catch((exception) =>
+        {
+            console.error(`[ERROR] postIdExist ${req.params.id} - ${exception.message}`)
+
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la recherche du formulaire`,
+                })
+        })
 }
 
 const postMiddleware =
 {
-    textExist,
+    titleExist,
+    toolExist,
     postIdExist
 }
 

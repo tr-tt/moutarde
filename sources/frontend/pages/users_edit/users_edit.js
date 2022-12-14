@@ -12,6 +12,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _subtitle = document.querySelector('#subtitle')
+const _profileFields = document.querySelector('#profile__fields')
 
 const _username = document.querySelector('#username')
 const _email = document.querySelector('#email')
@@ -20,7 +21,10 @@ const _sex = document.querySelector('#sex')
 const _school = document.querySelector('#school')
 const _schoolYear = document.querySelector('#school__year')
 
+const _posts = document.querySelector('#posts')
 const _button = document.querySelector('#button')
+
+const _loading = document.querySelector('#loading')
 
 let _current_username = ''
 let _current_email = ''
@@ -38,10 +42,14 @@ UserService
         _sex.value = response.data.message.sex || ''
         _school.value = response.data.message.school || ''
         _schoolYear.value = response.data.message.schoolYear || ''
+
+        _loading.style.display = 'none'
     })
 
 _button.addEventListener('click', () =>
 {
+    const formData = new FormData()
+
     let username = _username.value
     let email = _email.value
     const birthday = _birthday.value
@@ -49,51 +57,87 @@ _button.addEventListener('click', () =>
     const school = _school.value
     const schoolYear = _schoolYear.value
 
-    if(!username)
+    if(username)
     {
-        _subtitle.textContent = `Un nom d'utilisateur unique est requis.`
-        _subtitle.classList.add('error')
-    }
-    else if(!email)
-    {
-        _subtitle.textContent = `Une addresse email unique est requise.`
-        _subtitle.classList.add('error')
-    }
-    else if(!school)
-    {
-        _subtitle.textContent = `Un nom d'école est requis.`
-        _subtitle.classList.add('error')
-    }
-    else if(!schoolYear)
-    {
-        _subtitle.textContent = `Une année de formation comprise entre 2000 et 2023 est requise.`
-        _subtitle.classList.add('error')
+        if(username !== _current_username)
+        {
+            formData.append('username', username)
+        }        
     }
     else
     {
-        username = username === _current_username ? '' : username
-        email = email === _current_email ? '' : email
+        _subtitle.textContent = `Un nom d'utilisateur unique est requis.`
+        _subtitle.classList.add('error')
 
-        UserService
-            .putApiUser(
-                username,
-                email,
-                birthday,
-                sex,
-                school,
-                schoolYear
-            )
-            .then((response) =>
-            {
-                _subtitle.textContent = response.data.message
-                _subtitle.classList.remove('error')
-            })
-            .catch((exception) =>
-            {
-                _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
-            })
+        return
     }
+
+    if(email)
+    {
+        if(email !== _current_email)
+        {
+            formData.append('email', email)
+        }
+    }
+    else
+    {
+        _subtitle.textContent = `Une addresse email unique est requise.`
+        _subtitle.classList.add('error')
+
+        return
+    }
+
+    if(birthday)
+    {
+        formData.append('birthday', birthday)
+    }
+
+    if(sex)
+    {
+        formData.append('sex', sex)
+    }
+
+    if(school)
+    {
+        formData.append('school', school)
+    }
+    else
+    {
+        _subtitle.textContent = `Un nom d'école est requis.`
+        _subtitle.classList.add('error')
+
+        return
+    }
+
+    if(schoolYear)
+    {
+        formData.append('schoolYear', schoolYear)
+    }
+    else
+    {
+        _subtitle.textContent = `Une année de formation comprise entre 2000 et 2023 est requise.`
+        _subtitle.classList.add('error')
+
+        return
+    }
+
+    UserService
+        .putApiUser(formData)
+        .then((response) =>
+        {
+            _subtitle.textContent = response.data.message
+            _subtitle.classList.remove('error')
+
+            _profileFields.innerHTML = ''
+            _button.style.display = 'none'
+            _posts.setAttribute('label', 'Mes formulaires')
+            _posts.setAttribute('css', 'colored')
+        })
+        .catch((exception) =>
+        {
+            _subtitle.textContent = exception.response.data.message
+            _subtitle.classList.add('error')
+        })
 })
 
 
