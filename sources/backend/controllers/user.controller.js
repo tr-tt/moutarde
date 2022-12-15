@@ -1,6 +1,7 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 const jwt = require('jsonwebtoken')
+const logger = require('../logger')
 
 exports.getApiUser = (req, res) =>
 {
@@ -10,7 +11,7 @@ exports.getApiUser = (req, res) =>
         {
             if(user)
             {
-                console.log(`[DEBUG] getApiUser - User found ${JSON.stringify(user)}`)
+                logger.debug(`user id ${req.user_id} user name ${user.username} found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.OK})
 
                 return res
                     .status(httpCodes.OK)
@@ -28,7 +29,7 @@ exports.getApiUser = (req, res) =>
             }
             else
             {
-                console.error(`[ERROR] getApiUser - User id ${req.user_id} not found`)
+                logger.warn(`user id ${req.user_id} not found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.NOT_FOUND})
     
                 return res
                     .status(httpCodes.NOT_FOUND)
@@ -39,7 +40,7 @@ exports.getApiUser = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] getApiUser ${req.user_id} - ${exception.message}`)
+            logger.error(`user id ${req.user_id} exception ${exception.message}`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
     
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -55,11 +56,12 @@ exports.postApiUser = (req, res) =>
 
     userData.username = req.body.username
     userData.email = req.body.email
-    userData.birthday = req.body.birthday || null
-    userData.sex = req.body.sex || null
     userData.school = req.body.school
     userData.schoolYear = req.body.schoolYear
     userData.password = req.body.password
+
+    userData.birthday = req.body.birthday || null
+    userData.sex = req.body.sex || null
 
     db.sequelize
         .transaction((transaction) =>
@@ -72,7 +74,7 @@ exports.postApiUser = (req, res) =>
         })
         .then((user) =>
         {
-            console.log(`[DEBUG] postApiUser new user created ${JSON.stringify(user)}`)
+            logger.debug(`user name ${req.body.username} user email ${req.body.email} created`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK})
 
             return res
                 .status(httpCodes.OK)
@@ -82,7 +84,7 @@ exports.postApiUser = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] postApiUser ${req.body.username} ${req.body.email} ${req.body.password} - ${exception.message}`)
+            logger.error(`user name ${req.body.username} user email ${req.body.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -98,10 +100,11 @@ exports.putApiUser = (req, res) =>
 
     req.body.username ? userData.username = req.body.username : ''
     req.body.email ? userData.email = req.body.email : ''
+    userData.school = req.body.school
+    userData.schoolYear = req.body.schoolYear
+
     userData.birthday = req.body.birthday || null
     userData.sex = req.body.sex || null
-    req.body.school ? userData.school = req.body.school : ''
-    req.body.schoolYear ? userData.schoolYear = req.body.schoolYear : ''
 
     db.sequelize
         .transaction((transaction) =>
@@ -120,7 +123,7 @@ exports.putApiUser = (req, res) =>
         })
         .then((count) =>
         {
-            console.log(`[DEBUG] putApiUser ${count} row(s) updated`)
+            logger.debug(`user id ${req.user_id} row(s) ${count} updated`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.OK})
 
             return res
                     .status(httpCodes.OK)
@@ -130,7 +133,7 @@ exports.putApiUser = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] putApiUser ${req.user_id} ${JSON.stringify(userData)} - ${exception.message}`)
+            logger.error(`user id ${req.user_id} user data ${JSON.stringify(userData)} exception ${exception.message}`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -155,6 +158,8 @@ exports.postApiUserPasswordForgot = (req, res) =>
 
     console.log(link)
     // TODO : Send this link to the user email.
+
+    logger.debug(`user id ${req.user.id} user email ${req.user.email} request password reset`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.OK})
 
     return res
         .status(httpCodes.OK)
@@ -184,7 +189,7 @@ exports.postApiUserPasswordReset = (req, res) =>
         })
         .then((count) =>
         {
-            console.log(`[DEBUG] postApiUserPasswordReset ${count} row(s) updated`)
+            logger.debug(`user id ${req.user_id} password row(s) ${count} updated`, {file: 'user.controller.js', function: 'postApiUserPasswordReset', http: httpCodes.OK})
   
             return res
                 .status(httpCodes.OK)
@@ -194,7 +199,7 @@ exports.postApiUserPasswordReset = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] postApiUserPasswordReset ${req.user_id} - ${exception.message}`)
+            logger.error(`user id ${req.user_id} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUserPasswordReset', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)

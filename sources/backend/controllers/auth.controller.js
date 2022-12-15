@@ -2,6 +2,7 @@ const db = require('../postgres')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const httpCodes = require('../httpCodes')
+const logger = require('../logger')
 
 exports.postApiAuthSignin = (req, res) =>
 {
@@ -16,7 +17,7 @@ exports.postApiAuthSignin = (req, res) =>
         {
             if (!user)
             {
-                console.error(`[ERROR] postApiAuthSignin user ${req.body.username} not found`)
+                logger.warn(`user name ${req.body.username} not found`, {file: 'auth.controller.js', function: 'postApiAuthSignin', http: httpCodes.NOT_FOUND})
 
                 return res
                     .status(httpCodes.NOT_FOUND)
@@ -32,7 +33,7 @@ exports.postApiAuthSignin = (req, res) =>
 
             if (!passwordIsValid)
             {
-                console.error(`[ERROR] postApiAuthSignin user ${req.body.username} password ${req.body.password} invalid`)
+                logger.error(`user name ${req.body.username}'s password ${req.body.password} is invalid`, {file: 'auth.controller.js', function: 'postApiAuthSignin', http: httpCodes.UNAUTHORIZED})
 
                 return res
                     .status(httpCodes.UNAUTHORIZED)
@@ -46,6 +47,8 @@ exports.postApiAuthSignin = (req, res) =>
                 id: user.id
             }
             const token = jwt.sign(payload, process.env.APP_SECRET, {expiresIn: '4h'})
+
+            logger.debug(`user name ${req.body.username} logged in`, {file: 'auth.controller.js', function: 'postApiAuthSignin', http: httpCodes.OK})
 
             return res
                 .cookie('access_token', token,
@@ -61,7 +64,7 @@ exports.postApiAuthSignin = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] postApiAuthSignin user ${req.body.username} password ${req.body.password} - ${exception.message}`)
+            logger.error(`user name ${req.body.username} password ${req.body.password} exception ${exception.message}`, {file: 'auth.controller.js', function: 'postApiAuthSignin', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)

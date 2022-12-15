@@ -46,7 +46,7 @@ if(process.env.NODE_ENV === 'development')
 
     watcher.on('change', (path) => 
     {
-        console.debug(`[DEBUG] change detected on *** ${path} ***`)
+        console.debug(`[DEBUG] change detected on >>> ${path} <<<`)
 
         webpackHotMiddleware.publish({action: 'reload'})
     })
@@ -60,7 +60,7 @@ if(process.env.NODE_ENV === 'development')
         {
             console.log('[DEBUG] Drop and re-sync database')
         })*/
-    db.sequelize.sync({alter: true})
+    db.sequelize.sync()
 }
 else
 {

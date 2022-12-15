@@ -1,6 +1,7 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 const jwt = require('jsonwebtoken')
+const logger = require('../logger')
 
 emailOrUsernameExist = (req, res, next) =>
 {
@@ -10,7 +11,7 @@ emailOrUsernameExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] emailOrUsernameExist - No email or username provided')
+        logger.warn(`no email or username provided`, {file: 'user.middleware.js', function: 'emailOrUsernameExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -35,11 +36,13 @@ emailOrUsernameExistInDB = (req, res, next) =>
             {
                 req.user = user
 
+                logger.debug(`user name or email ${req.body.emailOrUsername} found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.OK})
+
                 return next()
             }
             else
             {
-                console.error(`[ERROR] emailOrUsernameExistInDB ${req.body.emailOrUsername} not found`)
+                logger.warn(`user name or email ${req.body.emailOrUsername} not found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.NOT_FOUND})
 
                 return res
                     .status(httpCodes.NOT_FOUND)
@@ -50,7 +53,7 @@ emailOrUsernameExistInDB = (req, res, next) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] emailOrUsernameExistInDB ${req.body.emailOrUsername} - ${exception.message}`)
+            logger.error(`user name or email ${req.body.emailOrUsername} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -68,7 +71,7 @@ usernameExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] userameExist - No username provided')
+        logger.warn(`no username provided`, {file: 'user.middleware.js', function: 'usernameExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -86,7 +89,7 @@ emailExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] emailExist - No email provided')
+        logger.warn(`no email provided`, {file: 'user.middleware.js', function: 'emailExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -104,7 +107,7 @@ passwordExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] passwordExist - No password provided')
+        logger.warn(`no password provided`, {file: 'user.middleware.js', function: 'passwordExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -122,7 +125,7 @@ confirmPasswordExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] confirmPasswordExist - No confirm password provided')
+        logger.warn(`no confirm password provided`, {file: 'user.middleware.js', function: 'confirmPasswordExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -140,7 +143,7 @@ passwordAndConfirmPasswordIdentity = (req, res, next) =>
     }
     else
     {
-        console.error(`[ERROR] passwordAndConfirmPasswordIdentity - ${req.body.password} != ${req.body.confirmPassword}`)
+        logger.warn(`password ${req.body.password} confirm password ${req.body.confirmPassword} are not equal`, {file: 'user.middleware.js', function: 'passwordAndConfirmPasswordIdentity', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -154,7 +157,7 @@ userIdExist = (req, res, next) =>
 {
     if(!req.params.id)
     {
-        console.error('[ERROR] userIdExist - No user id provided')
+        logger.warn(`no user id provided`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -171,11 +174,13 @@ userIdExist = (req, res, next) =>
             {
                 req.user = user
 
+                logger.debug(`user id ${req.params.id} user name ${user.username} found`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.OK})
+
                 return next()
             }
             else
             {
-                console.error(`[ERROR] userIdExist - User id ${req.params.id} not found`)
+                logger.warn(`user id ${req.params.id} not found`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.NOT_FOUND})
 
                 return res
                     .status(httpCodes.NOT_FOUND)
@@ -185,7 +190,7 @@ userIdExist = (req, res, next) =>
             }
         }).catch((exception) =>
         {
-            console.error(`[ERROR] userIdExist ${req.params.id} - ${exception.message}`)
+            logger.error(`user id ${req.params.id} exception ${exception.message}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -213,7 +218,7 @@ usernameDuplicated = (req, res, next) =>
         {
             if(user)
             {
-                console.error(`[ERROR] usernameDuplicated - Username ${req.body.username} already taken`)
+                logger.warn(`user name ${req.body.username} already taken`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.BAD_REQUEST})
 
                 return res
                     .status(httpCodes.BAD_REQUEST)
@@ -228,7 +233,7 @@ usernameDuplicated = (req, res, next) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] usernameDuplicated ${req.body.username} - ${exception.message}`)
+            logger.error(`user name ${req.body.username} exception ${exception.message}`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -256,7 +261,7 @@ emailDuplicated = (req, res, next) =>
         {
             if(user)
             {
-                console.error(`[ERROR] emailDuplicated - Email ${req.body.email} already taken`)
+                logger.warn(`user email ${req.body.email} already taken`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.BAD_REQUEST})
 
                 return res
                     .status(httpCodes.BAD_REQUEST)
@@ -271,7 +276,7 @@ emailDuplicated = (req, res, next) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] emailDuplicated ${req.body.email} - ${exception.message}`)
+            logger.error(`user email ${req.body.email} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -285,10 +290,10 @@ tokenExistVerify = (req, res, next) =>
 {
     if(!req.params.token)
     {
-        console.error('[ERROR] tokenExistVerify - No token provided')
+        logger.warn(`no token provided`, {file: 'user.middleware.js', function: 'tokenExistVerify', http: httpCodes.BAD_REQUEST})
 
         return res
-            .status(httpCodes.FORBIDDEN)
+            .status(httpCodes.BAD_REQUEST)
             .json({
                 message: `Vous devez envoyer une requête sur la plateforme avant d'avoir accès aux données.`,
             })
@@ -300,7 +305,7 @@ tokenExistVerify = (req, res, next) =>
     {
         if(error)
         {
-            console.error('[ERROR] tokenExistVerify - Unauthorized')
+            logger.error(`token ${req.params.token} invalid ${error}`, {file: 'user.middleware.js', function: 'tokenExistVerify', http: httpCodes.UNAUTHORIZED})
 
             return res
                 .status(httpCodes.UNAUTHORIZED)
@@ -323,7 +328,7 @@ schoolExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] schoolExist - No school provided')
+        logger.warn(`no school provided`, {file: 'user.middleware.js', function: 'schoolExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
@@ -341,7 +346,7 @@ schoolYearExist = (req, res, next) =>
     }
     else
     {
-        console.error('[ERROR] schoolYearExist - No schoolYear provided')
+        logger.warn(`no school year provided`, {file: 'user.middleware.js', function: 'schoolYearExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)

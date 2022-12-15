@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const httpCodes = require('../httpCodes')
+const logger = require('../logger')
 
 tokenExistVerify = (req, res, next) =>
 {
@@ -7,9 +8,9 @@ tokenExistVerify = (req, res, next) =>
 
     if(!token)
     {
-        console.error('[ERROR] tokenExistVerify - No token provided')
-
         req.status = httpCodes.FORBIDDEN
+
+        logger.warn(`no token provided`, {file: 'auth.middleware.js', function: 'tokenExistVerify', http: httpCodes.FORBIDDEN})
 
         return next()
     }
@@ -18,15 +19,18 @@ tokenExistVerify = (req, res, next) =>
     {
         if(error)
         {
-            console.error('[ERROR] tokenExistVerify - Unauthorized')
-
             req.status = httpCodes.UNAUTHORIZED
+
+            logger.error(`token ${token} invalid ${error}`, {file: 'auth.middleware.js', function: 'tokenExistVerify', http: httpCodes.UNAUTHORIZED})
 
             return next()
         }
         
-        req.status = httpCodes.OK
         req.user_id = decoded.id
+
+        req.status = httpCodes.OK
+
+        logger.debug(`user id ${decoded.id} token verified`, {file: 'auth.middleware.js', function: 'tokenExistVerify', http: httpCodes.OK})
 
         return next()
     })
@@ -51,6 +55,8 @@ rejectIfBadToken = (req, res, next) =>
                     message: `Votre accès aux données a expiré.`
                 })
         default:
+            logger.warn(`request status ${req.status} invalid`, {file: 'auth.middleware.js', function: 'rejectIfBadToken', http: httpCodes.INTERNAL_SERVER_ERROR})
+
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({

@@ -1,5 +1,6 @@
 const db = require('../postgres')
 const httpCodes = require('../httpCodes')
+const logger = require('../logger')
 
 exports.getApiPost = (req, res) =>
 {
@@ -11,13 +12,13 @@ exports.getApiPost = (req, res) =>
             {
                 const posts = user.Posts
 
-                console.log(`[DEBUG] getApiPost - Posts found ${JSON.stringify(posts)}`)
-
                 posts.forEach((post) =>
                 {
                     post.dataValues.UserId && delete post.dataValues.UserId
                     post.dataValues.updatedAt && delete post.dataValues.updatedAt
                 })
+
+                logger.debug(`user id ${req.user_id} has ${posts.length} posts found`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.OK})
 
                 return res
                     .status(httpCodes.OK)
@@ -27,7 +28,7 @@ exports.getApiPost = (req, res) =>
             }
             else
             {
-                console.error(`[ERROR] getApiPost - User id ${req.user_id} not found`)
+                logger.warn(`user id ${req.user_id} not found`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.NOT_FOUND})
 
                 return res
                     .status(httpCodes.NOT_FOUND)
@@ -38,7 +39,7 @@ exports.getApiPost = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] getApiPost ${req.user_id} - ${exception.message}`)
+            logger.error(`user id ${req.user_id} exception ${exception.message}`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
     
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -55,6 +56,7 @@ exports.postApiPost = (req, res) =>
     postData.UserId = req.user_id
     postData.title = req.body.title
     postData.tool = req.body.tool
+
     postData.image = req.files && req.files.image ? req.files.image.data : null
 
     db.sequelize
@@ -68,7 +70,7 @@ exports.postApiPost = (req, res) =>
         })
         .then((post) =>
         {
-            console.log(`[DEBUG] postApiPost new post created ${JSON.stringify(post)}`)
+            logger.debug(`user id ${req.user_id} created a new post with title ${req.body.title}`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.OK})
 
             return res
                 .status(httpCodes.OK)
@@ -78,7 +80,7 @@ exports.postApiPost = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] postApiPost ${req.user_id} ${req.body.title} - ${exception.message}`)
+            logger.error(`user id ${req.user_id} exception ${exception.message}`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -115,7 +117,7 @@ exports.deleteApiPostId = (req, res) =>
         })
         .then((count) =>
         {
-            console.log(`[DEBUG] deleteApiPostId ${count} row(s) deleted`)
+            logger.debug(`post id ${req.params.id} row(s) ${count} deleted`, {file: 'post.controller.js', function: 'deleteApiPostId', http: httpCodes.OK})
 
             return res
                 .status(httpCodes.OK)
@@ -125,7 +127,7 @@ exports.deleteApiPostId = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] deleteApiPostId ${req.params.id} - ${exception.message}`)
+            logger.error(`post id ${req.params.id} exception ${exception.message}`, {file: 'post.controller.js', function: 'deleteApiPostId', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
@@ -139,8 +141,9 @@ exports.putApiPostId = (req, res) =>
 {
     const postData = {}
 
-    req.body.title ? postData.title = req.body.title : ''
-    req.body.tool ? postData.tool = req.body.tool : ''
+    postData.title = req.body.title
+    postData.tool = req.body.tool
+    
     postData.image = req.files && req.files.image ? req.files.image.data : null
 
     db.sequelize
@@ -160,7 +163,7 @@ exports.putApiPostId = (req, res) =>
         })
         .then((count) =>
         {
-            console.log(`[DEBUG] putApiPostId ${count} row(s) updated`)
+            logger.debug(`post id ${req.params.id} title ${postData.title} row(s) ${count} updated`, {file: 'post.controller.js', function: 'putApiPostId', http: httpCodes.OK})
 
             return res
                     .status(httpCodes.OK)
@@ -170,7 +173,7 @@ exports.putApiPostId = (req, res) =>
         })
         .catch((exception) =>
         {
-            console.error(`[ERROR] putApiPostId ${req.params.id} ${JSON.stringify(postData)} - ${exception.message}`)
+            logger.error(`post id ${req.params.id} title ${postData.title} exception ${exception.message}`, {file: 'post.controller.js', function: 'putApiPostId', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)

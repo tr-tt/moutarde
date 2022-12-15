@@ -13,10 +13,10 @@ const sequelize = new Sequelize(
 
 sequelize.authenticate().then(() =>
 {
-    console.log('[INFO] Connection with postgresql successfull.')
+    console.debug('[INFO] Connection with postgresql successfull')
 }).catch((error) =>
 {
-    console.error(`[ERROR] Unable to connect with postgresql - ${error}`)
+    console.error(`[ERROR] Connection with postgresql error - ${error}`)
 })
 
 const db = {}
