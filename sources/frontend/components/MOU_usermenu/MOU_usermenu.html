@@ -1,25 +1,46 @@
 <style>
 @import "/static/css/root.css";
 
-:host
+@media screen and (min-width: 800px)
 {
-    position: relative;
-}
-#usermenu__fields
-{
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: #fff;
+    :host
+    {
+        position: relative;
+    }
 
-    border-radius: var(--border-radius);
-    border: 1px solid rgb(var(--color-1));
-    padding: 40px;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+    #usermenu__fields
+    {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 300px;
+        gap: 20px;
+        background-color: #fff;
+        border-radius: var(--border-radius);
+        border: 1px solid rgb(var(--color-1));
+        padding: 40px;
+        box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
+
+        display: flex;
+        flex-direction: column;
+    }
+}
+@media screen and (max-width: 800px)
+{
+    #usermenu__fields
+    {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        gap: 20px;
+        background-color: #fff;
+        padding: 20px;
+
+        display: flex;
+        flex-direction: column;
+    }
 }
 #usermenu__fields.hide
 {

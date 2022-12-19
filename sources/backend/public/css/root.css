@@ -51,24 +51,28 @@ This file include generic style that can be used inside shadowdom of webcomponen
     letter-spacing: .1px;
 }
 
-::-webkit-scrollbar
+
+@media screen and (min-width: 800px)
 {
-    width: 20px;
-}
-  
-::-webkit-scrollbar-track
-{
-    background: #f1f1f1; 
-}
-   
-::-webkit-scrollbar-thumb
-{
-    background: rgb(var(--color-1)); 
-}
-  
-::-webkit-scrollbar-thumb:hover
-{
-    background: rgb(var(--color-1-shade-4));
+    ::-webkit-scrollbar
+    {
+        width: 20px;
+    }
+    
+    ::-webkit-scrollbar-track
+    {
+        background: #f1f1f1; 
+    }
+    
+    ::-webkit-scrollbar-thumb
+    {
+        background: rgb(var(--color-1)); 
+    }
+    
+    ::-webkit-scrollbar-thumb:hover
+    {
+        background: rgb(var(--color-1-shade-4));
+    }
 }
 
 .loading

@@ -15,48 +15,74 @@
     background-color: fff;
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
 }
-#header__container
-{
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    height: 60px;
-    justify-content: space-between;
-    padding: 0 60px;
-}
-#header__logo
-{
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    line-height: 26px;
-    column-gap: 16px;
-    cursor: pointer;
-}
-#header__logo span
-{
-    color: #5f6368;
-}
-
-slot[name="path"]
-{
-    display: flex;
-    gap: 20px;
-}
-slot[name="path"]::slotted(a)
-{
-    color: rgb(var(--color-1));
-    appearance: none;
-    -webkit-appearance: none;
-    text-decoration: none;
-}
 
 slot[name="controls"]
 {
     display: flex;
     align-items: center;
-    column-gap: 16px;
+    gap: 20px;
+}
+
+@media screen and (min-width: 800px)
+{
+    #header__container
+    {
+        margin: 0 auto;
+        height: 60px;
+        padding: 0 60px;
+
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    #header__logo
+    {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        line-height: 26px;
+        column-gap: 16px;
+        cursor: pointer;
+    }
+    #header__logo span
+    {
+        color: #5f6368;
+    }
+    slot[name="path"]
+    {
+        display: flex;
+        gap: 20px;
+    }
+    slot[name="path"]::slotted(a)
+    {
+        color: rgb(var(--color-1));
+        appearance: none;
+        -webkit-appearance: none;
+        text-decoration: none;
+    }
+}
+@media screen and (max-width: 800px)
+{
+    #header__container
+    {
+        margin: 0 auto;
+        height: 60px;
+        padding: 0 20px;
+
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: end;
+    }
+    #header__logo
+    {
+        display: none;
+    }
+    slot[name="path"]
+    {
+        display: none;
+    }
 }
 </style>
 <div id="header">
