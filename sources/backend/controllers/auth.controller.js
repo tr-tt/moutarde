@@ -4,6 +4,15 @@ const bcrypt = require('bcryptjs')
 const httpCodes = require('../httpCodes')
 const logger = require('../logger')
 
+exports.getApiAuthSignin = (req, res) =>
+{
+    return res
+        .status(httpCodes.OK)
+        .json({
+            message: `Vous êtes connecté.`
+        })
+}
+
 exports.postApiAuthSignin = (req, res) =>
 {
     db.User

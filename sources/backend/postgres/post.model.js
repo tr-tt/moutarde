@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) =>
             {
                 notEmpty:
                 {
-                    msg: `Le titre du formulaire ne peut pas être vide.`
+                    msg: `Titre de la situation vécue est requis.`
                 }
             }
         },
@@ -22,9 +22,49 @@ module.exports = (sequelize, DataTypes) =>
             {
                 notEmpty:
                 {
-                    msg: `L'outil cible ne peut pas être vide.`
+                    msg: `Outil cible utilisé est requis.`
                 }
             }
+        },
+        description:
+        {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            validate:
+            {
+                notEmpty:
+                {
+                    msg: `Description de la situation est requis.`
+                }
+            }
+        },
+        place:
+        {
+            type: DataTypes.TEXT
+        },
+        ressource:
+        {
+            type: DataTypes.TEXT
+        },
+        difficulty:
+        {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            validate:
+            {
+                notEmpty:
+                {
+                    msg: `Difficulté et/ou satisfaction rencontrées est requis.`
+                }
+            }
+        },
+        improvement:
+        {
+            type: DataTypes.TEXT
+        },
+        more:
+        {
+            type: DataTypes.TEXT
         },
         image:
         {

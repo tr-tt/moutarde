@@ -1,15 +1,19 @@
 <style>
 @import "/static/css/root.css";
 
-h2
+h2,
+h3
 {
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap
 }
 
 p
 {
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
@@ -50,7 +54,7 @@ strong
 #post__frame
 {
     display: grid;
-    grid-template-rows: 18px 3px 150px 3px 1fr 2fr auto;
+    grid-template-rows: 18px 3px 150px 3px 30px 25px 3px 110px auto;
     gap: 10px;
 }
 
@@ -129,7 +133,11 @@ strong
 
         <div class="separator"></div>
 
-        <h2 id="title"></h2>        
+        <h2 id="title"></h2>
+        <h3 id="tool"></h3>
+        
+        <div class="separator"></div>
+        
         <p id="description"></p>
 
         <div id="post__controls">

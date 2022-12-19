@@ -14,8 +14,10 @@
         <label slot="path">/</label>
         <a href="" slot="path">Page d'accueil</a>
 
-        <mou-link slot="controls" href="/posts" label="Connexion" css="default"></mou-link>
-        <mou-link slot="controls" href="/signup" label="Créer un compte" css="colored"></mou-link>
+        <mou-link id="signin" slot="controls" href="/posts" label="Connexion" css="default"></mou-link>
+        <mou-link id="signup" slot="controls" href="/signup" label="Créer un compte" css="colored"></mou-link>
+
+        <mou-usermenu id="menu" slot="controls"></mou-usermenu>
     </mou-headerbar>
 
     <div id="page">

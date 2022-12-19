@@ -1,7 +1,7 @@
 <style>
 @import "/static/css/root.css";
 
-.text-field
+#field
 {
     position: relative;
 }
@@ -18,10 +18,6 @@ textarea
     resize: vertical;
     min-height: 100px;
 }
-textarea.error
-{
-    border-color: rgb(var(--color-error));
-}
 textarea:focus
 {
     border-color: rgb(var(--color-1));
@@ -35,13 +31,21 @@ textarea:focus ~ label
     background-color:#fff;
     padding: 0 5px;
 }
-textarea:valid ~ label
+textarea.notempty ~ label
 {
     top: -9px;
     left: 5px;
     font-size: small;
     background-color:#fff;
     padding: 0 5px;
+}
+textarea.error
+{
+    border-color: rgb(var(--color-error));
+}
+textarea.error ~ label
+{
+    color: rgb(var(--color-error));
 }
 
 label
@@ -53,13 +57,10 @@ label
     top: 10px;
     transition: 0.2s;
 }
-label.error
-{
-    color: rgb(var(--color-error));
-}
+
 
 </style>
-<div class="text-field">
-    <textarea maxlength="1000" required></textarea>
+<div id="field">
+    <textarea></textarea>
     <label>Placeholder</label>
 </div>

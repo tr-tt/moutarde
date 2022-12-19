@@ -56,7 +56,13 @@ exports.postApiPost = (req, res) =>
     postData.UserId = req.user_id
     postData.title = req.body.title
     postData.tool = req.body.tool
+    postData.description = req.body.description
+    postData.difficulty = req.body.difficulty
 
+    req.body.place ? postData.place = req.body.place : ''
+    req.body.ressource ? postData.ressource = req.body.ressource : ''
+    req.body.improvement ? postData.improvement = req.body.improvement : ''
+    req.body.more ? postData.more = req.body.more : ''
     postData.image = req.files && req.files.image ? req.files.image.data : null
 
     db.sequelize
@@ -143,7 +149,13 @@ exports.putApiPostId = (req, res) =>
 
     postData.title = req.body.title
     postData.tool = req.body.tool
-    
+    postData.description = req.body.description
+    postData.difficulty = req.body.difficulty
+
+    req.body.place ? postData.place = req.body.place : ''
+    req.body.ressource ? postData.ressource = req.body.ressource : ''
+    req.body.improvement ? postData.improvement = req.body.improvement : ''
+    req.body.more ? postData.more = req.body.more : ''    
     postData.image = req.files && req.files.image ? req.files.image.data : null
 
     db.sequelize

@@ -31,21 +31,21 @@
                 <p id="subtitle">Décrire une nouvelle situation.</p>
     
                 <div id="form__fields">
-                    <mou-upload></mou-upload>
-
-                    <div class="separator"></div>
-
                     <mou-input id="title" placeholder="Titre de la situation vécue" type="text" maxlength="100" required></mou-input>
                     <mou-input id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100" required></mou-input>
     
                     <div class="separator"></div>
     
-                    <mou-textarea placeholder="Description de la situation"></mou-textarea>
-                    <mou-textarea placeholder="Lieux, personne(s) présente(s), déroulement"></mou-textarea>
-                    <mou-textarea placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)"></mou-textarea>
-                    <mou-textarea placeholder="Difficulté et/ou satisfaction rencontrées"></mou-textarea>
-                    <mou-textarea placeholder="Astuce et futurs imaginés par la situation"></mou-textarea>
-                    <mou-textarea placeholder="En dire plus"></mou-textarea>
+                    <mou-textarea id="description" placeholder="Description de la situation" maxlength="1000" required></mou-textarea>
+                    <mou-textarea id="place" placeholder="Lieux, personne(s) présente(s), déroulement" maxlength="1000"></mou-textarea>
+                    <mou-textarea id="ressource" placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)" maxlength="1000"></mou-textarea>
+                    <mou-textarea id="difficulty" placeholder="Difficulté et/ou satisfaction rencontrées" maxlength="1000" required></mou-textarea>
+                    <mou-textarea id="improvement" placeholder="Astuce et futurs imaginés par la situation" maxlength="1000"></mou-textarea>
+                    <mou-textarea id="more" placeholder="En dire plus" maxlength="1000"></mou-textarea>
+
+                    <div class="separator"></div>
+
+                    <mou-upload></mou-upload>
                 </div>
     
                 <div id="form__controls">

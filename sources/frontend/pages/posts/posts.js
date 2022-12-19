@@ -32,7 +32,8 @@ const createPostsView = (posts) =>
         postElement.setAttribute('createdAt', post.createdAt)
         postElement.image = post.image
         postElement.setAttribute('title', post.title)
-        postElement.setAttribute('description', post.title)
+        postElement.setAttribute('tool', post.tool)
+        postElement.setAttribute('description', post.description)
         postElement.addEventListener('mou-post:delete', () =>
         {
             if(_page.childElementCount === 2)

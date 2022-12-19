@@ -15,7 +15,7 @@ titleExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Le titre du formulaire est requis.`,
+                message: `Titre de la situation vécue est requis.`,
             })
     }
 }
@@ -33,7 +33,7 @@ toolExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `L' outil cible est requis.`,
+                message: `Outil cible utilisé est requis.`,
             })
     }
 }
@@ -86,11 +86,49 @@ postIdExist = (req, res, next) =>
         })
 }
 
+descriptionExist = (req, res, next) =>
+{
+    if(req.body.description)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no description provided`, {file: 'post.middleware.js', function: 'descriptionExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Description de la situation est requis.`,
+            })
+    }
+}
+
+difficultyExist = (req, res, next) =>
+{
+    if(req.body.difficulty)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no difficulty provided`, {file: 'post.middleware.js', function: 'difficultyExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Difficulté et/ou satisfaction rencontrées est requis.`,
+            })
+    }
+}
+
 const postMiddleware =
 {
     titleExist,
     toolExist,
-    postIdExist
+    postIdExist,
+    descriptionExist,
+    difficultyExist
 }
 
 module.exports = postMiddleware

@@ -16,6 +16,7 @@ class MOUpost extends HTMLElement
         this._date = this.shadowRoot.querySelector('#date')
         this._image = this.shadowRoot.querySelector('img')
         this._title = this.shadowRoot.querySelector('#title')
+        this._tool = this.shadowRoot.querySelector('#tool')
         this._description = this.shadowRoot.querySelector('#description')
         this._popup = this.shadowRoot.querySelector('#popup')
         this._subtitle = this.shadowRoot.querySelector('#subtitle')
@@ -38,6 +39,11 @@ class MOUpost extends HTMLElement
         if(this.hasAttribute('title'))
         {
             this._title.textContent = this.getAttribute('title')
+        }
+
+        if(this.hasAttribute('tool'))
+        {
+            this._tool.textContent = this.getAttribute('tool')
         }
 
         if(this.hasAttribute('description'))
