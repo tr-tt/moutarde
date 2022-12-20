@@ -11,12 +11,13 @@
     <div id="loading" class="loading"></div>
 
     <mou-headerbar>
-        <label slot="path">/</label>
-        <a href="/" slot="path">Page d'accueil</a>
-        <label slot="path">/</label>
-        <a href="" slot="path">Mes formulaires</a>
+        <label slot="page">Mes formulaires</label>
         
-        <mou-usermenu slot="controls"></mou-usermenu>
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
+        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default"></mou-link>
+        <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
+        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
 
     <div id="page">
@@ -31,7 +32,5 @@
             </div>
         </div>
     </div>
-
-    
 </body>
 </html>

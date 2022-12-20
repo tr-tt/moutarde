@@ -4,8 +4,8 @@ import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_textarea/MOU_textarea'
 import '../../components/MOU_upload/MOU_upload'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import '../../components/MOU_usermenu/MOU_usermenu'
 import postService from '../../services/post.service'
+import authService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -13,6 +13,8 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const post_id = window.location.pathname.replace('/posts/edit/', '')
+
+const _logout = document.querySelector('#logout')
 
 const _subtitle = document.querySelector('#subtitle')
 const _formFields = document.querySelector('#form__fields')
@@ -32,6 +34,20 @@ const _button = document.querySelector('#button')
 
 const _loading = document.querySelector('#loading')
 
+_logout.addEventListener('click', () =>
+{
+    authService
+        .getApiAuthSignout()
+        .then(() =>
+        {
+            window.location.href = '/'
+        })
+        .catch((exception) =>
+        {
+            console.error(exception)
+        })
+})
+
 postService.
     getApiPostId(post_id)
     .then((response) =>
@@ -50,10 +66,16 @@ postService.
     })
     .catch((exception) =>
     {
-        exception.response 
+        if(exception.response
             && exception.response.data
-            && exception.response.data.message
-            && console.log(exception.response.data.message)
+            && exception.response.data.message)
+        {
+            console.log(exception.response.data.message)
+        }
+        else
+        {
+            console.error(exception)
+        }
     })
 
 _button.addEventListener('click', () =>
@@ -157,7 +179,16 @@ _button.addEventListener('click', () =>
         })
         .catch((exception) =>
         {
-            _subtitle.textContent = exception.response.data.message
-            _subtitle.classList.add('error')
+            if(exception.response
+                && exception.response.data
+                && exception.response.data.message)
+            {
+                _subtitle.textContent = exception.response.data.message
+                _subtitle.classList.add('error')
+            }
+            else
+            {
+                console.error(exception)
+            }
         })
 })

@@ -11,53 +11,51 @@
     <div id="loading" class="loading"></div>
     
     <mou-headerbar>
-        <label slot="path">/</label>
-        <a href="/" slot="path">Page d'accueil</a>
-        <label slot="path">/</label>
-        <a href="" slot="path">Enregistrement</a>
+        <label slot="page">Créer un compte</label>
+
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
+        <mou-link slot="controls" href="/signin" label="Se connecter" css="colored"></mou-link>
     </mou-headerbar>
 
-    <div id="page">
-        <div id="signup">
-            <div id="signup__frame">
-                <div id="signup__title">
-                    <img src="/static/images/logo.jpg" width="40px" height="40px">
-                    <h2>Créer votre compte</h2>
-                </div>
-                <p id="subtitle">Créer un compte utilisateur.</p>
+    <div id="signup">
+        <div id="signup__frame">
+            <div id="signup__title">
+                <img src="/static/images/logo.jpg" width="40px" height="40px" draggable="false">
+                <h2>Créer votre compte</h2>
+            </div>
+            <p id="subtitle">Créer un compte utilisateur.</p>
 
-                <div id="signup__fields">
-                    <mou-input id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input>
-                    <mou-input id="email" placeholder="Addresse email" type="email" maxlength="100" required></mou-input>
-                    <mou-input id="birthday" placeholder="Date de naissance" type="date" min="1950-01-01" max="2023-01-01"></mou-input>
-                    <mou-select id="sex" placeholder="Sexe">
-                        <option value="Homme">Homme</option>
-                        <option value="Femme">Femme</option>
-                    </mou-select>
+            <div id="signup__fields">
+                <mou-input id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input>
+                <mou-input id="email" placeholder="Addresse email" type="email" maxlength="100" required></mou-input>
+                <mou-input id="birthday" placeholder="Date de naissance" type="date" min="1950-01-01" max="2023-01-01"></mou-input>
+                <mou-select id="sex" placeholder="Sexe">
+                    <option value="Homme">Homme</option>
+                    <option value="Femme">Femme</option>
+                </mou-select>
 
-                    <div class="separator"></div>
+                <div class="separator"></div>
 
-                    <mou-input id="school" placeholder="Ecole" type="text" maxlength="100" required></mou-input>
-                    <mou-input id="school__year" placeholder="Année de formation" type="number" min="2000" max="2023" required></mou-input>
+                <mou-input id="school" placeholder="Ecole" type="text" maxlength="100" required></mou-input>
+                <mou-input id="school__year" placeholder="Année de formation" type="number" min="2000" max="2023" required></mou-input>
 
-                    <div class="separator"></div>
+                <div class="separator"></div>
 
-                    <mou-input id="password" placeholder="Mot de passe" type="password" maxlength="100" required></mou-input>
-                    <mou-input id="confirm__password" placeholder="Confirmation du mot de passe" type="password" maxlength="100" required></mou-input>
-                    <div id="signup__password">
-                        <input id="show" type="checkbox">
-                        <span>Voir le mot de passe</span>
-                    </div>
-                </div>
-
-                <div id="signup__controls">
-                    <mou-link id="signin" href="/signin" label="Se connecter" css="basic"></mou-link>
-                    <mou-link id="button" label="Créer un compte" css="colored"></mou-link>
+                <mou-input id="password" placeholder="Mot de passe" type="password" maxlength="100" required></mou-input>
+                <mou-input id="confirm__password" placeholder="Confirmation du mot de passe" type="password" maxlength="100" required></mou-input>
+                <div id="signup__password">
+                    <input id="show" type="checkbox">
+                    <span>Voir le mot de passe</span>
                 </div>
             </div>
 
-            <div id="signup__bar"></div>
+            <div id="signup__controls">
+                <mou-link id="signin" href="/signin" label="Se connecter" css="basic"></mou-link>
+                <mou-link id="button" label="Créer un compte" css="colored"></mou-link>
+            </div>
         </div>
+
+        <div id="signup__bar"></div>
     </div>
 </body>
 </html>

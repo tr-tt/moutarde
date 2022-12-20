@@ -1,15 +1,19 @@
 import './users_edit.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import '../../components/MOU_usermenu/MOU_usermenu'
 import '../../components/MOU_input/MOU_input'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_select/MOU_select'
-import UserService from '../../services/user.service'
+import userService from '../../services/user.service'
+import authService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
     module.hot.accept()
 }
+
+const _loading = document.querySelector('#loading')
+
+const _logout = document.querySelector('#logout')
 
 const _subtitle = document.querySelector('#subtitle')
 const _profileFields = document.querySelector('#profile__fields')
@@ -24,12 +28,24 @@ const _schoolYear = document.querySelector('#school__year')
 const _posts = document.querySelector('#posts')
 const _button = document.querySelector('#button')
 
-const _loading = document.querySelector('#loading')
-
 let _current_username = ''
 let _current_email = ''
 
-UserService
+_logout.addEventListener('click', () =>
+{
+    authService
+        .getApiAuthSignout()
+        .then(() =>
+        {
+            window.location.href = '/'
+        })
+        .catch((exception) =>
+        {
+            console.error(exception)
+        })
+})
+
+userService
     .getApiUser()
     .then((response) =>
     {
@@ -44,6 +60,10 @@ UserService
         _schoolYear.value = response.data.message.schoolYear || ''
 
         _loading.style.display = 'none'
+    })
+    .catch((exception) =>
+    {
+        console.error(exception)
     })
 
 _button.addEventListener('click', () =>
@@ -121,7 +141,7 @@ _button.addEventListener('click', () =>
         return
     }
 
-    UserService
+    userService
         .putApiUser(formData)
         .then((response) =>
         {
@@ -135,8 +155,17 @@ _button.addEventListener('click', () =>
         })
         .catch((exception) =>
         {
-            _subtitle.textContent = exception.response.data.message
-            _subtitle.classList.add('error')
+            if(exception.response
+                && exception.response.data
+                && exception.response.data.message)
+            {
+                _subtitle.textContent = exception.response.data.message
+                _subtitle.classList.add('error')
+            }
+            else
+            {
+                console.error(exception)
+            }
         })
 })
 

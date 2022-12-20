@@ -1,16 +1,10 @@
-#empty.hide
-{
-    display: none;
-}
-
 body
 {
-    margin-top: 60px;
     color: rgb(var(--dark-text));
+    min-height: 100vh;
 
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
 }
 
 p
@@ -32,6 +26,11 @@ strong
     gap: 20px;
 }
 
+#empty.hide
+{
+    display: none;
+}
+
 @media screen and (min-width: 800px)
 {
     h2
@@ -41,12 +40,10 @@ strong
 
     #page
     {
-        width: 100%;
-        height: calc(100vh - 60px);
-        overflow: auto;
-        padding: 40px;
         position: relative;
 
+        padding: 40px;
+        
         display: flex;
         flex-wrap: wrap;
         gap: 40px;
@@ -55,6 +52,7 @@ strong
     #empty
     {
         position: absolute;
+
         top: 0;
         left: 0;
         width: 100%;
@@ -74,12 +72,10 @@ strong
 
     #page
     {
-        width: 100%;
-        height: calc(100vh - 60px);
-        overflow: auto;
-        padding: 20px;
         position: relative;
 
+        padding: 20px;
+        
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -88,6 +84,7 @@ strong
     #empty
     {
         position: absolute;
+        
         top: 0;
         left: 0;
         width: 100%;

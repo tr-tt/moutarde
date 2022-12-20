@@ -11,73 +11,86 @@
     <div id="loading" class="loading"></div>
     
     <mou-headerbar>
-        <label slot="path">/</label>
-        <a href="/" slot="path">Page d'accueil</a>
-        <label slot="path">/</label>
-        <a href="" slot="path">Contact</a>
+        <label slot="page">Contacts</label>
 
-        <mou-usermenu slot="controls"></mou-usermenu>
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
+        <mou-link slot="controls" href="/posts" label="Mes formulaires" css="default"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
+        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default"></mou-link>
+        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
 
     <div id="page">
         <div class="contact">
             <div class="contact__frame">
-                <img src="/static/images/contact.png" width="250px">
+                <img src="/static/images/person1.jpg" draggable="false">
+
+                <div class="separator"></div>
+
                 <h2>
                     Viviane Folcher
                 </h2>
                 <h3>
                     Responsable IT
                 </h3>
+
+                <div class="separator"></div>
+
                 <p>
-                    telephone: +33 61 11 11 11 11
+                    <strong>Telephone</strong> +33 61 11 11 11 11
                 </p>
                 <p>
-                    email: Viviane.Folcher@institut-agro-dijon.fr
+                    <strong>Email</strong> Viviane.Folcher@institut-agro-dijon.fr
                 </p>
             </div>
-
-            <div class="contact__bar"></div>
         </div>
 
         <div class="contact">
             <div class="contact__frame">
-                <img src="/static/images/contact.png" width="250px">
+                <img src="/static/images/person2.jpg" draggable="false">
+
+                <div class="separator"></div>
+
                 <h2>
                     Anaïs Loizon
                 </h2>
                 <h3>
                     Chercheur
                 </h3>
+
+                <div class="separator"></div>
+
                 <p>
-                    telephone: +33 61 11 11 11 11
+                    <strong>Telephone</strong> +33 61 11 11 11 11
                 </p>
                 <p>
-                    email: Anaïs.Loizon@institut-agro-dijon.fr
+                    <strong>Email</strong> Anaïs.Loizon@institut-agro-dijon.fr
                 </p>
             </div>
-
-            <div class="contact__bar"></div>
         </div>
 
         <div class="contact">
             <div class="contact__frame">
-                <img src="/static/images/contact.png" width="250px">
+                <img src="/static/images/person3.jpg" draggable="false">
+
+                <div class="separator"></div>
+
                 <h2>
                     Marion Paggetti
                 </h2>
                 <h3>
                     Cheffe de projet
                 </h3>
+
+                <div class="separator"></div>
+
                 <p>
-                    telephone: +33 61 11 11 11 11
+                    <strong>Telephone</strong> +33 61 11 11 11 11
                 </p>
                 <p>
-                    email: Marion.Paggetti@institut-agro-dijon.fr
+                    <strong>Email</strong> Marion.Paggetti@institut-agro-dijon.fr
                 </p>
             </div>
-
-            <div class="contact__bar"></div>
         </div>
     </div>
 </body>

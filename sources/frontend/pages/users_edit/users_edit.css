@@ -1,11 +1,9 @@
 body
 {
-    margin-top: 60px;
     color: rgb(var(--dark-text));
-
+    min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
 }
 
 p
@@ -60,16 +58,6 @@ p
         font-size: 40px;
     }
 
-    #page
-    {
-        width: 100%;
-        height: calc(100vh - 60px);
-        overflow: auto;
-        padding: 40px;
-
-        display: flex;
-    }
-
     #profile
     {
         border-radius: var(--border-radius);
@@ -98,20 +86,11 @@ p
         font-size: 30px;
     }
 
-    #page
-    {
-        width: 100%;
-        height: calc(100vh - 60px);
-        overflow: auto;
-        padding: 20px;
-
-        display: flex;
-    }
-
     #profile
     {
         margin: auto;
         width: 100%;
+        padding: 20px;
     }
 
     #profile__bar

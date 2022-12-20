@@ -3,24 +3,38 @@
 
 :host
 {
-    position: fixed;
+    display: block;
+    position: sticky;
     top: 0;
     width: 100%;
-    background: #fff;
     z-index: 2;
 }
 
 #header
 {
-    background-color: fff;
+    background: #fff;
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
 }
 
-slot[name="controls"]
+#header__logo
 {
+    font-size: 18px;
+    line-height: 26px;
+    cursor: pointer;
+
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+#navigation__fields.hide
+{
+    display: none;
+}
+
+mou-link
+{
+    margin-left: auto;
 }
 
 @media screen and (min-width: 800px)
@@ -34,32 +48,49 @@ slot[name="controls"]
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        justify-content: space-between;
+        gap: 20px;
     }
-    #header__logo
+
+    .separator
     {
-        display: flex;
-        align-items: center;
-        font-size: 18px;
-        line-height: 26px;
-        column-gap: 16px;
-        cursor: pointer;
+        background-color: rgb(var(--color-1));
+        width: 3px;
+        height: 60px;
     }
+
     #header__logo span
     {
         color: #5f6368;
+        user-select: none;
     }
-    slot[name="path"]
+
+    slot[name="page"]
     {
+        user-select: none;
+        
         display: flex;
         gap: 20px;
     }
-    slot[name="path"]::slotted(a)
+
+    slot[name="page"]::slotted(label)
     {
         color: rgb(var(--color-1));
-        appearance: none;
-        -webkit-appearance: none;
-        text-decoration: none;
+    }
+
+    #navigation__fields
+    {
+        position: absolute;
+        top: 60px;
+        right: 60px;
+        width: 300px;
+        gap: 20px;
+        background-color: rgb(var(--color-6));
+        border-radius: 0 0 20px 20px;
+        border: 1px solid rgb(var(--color-1));
+        padding: 40px;
+
+        display: flex;
+        flex-direction: column;
     }
 }
 @media screen and (max-width: 800px)
@@ -73,26 +104,45 @@ slot[name="controls"]
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        justify-content: end;
+        justify-content: space-between;
     }
-    #header__logo
+
+    slot[name="page"]
     {
         display: none;
     }
-    slot[name="path"]
+
+    #navigation__fields
     {
-        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        gap: 20px;
+        background-color: #fff;
+        padding: 20px;
+
+        display: flex;
+        flex-direction: column;
     }
 }
 </style>
 <div id="header">
     <div id="header__container">
         <div id="header__logo">
-            <img src="/static/images/logo.jpg" width="30px" height="30px">
+            <img src="/static/images/logo.jpg" width="30px" height="30px" draggable="false">
             <span>HERCULE</span>
-
-            <slot name="path"></slot>
         </div>
-        <slot name="controls"></slot>
+
+        <div class="separator"></div>
+
+        <slot name="page"></slot>
+
+        <mou-link id="navigation" label="Navigation" css="colored"></mou-link>
+
+        <div id="navigation__fields" class="hide">
+            <slot name="controls"></slot>
+        </div>
     </div> 
 </div>

@@ -161,7 +161,16 @@ _button.addEventListener('click', () =>
         })
         .catch((exception) =>
         {
-            _subtitle.textContent = exception.response.data.message
-            _subtitle.classList.add('error')
+            if(exception.response
+                && exception.response.data
+                && exception.response.data.message)
+            {
+                _subtitle.textContent = exception.response.data.message
+                _subtitle.classList.add('error')
+            }
+            else
+            {
+                console.error(exception)
+            }
         })
 })

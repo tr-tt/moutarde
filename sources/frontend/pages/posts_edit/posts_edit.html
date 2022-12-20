@@ -11,51 +11,48 @@
     <div id="loading" class="loading"></div>
     
     <mou-headerbar>
-        <label slot="path">/</label>
-        <a href="/" slot="path">Page d'accueil</a>
-        <label slot="path">/</label>
-        <a href="/posts" slot="path">Mes formulaires</a>
-        <label slot="path">/</label>
-        <a href="" slot="path">Edition</a>
+        <label slot="page">Edition du formulaire</label>
 
-        <mou-usermenu slot="controls"></mou-usermenu>
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
+        <mou-link slot="controls" href="/posts" label="Mes formulaires" css="default"></mou-link>
+        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default"></mou-link>
+        <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
+        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
 
-    <div id="page">
-        <div id="form">
-            <div id="form__frame">
-                <div id="form__title">
-                    <img src="/static/images/logo.jpg" width="40px" height="40px">
-                    <h2>Editer le formulaire</h2>
-                </div>
-                <p id="subtitle">Editer la situation.</p>
-    
-                <div id="form__fields">
-                    <mou-input id="title" placeholder="Titre de la situation vécue" type="text" maxlength="100" required></mou-input>
-                    <mou-input id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100" required></mou-input>
-    
-                    <div class="separator"></div>
-    
-                    <mou-textarea id="description" placeholder="Description de la situation" maxlength="1000" required></mou-textarea>
-                    <mou-textarea id="place" placeholder="Lieux, personne(s) présente(s), déroulement" maxlength="1000"></mou-textarea>
-                    <mou-textarea id="ressource" placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)" maxlength="1000"></mou-textarea>
-                    <mou-textarea id="difficulty" placeholder="Difficulté et/ou satisfaction rencontrées" maxlength="1000" required></mou-textarea>
-                    <mou-textarea id="improvement" placeholder="Astuce et futurs imaginés par la situation" maxlength="1000"></mou-textarea>
-                    <mou-textarea id="more" placeholder="En dire plus" maxlength="1000"></mou-textarea>
-                    
-                    <div class="separator"></div>
-
-                    <mou-upload></mou-upload>
-                </div>
-    
-                <div id="form__controls">
-                    <mou-link id="posts" href="/posts" label="Annuler" css="basic"></mou-link>
-                    <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
-                </div>
+    <div id="form">
+        <div id="form__frame">
+            <div id="form__title">
+                <img src="/static/images/logo.jpg" width="40px" height="40px" draggable="false">
+                <h2>Editer le formulaire</h2>
             </div>
-               
-            <div id="form__bar"></div>
+            <p id="subtitle">Editer la situation.</p>
+
+            <div id="form__fields">
+                <mou-input id="title" placeholder="Titre de la situation vécue" type="text" maxlength="100" required></mou-input>
+                <mou-input id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100" required></mou-input>
+
+                <div class="separator"></div>
+
+                <mou-textarea id="description" placeholder="Description de la situation" maxlength="1000" required></mou-textarea>
+                <mou-textarea id="place" placeholder="Lieux, personne(s) présente(s), déroulement" maxlength="1000"></mou-textarea>
+                <mou-textarea id="ressource" placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)" maxlength="1000"></mou-textarea>
+                <mou-textarea id="difficulty" placeholder="Difficulté et/ou satisfaction rencontrées" maxlength="1000" required></mou-textarea>
+                <mou-textarea id="improvement" placeholder="Astuce et futurs imaginés par la situation" maxlength="1000"></mou-textarea>
+                <mou-textarea id="more" placeholder="En dire plus" maxlength="1000"></mou-textarea>
+                
+                <div class="separator"></div>
+
+                <mou-upload></mou-upload>
+            </div>
+
+            <div id="form__controls">
+                <mou-link id="posts" href="/posts" label="Annuler" css="basic"></mou-link>
+                <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+            </div>
         </div>
+            
+        <div id="form__bar"></div>
     </div>
 </body>
 </html>

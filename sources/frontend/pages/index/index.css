@@ -1,20 +1,3 @@
-body
-{
-    margin-top: 60px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#page
-{
-    width: 100%;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 p
 {
     font-size: 18px;
@@ -306,15 +289,7 @@ strong
 
     #home__right
     {
-        z-index: 1;
-        margin: auto;    
-    }
-
-    #home__right img
-    {
-        background: #fff;
-        border-radius: var(--border-radius);
-        max-width: 200px;
+        display: none; 
     }
 
     /*===============================================//

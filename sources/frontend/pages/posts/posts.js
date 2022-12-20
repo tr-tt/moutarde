@@ -1,24 +1,41 @@
 import './posts.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import '../../components/MOU_usermenu/MOU_usermenu'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_post/MOU_post'
 import postService from '../../services/post.service'
+import authService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
     module.hot.accept()
 }
 
-const _page = document.querySelector('#page')
-const _empty = document.querySelector('#empty')
 const _loading = document.querySelector('#loading')
 
- 
+const _logout = document.querySelector('#logout')
+const _page = document.querySelector('#page')
+const _empty = document.querySelector('#empty')
+
+_logout.addEventListener('click', () =>
+{
+    authService
+        .getApiAuthSignout()
+        .then(() =>
+        {
+            window.location.href = '/'
+        })
+        .catch((exception) =>
+        {
+            console.error(exception)
+        })
+})
+
 const createPostsView = (posts) =>
 {
     if(!posts.length)
     {
+        _loading.style.display = 'none'
+
         return
     }
 
@@ -44,6 +61,8 @@ const createPostsView = (posts) =>
         
         _page.appendChild(postElement)
     })
+
+    _loading.style.display = 'none'
 }
 
 postService
@@ -51,15 +70,19 @@ postService
     .then((response) =>
     {
         createPostsView(response.data.message)
-
-        _loading.style.display = 'none'
     })
     .catch((exception) =>
     {
-        exception.response
+        if(exception.response
             && exception.response.data
-            && exception.response.data.message
-            && console.log(exception.response.data.message)
+            && exception.response.data.message)
+        {
+            console.log(exception.response.data.message)
+        }
+        else
+        {
+            console.error(exception)
+        }
     })
 
 
