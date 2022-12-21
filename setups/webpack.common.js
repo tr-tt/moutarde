@@ -46,6 +46,11 @@ module.exports =
         [
             path.resolve('sources', 'frontend', 'pages', 'contact', 'contact.js')
         ]
+        ,
+        chart:
+        [
+            path.resolve('sources', 'frontend', 'pages', 'chart', 'chart.js')
+        ]
     },
 
     output:
@@ -129,6 +134,13 @@ module.exports =
             filename: 'contact.html',
             template: path.resolve('sources', 'frontend', 'pages', 'contact', 'contact.html'),
             chunks: ['contact']
+        }),
+
+        new htmlWebpackPlugin(
+        {
+            filename: 'chart.html',
+            template: path.resolve('sources', 'frontend', 'pages', 'chart', 'chart.html'),
+            chunks: ['chart']
         })
     ],
 

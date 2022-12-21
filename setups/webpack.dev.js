@@ -50,6 +50,10 @@ module.exports = merge(
             contact:
             [
                 path.resolve('sources', 'frontend', 'scripts', 'header.js')
+            ],
+            chart:
+            [
+                path.resolve('sources', 'frontend', 'scripts', 'header.js')
             ]
         },
 

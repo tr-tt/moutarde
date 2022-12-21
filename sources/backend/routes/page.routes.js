@@ -4,6 +4,11 @@ const controller = require('../controllers/page.controller')
 module.exports = (app) =>
 {
     app.get(
+        '/chart',
+        controller.getChart
+    )
+    
+    app.get(
         '/signin',
         controller.getSignin
     )

@@ -23,14 +23,17 @@ const _password = document.querySelector('#password')
 const _confirmPassword = document.querySelector('#confirm__password')
 
 const _show = document.querySelector('#show')
+const _chart = document.querySelector('#chart')
+const _gotoChart = document.querySelector('#goto__chart')
+
 const _signin = document.querySelector('#signin')
 const _button = document.querySelector('#button')
 
 const _loading = document.querySelector('#loading')
 
-window.addEventListener('DOMContentLoaded', () =>
+_gotoChart.addEventListener('click', () =>
 {
-    _loading.style.display = 'none'
+    window.open('/chart', '_blank')
 })
 
 _show.addEventListener('click', () =>
@@ -148,6 +151,14 @@ _button.addEventListener('click', () =>
         return
     }
 
+    if(!_chart.checked)
+    {
+        _subtitle.textContent = `Vous devez accepter la charte de consentement avant de créer un compte.`
+        _subtitle.classList.add('error')
+
+        return
+    }
+
     UserService
         .postApiUser(formData)
         .then(() =>
@@ -173,4 +184,9 @@ _button.addEventListener('click', () =>
                 console.error(exception)
             }
         })
+})
+
+window.addEventListener('DOMContentLoaded', () =>
+{
+    _loading.style.display = 'none'
 })

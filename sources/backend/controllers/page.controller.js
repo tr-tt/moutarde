@@ -1,6 +1,12 @@
 const httpCodes = require('../httpCodes')
 const path = require('path')
 
+exports.getChart = (req, res) =>
+{
+    return res
+        .sendFile(path.resolve('_build', 'chart.html'))
+}
+
 exports.getIndex = (req, res) =>
 {
     return res
