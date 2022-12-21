@@ -32,6 +32,9 @@ const _mouUpload = document.querySelector('mou-upload')
 const _posts = document.querySelector('#posts')
 const _button = document.querySelector('#button')
 
+const _popup = document.querySelector('#popup')
+const _popupProgress = document.querySelector('#popup__progress')
+
 const _loading = document.querySelector('#loading')
 
 _logout.addEventListener('click', () =>
@@ -164,9 +167,11 @@ _button.addEventListener('click', () =>
     {
         formData.append('image', image)
     }
+
+    _popup.style.display = 'flex'
     
     postService
-        .putApiPostId(post_id, formData)
+        .putApiPostId(post_id, formData, _popupProgress)
         .then((response) =>
         {
             _subtitle.textContent = response.data.message
@@ -176,6 +181,8 @@ _button.addEventListener('click', () =>
             _button.style.display = 'none'
             _posts.setAttribute('label', 'Mes formulaires')
             _posts.setAttribute('css', 'colored')
+
+            _popup.style.display = 'none'
         })
         .catch((exception) =>
         {

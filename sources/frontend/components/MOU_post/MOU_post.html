@@ -57,6 +57,7 @@ strong
 #popup
 {
     position: absolute;
+    
     top: 0;
     left: 0;
     width: 100%;
@@ -81,6 +82,7 @@ strong
 {
     color: #fff;
 }
+
 #subtitle.error
 {
     color: rgb(var(--color-error));
@@ -96,6 +98,8 @@ strong
 {
     #post
     {
+        position: relative;
+
         border-radius: var(--border-radius);
         border: 1px solid rgb(var(--color-1));
         padding: 40px;
@@ -103,9 +107,7 @@ strong
         width: 400px;
         height: 600px;
         transition: .2s;
-        position: relative;
-        cursor: pointer;
-    
+        cursor: pointer;    
 
         display: grid;
         grid-template-columns: 1fr 20px;
@@ -126,13 +128,14 @@ strong
 {
     #post
     {
+        position: relative;
+
         border-radius: var(--border-radius);
         border: 1px solid rgb(var(--color-1));
         padding: 20px;
         box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
         height: 600px;
         width: 100%;
-        position: relative;
     }
 
     #post__bar

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 class PostService
 {
-    postApiPost(formData)
+    postApiPost(formData, _popupProgress)
     {
         return axios
             .post('/api/post', formData,
@@ -11,6 +11,12 @@ class PostService
                     {
                         'accept': 'application/json',
                         'Content-Type': 'multipart/form-data'
+                    },
+                    onUploadProgress: (event) =>
+                    {
+                        const progress = Math.round((event.loaded * 100) / event.total)
+
+                        _popupProgress.textContent = `${progress}%`
                     }
                 })
     }
@@ -33,7 +39,7 @@ class PostService
             .delete(`/api/post/${id}`)
     }
 
-    putApiPostId(id, formData)
+    putApiPostId(id, formData, _popupProgress)
     {
         return axios
             .put(`/api/post/${id}`, formData,
@@ -42,6 +48,12 @@ class PostService
                 {
                     'accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: (event) =>
+                {
+                    const progress = Math.round((event.loaded * 100) / event.total)
+
+                    _popupProgress.textContent = `${progress}%`
                 }
             })
     }

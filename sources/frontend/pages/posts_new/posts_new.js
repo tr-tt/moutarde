@@ -30,6 +30,9 @@ const _mouUpload = document.querySelector('mou-upload')
 const _posts = document.querySelector('#posts')
 const _button = document.querySelector('#button')
 
+const _popup = document.querySelector('#popup')
+const _popupProgress = document.querySelector('#popup__progress')
+
 const _loading = document.querySelector('#loading')
 
 window.addEventListener('DOMContentLoaded', () =>
@@ -137,9 +140,11 @@ _button.addEventListener('click', () =>
     {
         formData.append('image', image)
     }
+
+    _popup.style.display = 'flex'
     
     postService
-        .postApiPost(formData)
+        .postApiPost(formData, _popupProgress)
         .then(() =>
         {
             _subtitle.textContent = `Votre formulaire a été enregistré, vous pouvez consulter la liste de vos formulaires.`
@@ -150,6 +155,7 @@ _button.addEventListener('click', () =>
             _posts.setAttribute('label', 'Mes formulaires')
             _posts.setAttribute('css', 'colored')
 
+            _popup.style.display = 'none'
         })
         .catch((exception) =>
         {
