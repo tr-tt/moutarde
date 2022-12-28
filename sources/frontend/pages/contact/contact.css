@@ -82,6 +82,7 @@ strong
         width: 100%;
         height: 100%;
         background-color: rgb(var(--color-5));
+        background: linear-gradient(180deg, rgba(7,88,97,1) 2%, rgba(0,139,158,1) 40%, rgba(0,139,158,1) 60%, rgba(7,88,97,1) 98%);
         opacity: 0.8;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         backdrop-filter: blur(4px);
@@ -143,6 +144,7 @@ strong
         width: 100%;
         height: 100%;
         background-color: rgb(var(--color-5));
+        background: linear-gradient(180deg, rgba(7,88,97,1) 2%, rgba(0,139,158,1) 40%, rgba(0,139,158,1) 60%, rgba(7,88,97,1) 98%);
         opacity: 0.8;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         backdrop-filter: blur(4px);
