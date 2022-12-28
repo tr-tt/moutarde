@@ -9,42 +9,74 @@
 </head>
 <body>
     <div id="loading" class="loading"></div>
+
+    <div id="background" class="background"></div>
     
     <mou-headerbar>
         <label slot="page">Mon profil</label>
 
         <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
         <mou-link slot="controls" href="/posts" label="Mes formulaires" css="default"></mou-link>
-        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="default"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
         <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
+
+    <div class="marge"></div>
     
     <div id="profile">
         <div id="profile__frame">
             <div id="profile__title">
-                <img src="/static/images/logo.jpg" width="40px" height="40px" draggable="false">
+                <img src="/static/images/profil.png" width="40px" height="40px" draggable="false">
                 <h2>Mon profil</h2>
             </div>
             <p id="subtitle">Modifier mon profil utilisateur.</p>
 
             <div id="profile__fields">
+
+                <mou-input id="job" placeholder="Fonction" type="text" disabled></mou-input>
+
+                <div class="separator"></div>
+
                 <mou-input id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input>
                 <mou-input id="email" placeholder="Addresse email" type="text" maxlength="100" required></mou-input>
                 <mou-input id="birthday" placeholder="Date de naissance" type="date" min="1950-01-01" max="2023-01-01"></mou-input>
                 <mou-select id="sex" placeholder="Sexe">
+                    <option value=""></option>
                     <option value="Homme">Homme</option>
                     <option value="Femme">Femme</option>
                 </mou-select>
 
                 <div class="separator"></div>
 
-                <mou-input id="school" placeholder="Ecole" type="text" maxlength="100" required></mou-input>
-                <mou-input id="school__year" placeholder="Année de formation" type="number" min="2000" max="2023" required></mou-input>
+                <mou-select id="school" placeholder="Etablissement scolaire" required>
+                    <option value=""></option>
+                    <option value="D'Arsonval">D'Arsonval</option>
+                    <option value="Paul-Éluard">Paul-Éluard</option>
+                    <option value="Louis-Berthollet">Louis-Berthollet</option>
+                    <option value="Henri-IV">Henri-IV</option>
+                    <option value="Saint-Louis">Saint-Louis</option>
+                    <option value="Fénelon-Sainte-Marie">Fénelon-Sainte-Marie</option>
+                    <option value="Georges-Clemenceau">Georges-Clemenceau</option>
+                    <option value="Sainte-Anne">Sainte-Anne</option>
+                </mou-select>
+                <mou-select id="school__year" placeholder="Année scolaire" required>
+                    <option value=""></option>
+                    <option value="Première année">Première année</option>
+                    <option value="Deuxième année">Deuxième année</option>
+                    <option value="Troisième année">Troisième année</option>
+                    <option value="Quatrième année">Quatrième année</option>
+                    <option value="Cinquième année">Cinquième année</option>
+                </mou-select>
+                <mou-input id="seniority" placeholder="Ancienneté en année(s)" type="number" min="0" max="100" required></mou-input>
 
                 <div class="separator"></div>
 
                 <mou-link href="/password/forgot" label="Changer mon mot de passe" css="basic"></mou-link>
+
+                <div class="separator"></div>
+
+                <mou-link id="delete" label="Supprimer mon profil" css="error"></mou-link>
             </div>
 
             <div id="profile__controls">
@@ -54,6 +86,19 @@
         </div>
 
         <div id="profile__bar"></div>
+        
+        <div id="popup">
+            <div id="popup__frame">
+                <p id="popup__subtitle">Etes vous <strong>certain</strong> de vouloir supprimer votre compte utilisateur ? Toutes vos données seront perdues et cette action est <strong>irréversible</strong>.</p>
+            
+                <div id="popup__controls">
+                    <mou-link id="cancel" label="Annuler" css="colored"></mou-link>
+                    <mou-link id="confirm" label="Supprimer" css="basic"></mou-link>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="marge"></div>
 </body>
 </html>

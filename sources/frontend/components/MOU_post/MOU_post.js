@@ -19,7 +19,7 @@ class MOUpost extends HTMLElement
         this._tool = this.shadowRoot.querySelector('#tool')
         this._description = this.shadowRoot.querySelector('#description')
         this._popup = this.shadowRoot.querySelector('#popup')
-        this._subtitle = this.shadowRoot.querySelector('#subtitle')
+        this._popupSubtitle = this.shadowRoot.querySelector('#popup__subtitle')
         
         this._edit = this.shadowRoot.querySelector('#edit')
         this._delete = this.shadowRoot.querySelector('#delete')
@@ -86,8 +86,17 @@ class MOUpost extends HTMLElement
             })
             .catch((exception) =>
             {
-                this._subtitle.textContent = exception.response.data.message
-                this._subtitle.classList.add('error')
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
+                {
+                    this._popupSubtitle.textContent = exception.response.data.message
+                    this._popupSubtitle.classList.add('error')
+                }
+                else
+                {
+                    console.error(exception)
+                }
             })
     }
 
@@ -110,7 +119,7 @@ class MOUpost extends HTMLElement
             }
             catch(exception)
             {
-                console.error(exception.message)
+                console.error(exception)
             }
         }
     }

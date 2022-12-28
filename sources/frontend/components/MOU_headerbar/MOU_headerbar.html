@@ -27,6 +27,12 @@
     gap: 20px;
 }
 
+#header__logo span
+{
+    color: rgb(var(--dark-text));
+    user-select: none;
+}
+
 #navigation__fields.hide
 {
     display: none;
@@ -56,12 +62,6 @@ mou-link
         background-color: rgb(var(--color-1));
         width: 3px;
         height: 60px;
-    }
-
-    #header__logo span
-    {
-        color: #5f6368;
-        user-select: none;
     }
 
     slot[name="page"]

@@ -41,6 +41,11 @@ class MOUinput extends HTMLElement
             this._input.required = true
         }
 
+        if(this.hasAttribute('disabled'))
+        {
+            this._input.disabled = true
+        }
+
         if(this.hasAttribute('placeholder'))
         {
             this._label.textContent = this.getAttribute('placeholder')
@@ -110,7 +115,7 @@ class MOUinput extends HTMLElement
 
     set value(value)
     {
-        if(value)
+        if(value || value === 0)
         {
             this._input.classList.add('notempty')
         }

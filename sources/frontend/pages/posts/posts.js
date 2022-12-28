@@ -53,7 +53,7 @@ const createPostsView = (posts) =>
         postElement.setAttribute('description', post.description)
         postElement.addEventListener('mou-post:delete', () =>
         {
-            if(_page.childElementCount === 2)
+            if(_page.childElementCount === 1)
             {
                 _empty.classList.remove('hide')
             }

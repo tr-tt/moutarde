@@ -4,22 +4,27 @@
 #field
 {
     position: relative;
+
+    display: flex;
 }
 
 select
 {
     border: 1px solid rgb(var(--dark-text));
     color: rgb(var(--dark-text));
-    background-color: transparent;
     padding: 10px;
     border-radius: 4px;
     outline: none;
-    width: 100%;
+    flex: 1;
+    height: 40px;
+    background-color:#fff;
 }
+
 select:focus
 {
     border-color: rgb(var(--color-1));
 }
+
 select:focus ~ label
 {
     top: -9px;
@@ -28,7 +33,9 @@ select:focus ~ label
     color: rgb(var(--color-1));
     background-color:#fff;
     padding: 0 5px;
+    border-color: rgb(var(--color-1)) !important;
 }
+
 select.notempty ~ label
 {
     top: -9px;
@@ -36,11 +43,14 @@ select.notempty ~ label
     font-size: small;
     background-color:#fff;
     padding: 0 5px;
+    border-color: rgb(var(--dark-text));
 }
+
 select.error
 {
     border-color: rgb(var(--color-error));
 }
+
 select.error ~ label
 {
     color: rgb(var(--color-error));
@@ -52,18 +62,15 @@ label
     position: absolute;
     pointer-events: none;
     left: 10px;
-    top: 10px;
+    top: 11px;
     transition: 0.2s;
     background-color:#fff;
+    border: 1px solid transparent;
+    border-radius: 20px;
 }
-
-
 </style>
-
 <div id="field">
-    <select>
-        <option value=""></option>
-    </select>
+    <select></select>
     <slot></slot>
-    <label>Placeholder</label>
+    <label></label>
 </div>

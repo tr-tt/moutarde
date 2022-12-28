@@ -20,6 +20,12 @@ class UserService
             .put('/api/user', formData)
     }
 
+    deleteApiUserId(id)
+    {
+        return axios
+            .delete(`/api/user/${id}`)
+    }
+
     postApiUserPasswordForgot(formData)
     {
         return axios

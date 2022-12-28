@@ -15,12 +15,14 @@ module.exports = (app) =>
     app.post(
         '/api/user',
         [
+            userMiddleware.jobExist,
             userMiddleware.usernameExist,
             userMiddleware.usernameDuplicated,
             userMiddleware.emailExist,
             userMiddleware.emailDuplicated,
             userMiddleware.schoolExist,
             userMiddleware.schoolYearExist,
+            userMiddleware.seniorityExist,
             userMiddleware.passwordExist,
             userMiddleware.confirmPasswordExist,
             userMiddleware.passwordAndConfirmPasswordIdentity          
@@ -33,10 +35,20 @@ module.exports = (app) =>
         [
             authMiddleware.tokenExistVerify,
             authMiddleware.rejectIfBadToken,
+            userMiddleware.jobExist,
             userMiddleware.usernameDuplicated,
             userMiddleware.emailDuplicated
         ],
         controller.putApiUser
+    )
+
+    app.delete(
+        '/api/user/:id',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken
+        ],
+        controller.deleteApiUserId
     )
 
     app.post(

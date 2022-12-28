@@ -9,21 +9,26 @@
 </head>
 <body>
     <div id="loading" class="loading"></div>
+
+    <div id="background" class="background"></div>
     
     <mou-headerbar>
         <label slot="page">Edition du formulaire</label>
 
         <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
         <mou-link slot="controls" href="/posts" label="Mes formulaires" css="default"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
         <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default"></mou-link>
         <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
 
+    <div class="marge"></div>
+
     <div id="form">
         <div id="form__frame">
             <div id="form__title">
-                <img src="/static/images/logo.jpg" width="40px" height="40px" draggable="false">
+                <img src="/static/images/carnet.png" width="40px" height="40px" draggable="false">
                 <h2>Editer le formulaire</h2>
             </div>
             <p id="subtitle">Editer la situation.</p>
@@ -53,6 +58,7 @@
         </div>
             
         <div id="form__bar"></div>
+        <div id="form__rings"></div>
 
         <div id="popup">
             <div id="popup__frame">
@@ -61,5 +67,7 @@
             </div>
         </div>
     </div>
+
+    <div class="marge"></div>
 </body>
 </html>

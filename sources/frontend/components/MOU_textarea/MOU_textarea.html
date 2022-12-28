@@ -17,11 +17,14 @@ textarea
     width: 100%;
     resize: vertical;
     min-height: 100px;
+    background-color:#fff;
 }
+
 textarea:focus
 {
     border-color: rgb(var(--color-1));
 }
+
 textarea:focus ~ label
 {
     top: -9px;
@@ -30,7 +33,9 @@ textarea:focus ~ label
     color: rgb(var(--color-1));
     background-color:#fff;
     padding: 0 5px;
+    border-color: rgb(var(--color-1)) !important;
 }
+
 textarea.notempty ~ label
 {
     top: -9px;
@@ -38,11 +43,14 @@ textarea.notempty ~ label
     font-size: small;
     background-color:#fff;
     padding: 0 5px;
+    border-color: rgb(var(--dark-text));
 }
+
 textarea.error
 {
     border-color: rgb(var(--color-error));
 }
+
 textarea.error ~ label
 {
     color: rgb(var(--color-error));
@@ -56,6 +64,9 @@ label
     left: 10px;
     top: 10px;
     transition: 0.2s;
+    background-color:#fff;
+    border: 1px solid transparent;
+    border-radius: 20px;
 }
 
 

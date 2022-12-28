@@ -10,6 +10,8 @@
 <body>
     <div id="loading" class="loading"></div>
 
+    <div id="background" class="background"></div>
+
     <mou-headerbar>
         <label slot="page">Mes formulaires</label>
         
@@ -20,17 +22,17 @@
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
 
-    <div id="page">
-        <div id="empty">
-            <div id="empty__fields">
-                <p>
-                    Pour commencer à <strong>créer un formulaire</strong> vous pouvez cliquer sur le bouton ci dessous :
-                </p>
-                <div style="display: flex;">
-                    <mou-link href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
-                </div>
+    <div id="empty">
+        <div id="empty__fields">
+            <p>
+                Pour commencer à <strong>créer un formulaire</strong> vous pouvez cliquer sur le bouton ci dessous :
+            </p>
+            <div style="display: flex;">
+                <mou-link href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
             </div>
         </div>
     </div>
+
+    <div id="page"></div>
 </body>
 </html>

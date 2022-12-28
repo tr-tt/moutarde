@@ -15,7 +15,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 const _logout = document.querySelector('#logout')
 
 const _subtitle = document.querySelector('#subtitle')
-const _formFields = document.querySelector('#form__fields')
+const _formRings = document.querySelector('#form__rings')
 
 const _title = document.querySelector('#title')
 const _tool = document.querySelector('#tool')
@@ -27,13 +27,14 @@ const _improvement = document.querySelector('#improvement')
 const _more = document.querySelector('#more')
 const _mouUpload = document.querySelector('mou-upload')
 
-const _posts = document.querySelector('#posts')
 const _button = document.querySelector('#button')
 
 const _popup = document.querySelector('#popup')
 const _popupProgress = document.querySelector('#popup__progress')
 
 const _loading = document.querySelector('#loading')
+
+_formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 44)}px`
 
 window.addEventListener('DOMContentLoaded', () =>
 {
@@ -147,15 +148,7 @@ _button.addEventListener('click', () =>
         .postApiPost(formData, _popupProgress)
         .then(() =>
         {
-            _subtitle.textContent = `Votre formulaire a été enregistré, vous pouvez consulter la liste de vos formulaires.`
-            _subtitle.classList.remove('error')
-
-            _formFields.innerHTML = ''
-            _button.style.display = 'none'
-            _posts.setAttribute('label', 'Mes formulaires')
-            _posts.setAttribute('css', 'colored')
-
-            _popup.style.display = 'none'
+            window.location.href = '/posts'
         })
         .catch((exception) =>
         {

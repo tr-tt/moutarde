@@ -3,6 +3,24 @@ const httpCodes = require('../httpCodes')
 const jwt = require('jsonwebtoken')
 const logger = require('../logger')
 
+jobExist = (req, res, next) =>
+{
+    if(req.body.job)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no job provided`, {file: 'user.middleware.js', function: 'jobExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Une fonction est requise.`
+            })
+    }
+}
+
 emailOrUsernameExist = (req, res, next) =>
 {
     if(req.body.emailOrUsername)
@@ -333,14 +351,14 @@ schoolExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Un nom d'école est requis.`,
+                message: `Un nom d'établissement scolaire est requis.`,
             })
     }
 }
 
 schoolYearExist = (req, res, next) =>
 {
-    if(req.body.schoolYear)
+    if(req.body.schoolYear || req.body.job === 'Professeur')
     {
         return next()
     }
@@ -351,13 +369,32 @@ schoolYearExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Une année de formation est requise.`,
+                message: `Une année scolaire est requise.`,
+            })
+    }
+}
+
+seniorityExist = (req, res, next) =>
+{
+    if(req.body.seniority || req.body.job === 'Etudiant')
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no seniority provided`, {file: 'user.middleware.js', function: 'seniorityExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Une ancienneté en année(s) est requise.`,
             })
     }
 }
 
 const userMiddleware =
 {
+    jobExist,
     emailOrUsernameExist,
     usernameExist,
     emailOrUsernameExistInDB,
@@ -370,7 +407,8 @@ const userMiddleware =
     emailDuplicated,
     tokenExistVerify,
     schoolExist,
-    schoolYearExist
+    schoolYearExist,
+    seniorityExist
 }
 
 module.exports = userMiddleware

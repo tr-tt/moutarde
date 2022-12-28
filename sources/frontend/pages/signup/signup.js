@@ -13,12 +13,16 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 const _subtitle = document.querySelector('#subtitle')
 const _signupFields = document.querySelector('#signup__fields')
 
+const _job = document.querySelector('#job')
 const _username = document.querySelector('#username')
 const _email = document.querySelector('#email')
 const _birthday = document.querySelector('#birthday')
 const _sex = document.querySelector('#sex')
+
 const _school = document.querySelector('#school')
 const _schoolYear = document.querySelector('#school__year')
+const _seniority = document.querySelector('#seniority')
+
 const _password = document.querySelector('#password')
 const _confirmPassword = document.querySelector('#confirm__password')
 
@@ -30,6 +34,26 @@ const _signin = document.querySelector('#signin')
 const _button = document.querySelector('#button')
 
 const _loading = document.querySelector('#loading')
+
+_seniority.style.display = 'none'
+
+_job.addEventListener('mou-select:change', (event) =>
+{
+    if(event.detail.value === 'Etudiant')
+    {
+        _schoolYear.style.display = 'block'
+        _seniority.style.display = 'none'
+    }
+    else if(event.detail.value === 'Professeur')
+    {
+        _schoolYear.style.display = 'none'
+        _seniority.style.display = 'block'
+    }
+    else
+    {
+        console.error(`[ERROR] job ${event.detail.value} not supported`)
+    }
+})
 
 _gotoChart.addEventListener('click', () =>
 {
@@ -52,14 +76,26 @@ _button.addEventListener('click', () =>
 {
     const formData = new FormData()
 
+    const job = _job.value
     const username = _username.value
     const email = _email.value
     const birthday = _birthday.value
     const sex = _sex.value
     const school = _school.value
-    const schoolYear = _schoolYear.value
     const password = _password.value
     const confirmPassword = _confirmPassword.value
+
+    if(job)
+    {
+        formData.append('job', job)
+    }
+    else
+    {
+        _subtitle.textContent = `Une fonction est requise.`
+        _subtitle.classList.add('error')
+
+        return
+    }
 
     if(username)
     {
@@ -79,7 +115,7 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Une addresse email unique est requise.`
+        _subtitle.textContent = `Une addresse email unique et valide est requise.`
         _subtitle.classList.add('error')
 
         return
@@ -101,19 +137,47 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Un nom d'école est requis.`
+        _subtitle.textContent = `Un nom d'établissement scolaire est requis.`
         _subtitle.classList.add('error')
 
         return
     }
 
-    if(schoolYear)
+    if(job === 'Etudiant')
     {
-        formData.append('schoolYear', schoolYear)
+        const schoolYear = _schoolYear.value
+
+        if(schoolYear)
+        {
+            formData.append('schoolYear', schoolYear)
+        }
+        else
+        {
+            _subtitle.textContent = `Une année scolaire est requise.`
+            _subtitle.classList.add('error')
+
+            return
+        }
+    }
+    else if(job === 'Professeur')
+    {
+        const seniority = _seniority.value
+
+        if(seniority)
+        {
+            formData.append('seniority', seniority)
+        }
+        else
+        {
+            _subtitle.textContent = `Une ancienneté en année(s) est requise.`
+            _subtitle.classList.add('error')
+
+            return
+        }
     }
     else
     {
-        _subtitle.textContent = `Une année de formation comprise entre 2000 et 2023 est requise.`
+        _subtitle.textContent = `La profession ${job} n'est pas supportée.`
         _subtitle.classList.add('error')
 
         return

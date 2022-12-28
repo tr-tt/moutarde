@@ -4,6 +4,18 @@ module.exports = (sequelize, DataTypes) =>
 {
     const User = sequelize.define('User',
     {
+        job:
+        {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            validate:
+            {
+                notEmpty:
+                {
+                    msg: `Une fonction est requise.`
+                }
+            }
+        },
         username:
         {
             type: DataTypes.STRING(100),
@@ -13,7 +25,7 @@ module.exports = (sequelize, DataTypes) =>
             {
                 notEmpty:
                 {
-                    msg: `Le nom d'utilisateur ne peut pas être vide.`
+                    msg: `Un nom d'utilisateur unique est requis.`
                 }
             }
         },
@@ -26,7 +38,7 @@ module.exports = (sequelize, DataTypes) =>
             {
                 isEmail:
                 {
-                    msg: `Une adresse email valide est requise.`
+                    msg: `Une addresse email unique et valide est requise.`
                 }
             }
         },
@@ -38,7 +50,7 @@ module.exports = (sequelize, DataTypes) =>
         sex:
         {
             type: DataTypes.STRING(100),
-            defaultValue: null
+            defaultValue: ''
         },
         school:
         {
@@ -48,21 +60,19 @@ module.exports = (sequelize, DataTypes) =>
             {
                 notEmpty:
                 {
-                    msg: `Le nom de l'école ne peut pas être vide.`
+                    msg: `Un nom d'établissement scolaire est requis.`
                 }
             }
         },
         schoolYear:
         {
+            type: DataTypes.STRING(100),
+            defaultValue: ''
+        },
+        seniority:
+        {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `L'année de formation ne peut pas être vide.`
-                }
-            }
+            defaultValue: 0
         },
         password:
         {
@@ -72,7 +82,7 @@ module.exports = (sequelize, DataTypes) =>
             {
                 notEmpty:
                 {
-                    msg: `Le mot de passe ne peut pas être vide.`
+                    msg: `Un mot de passe non vide est requis.`
                 }
             },
             set(value)

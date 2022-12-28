@@ -9,6 +9,8 @@
 </head>
 <body>
     <div id="loading" class="loading"></div>
+
+    <div id="background" class="background"></div>
     
     <mou-headerbar>
         <label slot="page">Nouveau formulaire</label>
@@ -20,25 +22,27 @@
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
     </mou-headerbar>
 
+    <div class="marge"></div>
+
     <div id="form">
         <div id="form__frame">
             <div id="form__title">
-                <img src="/static/images/logo.jpg" width="40px" height="40px" draggable="false">
+                <img src="/static/images/carnet.png" width="40px" height="40px" draggable="false">
                 <h2>Nouveau formulaire</h2>
             </div>
             <p id="subtitle">Décrire une nouvelle situation.</p>
 
             <div id="form__fields">
-                <mou-input id="title" placeholder="Titre de la situation vécue" type="text" maxlength="100" required></mou-input>
-                <mou-input id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100" required></mou-input>
+                <mou-input id="title" placeholder="Titre" type="text" maxlength="100" required></mou-input>
+                <mou-input id="tool" placeholder="Outil cible" type="text" maxlength="100" required></mou-input>
 
                 <div class="separator"></div>
 
-                <mou-textarea id="description" placeholder="Description de la situation" maxlength="1000" required></mou-textarea>
+                <mou-textarea id="description" placeholder="Description" maxlength="1000" required></mou-textarea>
                 <mou-textarea id="place" placeholder="Lieux, personne(s) présente(s), déroulement" maxlength="1000"></mou-textarea>
                 <mou-textarea id="ressource" placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)" maxlength="1000"></mou-textarea>
-                <mou-textarea id="difficulty" placeholder="Difficulté et/ou satisfaction rencontrées" maxlength="1000" required></mou-textarea>
-                <mou-textarea id="improvement" placeholder="Astuce et futurs imaginés par la situation" maxlength="1000"></mou-textarea>
+                <mou-textarea id="difficulty" placeholder="Difficultés ou satisfactions" maxlength="1000" required></mou-textarea>
+                <mou-textarea id="improvement" placeholder="Améliorations" maxlength="1000"></mou-textarea>
                 <mou-textarea id="more" placeholder="En dire plus" maxlength="1000"></mou-textarea>
 
                 <div class="separator"></div>
@@ -53,6 +57,7 @@
         </div>
             
         <div id="form__bar"></div>
+        <div id="form__rings"></div>
 
         <div id="popup">
             <div id="popup__frame">
@@ -61,5 +66,7 @@
             </div>
         </div>
     </div>
+
+    <div class="marge"></div>
 </body>
 </html>

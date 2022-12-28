@@ -1,7 +1,8 @@
 body
 {
-    color: rgb(var(--dark-text));
+    color: #fff;
     min-height: 100vh;
+    
     display: flex;
     flex-direction: column;
 }
@@ -16,6 +17,11 @@ p
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+#subtitle
+{
+    height: 60px;
 }
 
 #subtitle.error
@@ -52,6 +58,7 @@ p
 
 #signin__controls
 {
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -64,24 +71,51 @@ p
         font-size: 40px;
     }
 
+    .marge
+    {
+        height: 100px;
+    }
+
     #signin
     {
-        border-radius: var(--border-radius);
-        border: 1px solid rgb(var(--color-1));
+        position: relative;
+
         padding: 40px;
-        box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
         margin: auto;
         width: 700px;
+        z-index: 1;
+        -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
+        box-shadow: 0px 0px 13px 0px #F8AC00;
+        border-radius: 20px;
 
         display: grid;
         grid-template-columns: 1fr 80px;
         gap: 40px;
     }
 
+    #signin::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(var(--color-5));
+        opacity: 0.8;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: var(--border-radius);
+        z-index: -1;
+    }
+
     #signin__bar
     {
         background-color: rgb(var(--color-5));
         border-radius: 4px;
+        opacity: 0.7;
     }
 }
 
@@ -92,11 +126,40 @@ p
         font-size: 30px;
     }
 
+    .marge
+    {
+        height: 20px;
+    }
+
     #signin
     {
-        margin: auto;
-        width: 100%;
+        position: relative;
+
+        z-index: 1;
+        margin: auto 20px;
         padding: 20px;
+        -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
+        box-shadow: 0px 0px 13px 0px #F8AC00;
+        border-radius: var(--border-radius);
+    }
+
+    #signin::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(var(--color-5));
+        opacity: 0.8;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        z-index: -1;
     }
 
     #signin__bar

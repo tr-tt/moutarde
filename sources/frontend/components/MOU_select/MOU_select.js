@@ -29,6 +29,7 @@ class MOUselect extends HTMLElement
         this.shadowRoot.addEventListener('slotchange', this._onSlotChangeHandler.bind(this))
         this._select.addEventListener('focus', this._onFocusHandler.bind(this))
         this._select.addEventListener('blur', this._onBlurHandler.bind(this))
+        this._select.addEventListener('change', this._onChangeHandler.bind(this))
     }
 
     disconnectedCallback()
@@ -36,6 +37,12 @@ class MOUselect extends HTMLElement
         this.shadowRoot.removeEventListener('slotchange', this._onSlotChangeHandler)
         this._select.removeEventListener('focus', this._onFocusHandler)
         this._select.removeEventListener('blur', this._onBlurHandler)
+        this._select.removeEventListener('change', this._onChangeHandler)
+    }
+
+    _onChangeHandler()
+    {
+        this.dispatchEvent(new CustomEvent('mou-select:change', {detail: {value: this.value}}))
     }
 
     _onSlotChangeHandler()
@@ -45,6 +52,11 @@ class MOUselect extends HTMLElement
         if(node)
         {
             this._select.append(node)
+            
+            if(node.selected && node.value !== '')
+            {
+                this._select.classList.add('notempty')
+            }
         }
     }
 

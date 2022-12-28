@@ -13,18 +13,14 @@ exports.getApiUser = (req, res) =>
             {
                 logger.debug(`user id ${req.user_id} user name ${user.username} found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.OK})
 
+                user.dataValues.createdAt && delete user.dataValues.createdAt
+                user.dataValues.updatedAt && delete user.dataValues.updatedAt
+                user.dataValues.password && delete user.dataValues.password
+
                 return res
                     .status(httpCodes.OK)
                     .json({
-                        message: 
-                        {
-                            username: user.username,
-                            email: user.email,
-                            birthday: user.birthday,
-                            sex: user.sex,
-                            school: user.school,
-                            schoolYear: user.schoolYear
-                        }
+                        message: user
                     })
             }
             else
@@ -54,14 +50,17 @@ exports.postApiUser = (req, res) =>
 {
     const userData = {}
 
+    userData.job = req.body.job
     userData.username = req.body.username
     userData.email = req.body.email
     userData.school = req.body.school
-    userData.schoolYear = req.body.schoolYear
     userData.password = req.body.password
 
+    userData.job === 'Etudiant' ? userData.schoolYear = req.body.schoolYear : ''
+    userData.job === 'Professeur' ? userData.seniority = req.body.seniority : ''
+
     userData.birthday = req.body.birthday || null
-    userData.sex = req.body.sex || null
+    userData.sex = req.body.sex || ''
 
     db.sequelize
         .transaction((transaction) =>
@@ -101,10 +100,12 @@ exports.putApiUser = (req, res) =>
     req.body.username ? userData.username = req.body.username : ''
     req.body.email ? userData.email = req.body.email : ''
     userData.school = req.body.school
-    userData.schoolYear = req.body.schoolYear
+    
+    req.body.job === 'Etudiant' ? userData.schoolYear = req.body.schoolYear : ''
+    req.body.job === 'Professeur' ? userData.seniority = req.body.seniority : ''
 
     userData.birthday = req.body.birthday || null
-    userData.sex = req.body.sex || null
+    userData.sex = req.body.sex || ''
 
     db.sequelize
         .transaction((transaction) =>
@@ -143,6 +144,43 @@ exports.putApiUser = (req, res) =>
         })
 }
 
+exports.deleteApiUserId = (req, res) =>
+{
+    db.sequelize
+        .transaction((transaction) =>
+        {
+            return db.User
+                .destroy({
+                    where:
+                    {
+                        id: req.params.id
+                    }
+                },
+                {
+                    transaction: transaction
+                })
+        })
+        .then((count) =>
+        {
+            logger.debug(`user id ${req.params.id} row(s) ${count} deleted`, {file: 'user.controller.js', function: 'deleteApiUserId', http: httpCodes.OK})
+
+            return res
+                .status(httpCodes.OK)
+                .json({
+                    message: `Le compte utilisateur a été supprimé.`
+                })
+        })
+        .catch((exception) =>
+        {
+            logger.error(`user id ${req.params.id} exception ${exception.message}`, {file: 'user.controller.js', function: 'deleteApiUserId', http: httpCodes.INTERNAL_SERVER_ERROR})
+
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la suppression d'un compte utilisateur.`,
+                })
+        })
+}
 
 exports.postApiUserPasswordForgot = (req, res) =>
 {
@@ -164,7 +202,7 @@ exports.postApiUserPasswordForgot = (req, res) =>
     return res
         .status(httpCodes.OK)
         .json({
-            message: 'Un lien vous a été envoyé dans votre boite email pour changer votre mot de passe.'
+            message: `Un lien vous a été envoyé par email pour changer votre mot de passe (Vérifiez vos spams, valide 15 min).`
         })
 }
 
