@@ -12,8 +12,6 @@ const _loading = document.querySelector('#loading')
 
 const _mouHeaderbar = document.querySelector('mou-headerbar')
 
-const _chart = document.querySelector('#chart')
-
 const _navigation = 
 [
     {
@@ -37,11 +35,6 @@ const _navigation =
         css: 'default'
     }
 ]
-
-_chart.addEventListener('click', () =>
-{
-    window.open('/chart', '_blank')
-})
 
 authService
     .getApiAuthSignin()
