@@ -2,6 +2,7 @@ const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 const jwt = require('jsonwebtoken')
 const logger = require('../logger')
+const transporter = require('../email')
 
 exports.getApiUser = (req, res) =>
 {
@@ -62,6 +63,26 @@ exports.postApiUser = (req, res) =>
     userData.birthday = req.body.birthday || null
     userData.sex = req.body.sex || ''
 
+    const html =
+    `
+        <img src="https://mon-carnet-hercule.fr/static/images/logo_hercule.png" width="400px" draggable="false">
+
+        <h1 style="font-size: 20px;color: #5f6368;">Bienvenu sur la plateforme HERCULE !</h1>
+
+        <p style="font-size: 18px;text-align: justify;color: #5f6368;">Votre compte utilisateur a bien été crée, vous pouvez désormais vous connecter avec en cliquant sur le lien ci-dessous.</p>
+
+        ${req.protocol}://${req.get('host')}/signin
+    `
+
+    const email =
+    {
+        from: process.env.EMAIL_USER,
+        to: userData.email,
+        subject: `Création du compte utilisateur.`,
+        text: `Création du compte utilisateur.`,
+        html: html
+    }
+
     db.sequelize
         .transaction((transaction) =>
         {
@@ -74,6 +95,14 @@ exports.postApiUser = (req, res) =>
         .then((user) =>
         {
             logger.debug(`user name ${req.body.username} user email ${req.body.email} created`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK})
+
+            transporter.sendMail(email, (error, info) =>
+            {
+                if(error)
+                {
+                    logger.error(`user id ${req.user.id} user email ${req.user.email} send email ${error}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
+                }
+            })
 
             return res
                 .status(httpCodes.OK)
@@ -194,16 +223,49 @@ exports.postApiUserPasswordForgot = (req, res) =>
 
     const link = `${req.protocol}://${req.get('host')}/password/reset/${req.user.id}/${token}`
 
-    console.log(link)
-    // TODO : Send this link to the user email.
+    const html =
+    `
+        <img src="https://mon-carnet-hercule.fr/static/images/logo_hercule.png" width="400px" draggable="false">
 
-    logger.debug(`user id ${req.user.id} user email ${req.user.email} request password reset`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.OK})
+        <h1 style="font-size: 20px;color: #5f6368;">Votre demande de changement de mot de passe sur la plateforme HERCULE a été prise en compte.</h1>
+        
+        <p style="font-size: 18px;text-align: justify;color: #5f6368;">Vous pouvez cliquer sur le lien ci-dessous, valide pendant <strong style="color: #F8AC00;">quinze mintutes</strong>, pour proceder au changement.</p>
 
-    return res
-        .status(httpCodes.OK)
-        .json({
-            message: `Un lien vous a été envoyé par email pour changer votre mot de passe (Vérifiez vos spams, valide 15 min).`
-        })
+        ${link}
+    `
+
+    const email =
+    {
+        from: process.env.EMAIL_USER,
+        to: req.user.email,
+        subject: `Demande de réinitialisation de mot de passe.`,
+        text: `Demande de réinitialisation de mot de passe.`,
+        html: html
+    }
+
+    transporter.sendMail(email, (error, info) =>
+    {
+        if(error)
+        {
+            logger.error(`user id ${req.user.id} user email ${req.user.email} request password reset error ${error}`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.INTERNAL_SERVER_ERROR})
+
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la réinitialisation du mot de passe.`
+                })
+        }
+        else
+        {
+            logger.debug(`user id ${req.user.id} user email ${req.user.email} request password reset`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.OK})
+
+            return res
+                .status(httpCodes.OK)
+                .json({
+                    message: `Un lien vous a été envoyé par email pour changer votre mot de passe (valide 15 min).`
+                })
+        }
+    })   
 }
 
 exports.postApiUserPasswordReset = (req, res) =>

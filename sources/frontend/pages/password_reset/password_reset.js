@@ -15,7 +15,7 @@ const _loading = document.querySelector('#loading')
 const _mouHeaderbar = document.querySelector('mou-headerbar')
 
 const _subtitle = document.querySelector('#subtitle')
-const _form = document.querySelector('form')
+const _resetFields = document.querySelector('#reset__fields')
 const _password = document.querySelector('#password')
 const _confirmPassword = document.querySelector('#confirm__password')
 const _show = document.querySelector('#show')
@@ -174,7 +174,7 @@ _button.addEventListener('click', () =>
                 .getApiAuthSignout()
                 .then(() =>
                 {
-                    _form.style.display = 'none'
+                    _resetFields.style.display = 'none'
                     _button.style.display = 'none'
                     _redirect.setAttribute('label', 'Se connecter')
                     _redirect.setAttribute('css', 'colored')
