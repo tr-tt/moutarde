@@ -10,17 +10,16 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _subtitle = document.querySelector('#subtitle')
-const _username = document.querySelector('#username')
+const _emailOrUsername = document.querySelector('#email_or_username')
 const _password = document.querySelector('#password')
 const _show = document.querySelector('#show')
 const _button = document.querySelector('#button')
-
 const _loading = document.querySelector('#loading')
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+/*===============================================//
+// Hides or shows the password when the _show
+// checkbox is triggered
+//===============================================*/
 
 _show.addEventListener('click', () =>
 {
@@ -34,20 +33,25 @@ _show.addEventListener('click', () =>
     }
 })
 
+/*===============================================//
+// Tries to submit the form when the _button is
+// clicked
+//===============================================*/
+
 _button.addEventListener('click', () =>
 {
     const formData = new FormData()
 
-    const username = _username.value
+    const emailOrUsername = _emailOrUsername.value
     const password = _password.value
 
-    if(username)
+    if(emailOrUsername)
     {
-        formData.append('username', username)
+        formData.append('emailOrUsername', emailOrUsername)
     }
     else
     {
-        _subtitle.textContent = `Votre nom d'utilisateur est requis.`
+        _subtitle.textContent = `Le champ "Addresse email ou nom d'utilisateur" est requis.`
         _subtitle.classList.add('error')
 
         return
@@ -59,7 +63,7 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Votre mot de passe est requis.`
+        _subtitle.textContent = `Le champ "Mot de passe" est requis.`
         _subtitle.classList.add('error')
 
         return
@@ -85,4 +89,14 @@ _button.addEventListener('click', () =>
                 console.error(exception)
             }
         })
+})
+
+/*===============================================//
+// Removes the loading screen when everything
+// is loaded
+//===============================================*/
+
+window.addEventListener('DOMContentLoaded', () =>
+{
+    _loading.style.display = 'none'
 })

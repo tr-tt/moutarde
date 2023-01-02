@@ -15,7 +15,8 @@ module.exports = (app) =>
     app.post(
         '/api/auth/signin',
         [
-            userMiddleware.usernameExist,
+            userMiddleware.emailOrUsernameExist,
+            userMiddleware.emailOrUsernameExistInDB,
             userMiddleware.passwordExist
         ],
         controller.postApiAuthSignin

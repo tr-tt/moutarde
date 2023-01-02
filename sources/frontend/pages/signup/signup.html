@@ -32,42 +32,48 @@
             <div id="signup__fields">
                 <mou-select id="job" placeholder="Fonction" required>
                     <option value="Etudiant" selected>Etudiant</option>
-                    <option value="Professeur">Professeur</option>
+                    <option value="Enseignant">Enseignant</option>
                 </mou-select>
 
                 <div class="separator"></div>
 
                 <mou-input id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input>
                 <mou-input id="email" placeholder="Addresse email" type="email" maxlength="100" required></mou-input>
-                <mou-input id="birthday" placeholder="Date de naissance" type="date" min="1950-01-01" max="2023-01-01"></mou-input>
+
+                <div class="separator"></div>
+
+                <mou-input id="lastname" placeholder="Nom" type="text" maxlength="100"></mou-input>
+                <mou-input id="firstname" placeholder="Prénom" type="text" maxlength="100"></mou-input>
+                <mou-select id="birthday" placeholder="Année de naissance">
+                    <option value=""></option>
+                </mou-select>
                 <mou-select id="sex" placeholder="Sexe">
                     <option value=""></option>
                     <option value="Homme">Homme</option>
                     <option value="Femme">Femme</option>
+                    <option value="Autre">Autre</option>
                 </mou-select>
 
                 <div class="separator"></div>
 
                 <mou-select id="school" placeholder="Etablissement scolaire" required>
                     <option value=""></option>
-                    <option value="D'Arsonval">D'Arsonval</option>
-                    <option value="Paul-Éluard">Paul-Éluard</option>
-                    <option value="Louis-Berthollet">Louis-Berthollet</option>
-                    <option value="Henri-IV">Henri-IV</option>
-                    <option value="Saint-Louis">Saint-Louis</option>
-                    <option value="Fénelon-Sainte-Marie">Fénelon-Sainte-Marie</option>
-                    <option value="Georges-Clemenceau">Georges-Clemenceau</option>
-                    <option value="Sainte-Anne">Sainte-Anne</option>
                 </mou-select>
-                <mou-select id="school__year" placeholder="Année scolaire" required>
+                <mou-select id="school__year" placeholder="Année scolaire">
                     <option value=""></option>
-                    <option value="Première année">Première année</option>
-                    <option value="Deuxième année">Deuxième année</option>
-                    <option value="Troisième année">Troisième année</option>
-                    <option value="Quatrième année">Quatrième année</option>
-                    <option value="Cinquième année">Cinquième année</option>
+                    <option value="1ère année">1ère année</option>
+                    <option value="2ème année">2ème année</option>
+                    <option value="3ème année">3ème année</option>
+                    <option value="4ème année">4ème année</option>
+                    <option value="5ème année">5ème année</option>
                 </mou-select>
-                <mou-input id="seniority" placeholder="Ancienneté en année(s)" type="number" min="0" max="100" required></mou-input>
+                <mou-select id="seniority" placeholder="Années d'expérience dans la fonction">
+                    <option value=""></option>
+                    <option value="Moins de 5 ans">Moins de 5 ans</option>
+                    <option value="De 5 à 10 ans">De 5 à 10 ans</option>
+                    <option value="De 10 à 20 ans">De 10 à 20 ans</option>
+                    <option value="Plus de 20 ans">Plus de 20 ans</option>
+                </mou-select>
 
                 <div class="separator"></div>
 
@@ -80,7 +86,7 @@
 
                 <div id="signup__chart">
                     <input id="chart" type="checkbox">
-                    <span>J'ai lu et approuvé la <strong id="goto__chart">charte de consentement</strong></span>
+                    <span>J'ai lu et approuvé la <strong id="goto__chart">charte de consentement éclairé</strong></span>
                 </div>
             </div>
 

@@ -11,9 +11,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _loading = document.querySelector('#loading')
-
 const _mouHeaderbar = document.querySelector('mou-headerbar')
-
 const _subtitle = document.querySelector('#subtitle')
 const _emailOrUsername = document.querySelector('#email_or_username')
 const _button = document.querySelector('#button')

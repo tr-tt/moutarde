@@ -1,13 +1,30 @@
-const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 const jwt = require('jsonwebtoken')
 const logger = require('../logger')
+const UserTable = require('../tables/user.table')
 
 jobExist = (req, res, next) =>
 {
     if(req.body.job)
     {
-        return next()
+        if(req.body.job === 'Etudiant')
+        {
+            return next()
+        }
+        else if(req.body.job === 'Enseignant')
+        {
+            return next()
+        }
+        else
+        {
+            logger.warn(`job ${req.body.job} invalid`, {file: 'user.middleware.js', function: 'jobExist', http: httpCodes.BAD_REQUEST})
+
+            return res
+                .status(httpCodes.BAD_REQUEST)
+                .json({
+                    message: `La fonction ${req.body.job} est invalide.`
+                })
+        }
     }
     else
     {
@@ -16,7 +33,191 @@ jobExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Une fonction est requise.`
+                message: `Le champ "Fonction" est requis.`
+            })
+    }
+}
+
+usernameExist = (req, res, next) =>
+{
+    if(req.body.username)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no username provided`, {file: 'user.middleware.js', function: 'usernameExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Le champ "Nom d'utilisateur" est requis.`,
+            })
+    }
+}
+
+usernameDuplicated = (req, res, next) =>
+{
+    if(!req.body.username)
+    {
+        return next()
+    }
+
+    UserTable
+        .findByUsername(req.body.username)
+        .then((user) =>
+        {
+            if(user)
+            {
+                logger.warn(`username ${req.body.username} is already taken`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.BAD_REQUEST})
+
+                return res
+                    .status(httpCodes.BAD_REQUEST)
+                    .json({
+                        message: `Le nom d'utilisateur ${req.body.username} est déjà utilisé.`,
+                    })
+            }
+            else
+            {
+                return next()
+            }
+        })
+        .catch((exception) =>
+        {
+            logger.error(`Error when finding user by username ${req.body.username} exception ${exception.message}`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
+
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la vérification de la duplication du nom d'utilisateur ${req.body.username}.`,
+                })
+        })
+}
+
+emailExist = (req, res, next) =>
+{
+    if(req.body.email)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no email provided`, {file: 'user.middleware.js', function: 'emailExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Le champ "Addresse email" est requis.`,
+            })
+    }
+}
+
+emailDuplicated = async (req, res, next) =>
+{
+    if(!req.body.email)
+    {
+        return next()
+    }
+
+    UserTable
+        .findByEmail(req.body.email)
+        .then((user) =>
+        {
+            if(user)
+            {
+                logger.warn(`user email ${req.body.email} is already taken`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.BAD_REQUEST})
+
+                return res
+                    .status(httpCodes.BAD_REQUEST)
+                    .json({
+                        message: `L'adresse email ${req.body.email} est déjà utilisée.`,
+                    })
+            }
+            else
+            {
+                return next()
+            }
+        })
+        .catch((exception) =>
+        {
+            logger.error(`Error when finding user by email ${req.body.email} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
+
+            return res
+                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                .json({
+                    message: `Une erreur est survenue lors de la vérification de la duplication de l'adresse email ${req.body.email}.`,
+                })
+        })
+}
+
+schoolExist = (req, res, next) =>
+{
+    if(req.body.school)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no school provided`, {file: 'user.middleware.js', function: 'schoolExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Le champ "Etablissement scolaire" est requis.`,
+            })
+    }
+}
+
+passwordExist = (req, res, next) =>
+{
+    if(req.body.password)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no password provided`, {file: 'user.middleware.js', function: 'passwordExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Le champ "Mot de passe" est requis.`,
+            })
+    }
+}
+
+confirmPasswordExist = (req, res, next) =>
+{
+    if(req.body.confirmPassword)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`no confirm password provided`, {file: 'user.middleware.js', function: 'confirmPasswordExist', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Le champ "Confirmation du mot de passe" est requis.`,
+            })
+    }
+}
+
+passwordAndConfirmPasswordIdentity = (req, res, next) =>
+{
+    if(req.body.password === req.body.confirmPassword)
+    {
+        return next()
+    }
+    else
+    {
+        logger.warn(`password ${req.body.password} confirm password ${req.body.confirmPassword} are not equal`, {file: 'user.middleware.js', function: 'passwordAndConfirmPasswordIdentity', http: httpCodes.BAD_REQUEST})
+
+        return res
+            .status(httpCodes.BAD_REQUEST)
+            .json({
+                message: `Attention, votre mot de passe est différent du mot de passe de confirmation.`,
             })
     }
 }
@@ -41,26 +242,26 @@ emailOrUsernameExist = (req, res, next) =>
 
 emailOrUsernameExistInDB = (req, res, next) =>
 {
-    db.User
-        .findOne({
-            where:
-            {
-                [db.Op.or]: [{username: req.body.emailOrUsername}, {email: req.body.emailOrUsername}]
-            }
-        })
+    if(!req.body.emailOrUsername)
+    {
+        return next()
+    }
+
+    UserTable
+        .findByEmailOrUsername(req.body.emailOrUsername)
         .then((user) =>
         {
             if(user)
             {
                 req.user = user
 
-                logger.debug(`user name or email ${req.body.emailOrUsername} found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.OK})
+                logger.debug(`username or email ${req.body.emailOrUsername} found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.OK})
 
                 return next()
             }
             else
             {
-                logger.warn(`user name or email ${req.body.emailOrUsername} not found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.NOT_FOUND})
+                logger.warn(`username or email ${req.body.emailOrUsername} not found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.NOT_FOUND})
 
                 return res
                     .status(httpCodes.NOT_FOUND)
@@ -71,104 +272,14 @@ emailOrUsernameExistInDB = (req, res, next) =>
         })
         .catch((exception) =>
         {
-            logger.error(`user name or email ${req.body.emailOrUsername} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.INTERNAL_SERVER_ERROR})
+            logger.error(`Error when finding user by username or email ${req.body.emailOrUsername} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Une erreur est survenue lors de la recherche de l'utilisateur pour changer le mot de passe.`
+                    message: `Une erreur est survenue lors de la recherche de l'utilisateur avec l'adresse email ou le nom d'utilisateur.`
                 })
         })
-}
-
-usernameExist = (req, res, next) =>
-{
-    if(req.body.username)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no username provided`, {file: 'user.middleware.js', function: 'usernameExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le nom d'utilisateur est requis.`,
-            })
-    }
-}
-
-emailExist = (req, res, next) =>
-{
-    if(req.body.email)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no email provided`, {file: 'user.middleware.js', function: 'emailExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Une adresse email est requise.`,
-            })
-    }
-}
-
-passwordExist = (req, res, next) =>
-{
-    if(req.body.password)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no password provided`, {file: 'user.middleware.js', function: 'passwordExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un mot de passe est requis.`,
-            })
-    }
-}
-
-confirmPasswordExist = (req, res, next) =>
-{
-    if(req.body.confirmPassword)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no confirm password provided`, {file: 'user.middleware.js', function: 'confirmPasswordExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un mot de passe de confirmation est requis.`,
-            })
-    }
-}
-
-passwordAndConfirmPasswordIdentity = (req, res, next) =>
-{
-    if(req.body.password === req.body.confirmPassword)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`password ${req.body.password} confirm password ${req.body.confirmPassword} are not equal`, {file: 'user.middleware.js', function: 'passwordAndConfirmPasswordIdentity', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le mot de passe de confirmation est différent du mot de passe.`,
-            })
-    }
 }
 
 userIdExist = (req, res, next) =>
@@ -184,8 +295,8 @@ userIdExist = (req, res, next) =>
             })
     }
 
-    db.User
-        .findByPk(req.params.id)
+    UserTable
+        .findById(req.params.id)
         .then((user) =>
         {
             if(user)
@@ -206,100 +317,15 @@ userIdExist = (req, res, next) =>
                         message: `L'utilisateur n'a pas été trouvé.`,
                     })
             }
-        }).catch((exception) =>
+        })
+        .catch((exception) =>
         {
-            logger.error(`user id ${req.params.id} exception ${exception.message}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
+            logger.error(`Error when finding user by id ${req.params.id} exception ${exception.message}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
                     message: `Une erreur est survenue lors de la recherche de l'utilisateur`,
-                })
-        })
-}
-
-usernameDuplicated = (req, res, next) =>
-{
-    if(!req.body.username)
-    {
-        return next()
-    }
-
-    db.User
-        .findOne({
-            where:
-            {
-                username: req.body.username
-            }
-        })
-        .then((user) =>
-        {
-            if(user)
-            {
-                logger.warn(`user name ${req.body.username} already taken`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.BAD_REQUEST})
-
-                return res
-                    .status(httpCodes.BAD_REQUEST)
-                    .json({
-                        message: `Le nom d'utilisateur ${req.body.username} est déjà utilisé.`,
-                    })
-            }
-            else
-            {
-                return next()
-            }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`user name ${req.body.username} exception ${exception.message}`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la vérification de la duplication du nom d'utilisateur ${req.body.username}.`,
-                })
-        })
-}
-
-emailDuplicated = (req, res, next) =>
-{
-    if(!req.body.email)
-    {
-        return next()
-    }
-
-    db.User
-        .findOne({
-            where:
-            {
-                email: req.body.email
-            }
-        })
-        .then((user) =>
-        {
-            if(user)
-            {
-                logger.warn(`user email ${req.body.email} already taken`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.BAD_REQUEST})
-
-                return res
-                    .status(httpCodes.BAD_REQUEST)
-                    .json({
-                        message: `L'adresse email ${req.body.email} est déjà utilisée.`
-                    })
-            }
-            else
-            {
-                return next()
-            }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`user email ${req.body.email} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la vérification de la duplication de l'adresse email ${req.body.email}.`
                 })
         })
 }
@@ -338,77 +364,21 @@ tokenExistVerify = (req, res, next) =>
     })
 }
 
-schoolExist = (req, res, next) =>
-{
-    if(req.body.school)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no school provided`, {file: 'user.middleware.js', function: 'schoolExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un nom d'établissement scolaire est requis.`,
-            })
-    }
-}
-
-schoolYearExist = (req, res, next) =>
-{
-    if(req.body.schoolYear || req.body.job === 'Professeur')
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no school year provided`, {file: 'user.middleware.js', function: 'schoolYearExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Une année scolaire est requise.`,
-            })
-    }
-}
-
-seniorityExist = (req, res, next) =>
-{
-    if(req.body.seniority || req.body.job === 'Etudiant')
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no seniority provided`, {file: 'user.middleware.js', function: 'seniorityExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Une ancienneté en année(s) est requise.`,
-            })
-    }
-}
-
 const userMiddleware =
 {
     jobExist,
-    emailOrUsernameExist,
     usernameExist,
-    emailOrUsernameExistInDB,
+    usernameDuplicated,
     emailExist,
+    emailDuplicated,
+    schoolExist,
     passwordExist,
     confirmPasswordExist,
     passwordAndConfirmPasswordIdentity,
+    emailOrUsernameExist,
+    emailOrUsernameExistInDB,
     userIdExist,
-    usernameDuplicated,
-    emailDuplicated,
-    tokenExistVerify,
-    schoolExist,
-    schoolYearExist,
-    seniorityExist
+    tokenExistVerify
 }
 
 module.exports = userMiddleware

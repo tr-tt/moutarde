@@ -21,8 +21,6 @@ module.exports = (app) =>
             userMiddleware.emailExist,
             userMiddleware.emailDuplicated,
             userMiddleware.schoolExist,
-            userMiddleware.schoolYearExist,
-            userMiddleware.seniorityExist,
             userMiddleware.passwordExist,
             userMiddleware.confirmPasswordExist,
             userMiddleware.passwordAndConfirmPasswordIdentity          
