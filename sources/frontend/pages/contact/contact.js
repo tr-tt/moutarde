@@ -10,8 +10,12 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _loading = document.querySelector('#loading')
-
 const _logout = document.querySelector('#logout')
+
+/*===============================================//
+// Logouts the user and redirects him to the
+// index page when _logout button is clicked
+//===============================================*/
 
 _logout.addEventListener('click', () =>
 {
@@ -26,6 +30,11 @@ _logout.addEventListener('click', () =>
             console.error(exception)
         })
 })
+
+/*===============================================//
+// Removes the loading screen when everything
+// is loaded
+//===============================================*/
 
 window.addEventListener('DOMContentLoaded', () =>
 {

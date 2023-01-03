@@ -4,8 +4,8 @@ import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_textarea/MOU_textarea'
 import '../../components/MOU_upload/MOU_upload'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import postService from '../../services/post.service'
-import authService from '../../services/auth.service'
+import PostService from '../../services/post.service'
+import AuthService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -13,10 +13,8 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _logout = document.querySelector('#logout')
-
 const _subtitle = document.querySelector('#subtitle')
 const _formRings = document.querySelector('#form__rings')
-
 const _title = document.querySelector('#title')
 const _tool = document.querySelector('#tool')
 const _description = document.querySelector('#description')
@@ -26,12 +24,9 @@ const _difficulty = document.querySelector('#difficulty')
 const _improvement = document.querySelector('#improvement')
 const _more = document.querySelector('#more')
 const _mouUpload = document.querySelector('mou-upload')
-
 const _button = document.querySelector('#button')
-
 const _popup = document.querySelector('#popup')
 const _popupProgress = document.querySelector('#popup__progress')
-
 const _loading = document.querySelector('#loading')
 
 _formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 44)}px`
@@ -43,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () =>
 
 _logout.addEventListener('click', () =>
 {
-    authService
+    AuthService
         .getApiAuthSignout()
         .then(() =>
         {
@@ -144,7 +139,7 @@ _button.addEventListener('click', () =>
 
     _popup.style.display = 'flex'
     
-    postService
+    PostService
         .postApiPost(formData, _popupProgress)
         .then(() =>
         {

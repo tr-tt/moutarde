@@ -50,7 +50,7 @@ strong
     {
         position: relative;
 
-        background: url("/static/images/background2.jpg");
+        background: url("/static/images/background.jpg");
         background-size: cover;
         color: #fff;
         padding: 100px;
@@ -174,7 +174,7 @@ strong
 
     .step__field
     {
-        border-left: 4px solid rgb(var(--color-1));
+        border-left: 2px solid rgb(var(--color-1));
         padding: 0 0 0 20px;
         cursor: pointer;
         transition: .2s;
@@ -242,7 +242,7 @@ strong
     {
         position: relative;
 
-        background: url("/static/images/background2.jpg");
+        background: url("/static/images/background.jpg");
         background-size: cover;
         color: #fff;
         padding: 20px;
@@ -363,7 +363,7 @@ strong
 
     .step__field
     {
-        border-left: 4px solid rgb(var(--color-1));
+        border-left: 2px solid rgb(var(--color-1));
         padding: 0 0 0 20px;
 
         display: flex;

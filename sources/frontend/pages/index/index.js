@@ -9,32 +9,40 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _loading = document.querySelector('#loading')
-
 const _mouHeaderbar = document.querySelector('mou-headerbar')
-
 const _navigation = 
 [
     {
         href: '/posts',
-        label: 'Mes formulaires',
-        css: 'default'
+        label: 'Mon carnet',
+        css: 'default',
+        title: 'Voir mon carnet'
     },
     {
         href: '/posts/new',
-        label: 'Nouveau formulaire',
-        css: 'colored'
+        label: 'Nouvelle page',
+        css: 'colored',
+        title: 'Créer une nouvelle page de carnet'
     },
     {
         href: '/users/edit',
         label: 'Mon profil',
-        css: 'default'
+        css: 'default',
+        title: 'Voir mon profil'
     },
     {
         href: '/contact',
         label: 'Contacts',
-        css: 'default'
+        css: 'default',
+        title: 'Voir les contacts'
     }
 ]
+
+/*===============================================//
+// Populate the navigation widget with all paths
+// if the user is logged in or only connexion and
+// create account path otherwise.
+//===============================================*/
 
 authService
     .getApiAuthSignin()
@@ -48,6 +56,7 @@ authService
             _mouLink.setAttribute('href', navigation.href)
             _mouLink.setAttribute('label', navigation.label)
             _mouLink.setAttribute('css', navigation.css)
+            _mouLink.setAttribute('title', navigation.title)
 
             _mouHeaderbar.appendChild(_mouLink)
         })
@@ -57,6 +66,7 @@ authService
         _logout.slot = 'controls'
         _logout.setAttribute('label', 'Se déconnecter')
         _logout.setAttribute('css', 'colored')
+        _logout.setAttribute('title', 'Se déconnecter')
         _logout.addEventListener('click', () =>
         {
             authService
@@ -83,6 +93,7 @@ authService
         _signin.setAttribute('href', '/signin')
         _signin.setAttribute('label', 'Se connecter')
         _signin.setAttribute('css', 'default')
+        _signin.setAttribute('title', 'Se connecter')
 
         const _signup = document.createElement('mou-link')
 
@@ -90,6 +101,7 @@ authService
         _signup.setAttribute('href', '/signup')
         _signup.setAttribute('label', 'Créer un compte')
         _signup.setAttribute('css', 'colored')
+        _signup.setAttribute('title', 'Créer un compte')
 
         _mouHeaderbar.appendChild(_signin)
         _mouHeaderbar.appendChild(_signup)  

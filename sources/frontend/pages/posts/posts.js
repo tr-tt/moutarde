@@ -2,8 +2,8 @@ import './posts.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_post/MOU_post'
-import postService from '../../services/post.service'
-import authService from '../../services/auth.service'
+import PostService from '../../services/post.service'
+import AuthService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -11,14 +11,18 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 }
 
 const _loading = document.querySelector('#loading')
-
 const _logout = document.querySelector('#logout')
 const _page = document.querySelector('#page')
 const _empty = document.querySelector('#empty')
 
+/*===============================================//
+// Logouts the user and redirects him to the
+// index page when _logout button is clicked
+//===============================================*/
+
 _logout.addEventListener('click', () =>
 {
-    authService
+    AuthService
         .getApiAuthSignout()
         .then(() =>
         {
@@ -29,6 +33,11 @@ _logout.addEventListener('click', () =>
             console.error(exception)
         })
 })
+
+/*===============================================//
+// Retrieves all forms stored in database and
+// populate the page with
+//===============================================*/
 
 const createPostsView = (posts) =>
 {
@@ -65,7 +74,7 @@ const createPostsView = (posts) =>
     _loading.style.display = 'none'
 }
 
-postService
+PostService
     .getApiPost()
     .then((response) =>
     {

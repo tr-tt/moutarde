@@ -112,7 +112,7 @@ emailExist = (req, res, next) =>
     }
 }
 
-emailDuplicated = async (req, res, next) =>
+emailDuplicated = (req, res, next) =>
 {
     if(!req.body.email)
     {

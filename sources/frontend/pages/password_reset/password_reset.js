@@ -2,8 +2,8 @@ import './password_reset.css'
 import '../../components/MOU_input/MOU_input'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import userService from '../../services/user.service'
-import authService from '../../services/auth.service'
+import UserService from '../../services/user.service'
+import AuthService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -21,37 +21,47 @@ const _confirmPassword = document.querySelector('#confirm__password')
 const _show = document.querySelector('#show')
 const _redirect = document.querySelector('#redirect')
 const _button = document.querySelector('#button')
-
 const _navigation = 
 [
     {
         href: '/',
         label: `Page d'accueil`,
-        css: 'default'
+        css: 'default',
+        title: `Retourner à la page d'accueil`
     },
     {
         href: '/posts',
-        label: 'Mes formulaires',
-        css: 'default'
+        label: 'Mon carnet',
+        css: 'default',
+        title: 'Voir mon carnet'
     },
     {
         href: '/posts/new',
-        label: 'Nouveau formulaire',
-        css: 'colored'
+        label: 'Nouvelle page',
+        css: 'colored',
+        title: 'Créer une nouvelle page de carnet'
     },
     {
         href: '/users/edit',
         label: 'Mon profil',
-        css: 'default'
+        css: 'default',
+        title: 'Voir mon profil'
     },
     {
         href: '/contact',
         label: 'Contacts',
-        css: 'default'
+        css: 'default',
+        title: 'Voir les contacts'
     }
 ]
 
-authService
+/*===============================================//
+// Populate the navigation widget with all paths
+// if the user is logged in or only connexion and
+// create account path otherwise.
+//===============================================*/
+
+AuthService
     .getApiAuthSignin()
     .then(() =>
     {
@@ -63,6 +73,7 @@ authService
             _mouLink.setAttribute('href', navigation.href)
             _mouLink.setAttribute('label', navigation.label)
             _mouLink.setAttribute('css', navigation.css)
+            _mouLink.setAttribute('title', navigation.title)
 
             _mouHeaderbar.appendChild(_mouLink)
         })
@@ -72,9 +83,10 @@ authService
         _logout.slot = 'controls'
         _logout.setAttribute('label', 'Se déconnecter')
         _logout.setAttribute('css', 'colored')
+        _logout.setAttribute('title', 'Se déconnecter')
         _logout.addEventListener('click', () =>
         {
-            authService
+            AuthService
                 .getApiAuthSignout()
                 .then(() =>
                 {
@@ -98,6 +110,7 @@ authService
         _signin.setAttribute('href', '/signin')
         _signin.setAttribute('label', 'Se connecter')
         _signin.setAttribute('css', 'default')
+        _signin.setAttribute('title', 'Se connecter')
 
         const _signup = document.createElement('mou-link')
 
@@ -105,12 +118,18 @@ authService
         _signup.setAttribute('href', '/signup')
         _signup.setAttribute('label', 'Créer un compte')
         _signup.setAttribute('css', 'colored')
+        _signup.setAttribute('title', 'Créer un compte')
 
         _mouHeaderbar.appendChild(_signin)
         _mouHeaderbar.appendChild(_signup)
 
         _loading.style.display = 'none'
     })
+
+/*===============================================//
+// Hides or shows the password when the _show
+// checkbox is triggered
+//===============================================*/
 
 _show.addEventListener('click', () =>
 {
@@ -123,6 +142,11 @@ _show.addEventListener('click', () =>
         _password.setAttribute('type', 'password')
     }
 })
+
+/*===============================================//
+// Tries to submit the form when the _button is
+// clicked
+//===============================================*/
 
 _button.addEventListener('click', () =>
 {
@@ -163,14 +187,14 @@ _button.addEventListener('click', () =>
         return
     }
 
-    userService
+    UserService
         .postApiUserPasswordReset(formData)
         .then((response) =>
         {
             _subtitle.textContent = response.data.message
             _subtitle.classList.remove('error')
 
-            authService
+            AuthService
                 .getApiAuthSignout()
                 .then(() =>
                 {
@@ -199,6 +223,11 @@ _button.addEventListener('click', () =>
             }            
         })
 })
+
+/*===============================================//
+// Removes the loading screen when everything
+// is loaded
+//===============================================*/
 
 window.addEventListener('DOMContentLoaded', () =>
 {

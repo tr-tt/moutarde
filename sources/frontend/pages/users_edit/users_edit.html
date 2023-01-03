@@ -15,11 +15,11 @@
     <mou-headerbar>
         <label slot="page">Mon profil</label>
 
-        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
-        <mou-link slot="controls" href="/posts" label="Mes formulaires" css="default"></mou-link>
-        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
-        <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
-        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default" title="Retourner à la page d'accueil"></mou-link>
+        <mou-link slot="controls" href="/posts" label="Mon carnet" css="default" title="Voir mon carnet"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
+        <mou-link slot="controls" href="/contact" label="Contacts" css="default" title="Voir les contacts"></mou-link>
+        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored" title="Se déconnecter"></mou-link>
     </mou-headerbar>
 
     <div class="marge"></div>
@@ -30,8 +30,9 @@
                 <img src="/static/images/profil.png" width="40px" height="40px" draggable="false">
                 <h2>Mon profil</h2>
             </div>
+            <p>Relire la <strong id="goto__chart">charte de concentement éclairé</strong>.</p>
             <p id="subtitle">Modifier mon profil utilisateur.</p>
-
+                        
             <div id="profile__fields">
                 <mou-input id="job" placeholder="Fonction" type="text" disabled></mou-input>
 
@@ -85,8 +86,8 @@
             </div>
 
             <div id="profile__controls">
-                <mou-link id="posts" href="/posts" label="Annuler" css="basic"></mou-link>
-                <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+                <mou-link id="posts" href="/posts" label="Annuler" css="basic" title="Annuler"></mou-link>
+                <mou-link id="button" label="Enregistrer" css="colored" title="Mettre à jour mon profil"></mou-link>
             </div>
         </div>
 
@@ -97,8 +98,8 @@
                 <p id="popup__subtitle">Etes vous <strong>certain</strong> de vouloir supprimer votre compte utilisateur ? Toutes vos données seront perdues et cette action est <strong>irréversible</strong>.</p>
             
                 <div id="popup__controls">
-                    <mou-link id="cancel" label="Annuler" css="colored"></mou-link>
-                    <mou-link id="confirm" label="Supprimer" css="basic"></mou-link>
+                    <mou-link id="cancel" label="Annuler" css="colored" title="Annuler"></mou-link>
+                    <mou-link id="confirm" label="Supprimer" css="basic" title="Confirmer la suppression de mon profil"></mou-link>
                 </div>
             </div>
         </div>

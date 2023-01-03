@@ -15,14 +15,14 @@ const transporter = nodemailer.createTransport(
 const mailer = {}
 
 mailer.sendAccountCreated = (emailData) =>
-{   
+{
     const html =
     `
         <img src="https://mon-carnet-hercule.fr/static/images/logo_hercule.png" width="400px" draggable="false">
 
         <h1 style="font-size: 20px;color: #5f6368;">Bienvenu sur la plateforme HERCULE !</h1>
 
-        <p style="font-size: 18px;text-align: justify;color: #5f6368;">Votre compte utilisateur <strong style="color: #F8AC00;">${emailData.username}</strong> a bien été crée, vous pouvez désormais vous connecter avec en cliquant sur le lien ci-dessous.</p>
+        <p style="font-size: 18px;text-align: justify;color: #5f6368;">Votre compte utilisateur <strong style="color: #F8AC00;">${emailData.username}</strong> a bien été créé, vous pouvez désormais vous connecter avec en cliquant sur le lien ci-dessous.</p>
 
         ${emailData.link}
     `
@@ -47,7 +47,7 @@ mailer.sendPasswordLink = (emailData) =>
 
         <h1 style="font-size: 20px;color: #5f6368;">Votre demande de changement de mot de passe sur la plateforme HERCULE a été prise en compte.</h1>
         
-        <p style="font-size: 18px;text-align: justify;color: #5f6368;">Vous pouvez cliquer sur le lien ci-dessous, valide pendant <strong style="color: #F8AC00;">quinze mintutes</strong>, pour proceder au changement.</p>
+        <p style="font-size: 18px;text-align: justify;color: #5f6368;">Vous pouvez cliquer sur le lien ci-dessous, valide pendant <strong style="color: #F8AC00;">15 mintutes</strong>, pour procéder au changement.</p>
 
         ${emailData.link}
     `

@@ -115,7 +115,7 @@ if(process.env.NODE_ENV === 'development')
             console.log('[DEBUG] Drop and re-sync database')
         })*/
     db.sequelize
-        .sync({force: true})
+        .sync()
         .then(() =>
         {
             populate()

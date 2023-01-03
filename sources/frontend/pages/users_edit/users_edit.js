@@ -14,6 +14,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 
 const _loading = document.querySelector('#loading')
 const _logout = document.querySelector('#logout')
+const _gotoChart = document.querySelector('#goto__chart')
 const _subtitle = document.querySelector('#subtitle')
 const _profileFields = document.querySelector('#profile__fields')
 const _job = document.querySelector('#job')
@@ -37,6 +38,15 @@ const _confirm = document.querySelector('#confirm')
 let _current_username = ''
 let _current_email = ''
 let _userId = 0
+
+/*===============================================//
+// Open the chart in a new tab
+//===============================================*/
+
+_gotoChart.addEventListener('click', () =>
+{
+    window.open('/chart', '_blank')
+})
 
 /*===============================================//
 // Retrieves all schools stored in database and
@@ -323,8 +333,9 @@ _button.addEventListener('click', () =>
 
             _profileFields.innerHTML = ''
             _button.style.display = 'none'
-            _posts.setAttribute('label', 'Mes formulaires')
+            _posts.setAttribute('label', 'Mon carnet')
             _posts.setAttribute('css', 'colored')
+            _posts.setAttribute('title', 'Voir mon carnet')
         })
         .catch((exception) =>
         {

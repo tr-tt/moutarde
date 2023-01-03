@@ -24,13 +24,18 @@ class MOUlink extends HTMLElement
         {
             this._link.textContent = this.getAttribute('label')
         }
+
+        if(this.hasAttribute('title'))
+        {
+            this._link.title = this.getAttribute('title')
+        }
         
         this._link.classList.add(this.getAttribute('css') || 'default')
     }
 
     static get observedAttributes()
     {
-        return ['css', 'label', 'href']
+        return ['css', 'label', 'href', 'title']
     }
 
     attributeChangedCallback(name, oldValue, newValue)
@@ -48,12 +53,17 @@ class MOUlink extends HTMLElement
 
         if(name === 'label')
         {
-            this._link.textContent = newValue || 'Link'
+            this._link.textContent = newValue || ''
         }
 
         if(name === 'href')
         {
             this._link.href = newValue || ''
+        }
+
+        if(name === 'title')
+        {
+            this._link.title = newValue || ''
         }
     }
 }

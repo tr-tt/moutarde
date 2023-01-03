@@ -13,14 +13,14 @@
     <div id="background" class="background"></div>
     
     <mou-headerbar>
-        <label slot="page">Edition du formulaire</label>
+        <label slot="page">Editer la page du carnet</label>
 
-        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
-        <mou-link slot="controls" href="/posts" label="Mes formulaires" css="default"></mou-link>
-        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
-        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default"></mou-link>
-        <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
-        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default" title="Retourner à la page d'accueil"></mou-link>
+        <mou-link slot="controls" href="/posts" label="Mon carnet" css="default" title="Voir mon carnet"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
+        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default" title="Voir mon profil"></mou-link>
+        <mou-link slot="controls" href="/contact" label="Contacts" css="default" title="Voir les contacts"></mou-link>
+        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored" title="Se déconnecter"></mou-link>
     </mou-headerbar>
 
     <div class="marge"></div>
@@ -29,7 +29,7 @@
         <div id="form__frame">
             <div id="form__title">
                 <img src="/static/images/carnet.png" width="40px" height="40px" draggable="false">
-                <h2>Editer le formulaire</h2>
+                <h2>Editer la page du carnet</h2>
             </div>
             <p id="subtitle">Editer la situation.</p>
 
@@ -52,8 +52,8 @@
             </div>
 
             <div id="form__controls">
-                <mou-link id="posts" href="/posts" label="Annuler" css="basic"></mou-link>
-                <mou-link id="button" label="Enregistrer" css="colored"></mou-link>
+                <mou-link id="posts" href="/posts" label="Annuler" css="basic" title="Annuler"></mou-link>
+                <mou-link id="button" label="Enregistrer" css="colored" title="Mettre à jour la page du carnet"></mou-link>
             </div>
         </div>
             
@@ -62,7 +62,7 @@
 
         <div id="popup">
             <div id="popup__frame">
-                <p id="popup__subtitle">Le formulaire est en cours de <strong>mise a jour</strong>, merci de patienter.</p>
+                <p id="popup__subtitle">La page du carnet est en cours de <strong>mise à jour</strong>, merci de patienter.</p>
                 <h1 id="popup__progress">0%</h1>
             </div>
         </div>

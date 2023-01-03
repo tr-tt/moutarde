@@ -13,22 +13,22 @@
     <div id="background" class="background"></div>
 
     <mou-headerbar>
-        <label slot="page">Mes formulaires</label>
+        <label slot="page">Mon carnet</label>
         
-        <mou-link slot="controls" href="/" label="Page d'accueil" css="default"></mou-link>
-        <mou-link slot="controls" href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
-        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default"></mou-link>
-        <mou-link slot="controls" href="/contact" label="Contacts" css="default"></mou-link>
-        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored"></mou-link>
+        <mou-link slot="controls" href="/" label="Page d'accueil" css="default" title="Retourner à la page d'accueil"></mou-link>
+        <mou-link slot="controls" href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
+        <mou-link slot="controls" href="/users/edit" label="Mon profil" css="default" title="Voir mon profil"></mou-link>
+        <mou-link slot="controls" href="/contact" label="Contacts" css="default" title="Voir les contacts"></mou-link>
+        <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored" title="Se déconnecter"></mou-link>
     </mou-headerbar>
 
     <div id="empty">
         <div id="empty__fields">
             <p>
-                Pour commencer à <strong>créer un formulaire</strong> vous pouvez cliquer sur le bouton ci dessous :
+                Pour commencer à <strong>créer une nouvelle page</strong> de carnet vous pouvez cliquer sur le bouton ci dessous :
             </p>
             <div style="display: flex;">
-                <mou-link href="/posts/new" label="Nouveau formulaire" css="colored"></mou-link>
+                <mou-link href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
             </div>
         </div>
     </div>
