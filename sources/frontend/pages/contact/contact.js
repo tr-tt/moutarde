@@ -1,8 +1,10 @@
 import './contact.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
 import '../../components/MOU_link/MOU_link'
-import '../../components/MOU_post/MOU_post'
-import authService from '../../services/auth.service'
+import '../../components/MOU_contact/MOU_contact'
+import AuthService from '../../services/auth.service'
+import UserService from '../../services/user.service'
+import SchoolService from '../../services/school.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -11,6 +13,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 
 const _loading = document.querySelector('#loading')
 const _logout = document.querySelector('#logout')
+const _page = document.querySelector('#page')
 
 /*===============================================//
 // Logouts the user and redirects him to the
@@ -19,7 +22,7 @@ const _logout = document.querySelector('#logout')
 
 _logout.addEventListener('click', () =>
 {
-    authService
+    AuthService
         .getApiAuthSignout()
         .then(() =>
         {
@@ -32,11 +35,48 @@ _logout.addEventListener('click', () =>
 })
 
 /*===============================================//
-// Removes the loading screen when everything
-// is loaded
+// Retrieves the user's school and the school
+// contacts then populate the page
 //===============================================*/
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+UserService
+    .getApiUser()
+    .then((response) =>
+    {
+        const school = response.data.message.school || ''
+
+        if(school)
+        {
+            SchoolService
+                .getApiSchoolByName(school)
+                .then((response) =>
+                {
+                    const contacts = response.data.message.Contacts
+
+                    contacts.forEach((contact) =>
+                    {
+                        const contactElement = document.createElement('mou-contact')
+
+                        contactElement.setAttribute('name', contact.name)
+                        contactElement.setAttribute('job', contact.job)
+                        contactElement.setAttribute('email', contact.email)
+
+                        _page.appendChild(contactElement)
+                    })
+
+                    _loading.style.display = 'none'
+                })
+                .catch((exception) =>
+                {
+                    console.error(exception)
+                })
+        }
+        else
+        {
+            console.error('no school provided')
+        }
+    })
+    .catch((exception) =>
+    {
+        console.error(exception)
+    })

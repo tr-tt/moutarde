@@ -108,46 +108,6 @@ exports.postApiUser = (req, res) =>
                 message: `Une erreur est survenue lors de l'enregistrement de l'utilisateur.`,
             })
     })
-
-    /*UserTable
-        .create(userData)
-        .then(async (user) =>
-        {
-            logger.debug(`User ${JSON.stringify(user, null, 2)} created`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK})
-    
-            try
-            {
-                const result = await mailer.sendAccountCreated({username: user.username, email: user.email, link: `${req.protocol}://${req.get('host')}/signin`})
-
-                logger.debug(`Email sent to ${user.email} result ${JSON.stringify(result, null, 2)}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK}) 
-            
-                return res
-                    .status(httpCodes.OK)
-                    .json({
-                        message: `L'utilisateur ${user.username} a été enregistré.`
-                    })
-            }
-            catch(exception)
-            {
-                logger.error(`Error when sending email to ${user.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
-            
-                return res
-                    .status(httpCodes.INTERNAL_SERVER_ERROR)
-                    .json({
-                        message: `Une erreur est survenue lors de l'envoi de l'email de confirmation de l'enregistrement de l'utilisateur.`,
-                    })
-            }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when creating new user username ${req.body.username} user email ${req.body.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de l'enregistrement de l'utilisateur.`,
-                })
-        })*/
 }
 
 exports.putApiUser = (req, res) =>

@@ -25,3 +25,12 @@ exports.getApiSchool = (req, res) =>
                 })
         })
 }
+
+exports.getApiSchoolByName = (req, res) =>
+{
+    return res
+        .status(httpCodes.OK)
+        .json({
+            message: req.school
+        })
+}

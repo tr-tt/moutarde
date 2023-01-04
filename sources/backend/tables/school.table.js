@@ -39,11 +39,15 @@ exports.findAll = () =>
         )
 }
 
-exports.findById = (id) =>
+exports.findByName = (name) =>
 {
     return db.School
-        .findByPk(id,
+        .findOne(
             {
+                where:
+                {
+                    name: name
+                },
                 include:
                 [
                     {

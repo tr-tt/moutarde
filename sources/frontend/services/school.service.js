@@ -7,6 +7,12 @@ class SchoolService
         return axios
             .get('/api/school')
     }
+
+    getApiSchoolByName(name)
+    {
+        return axios
+            .get(`/api/school/${name}`)
+    }
 }
 
 export default new SchoolService()

@@ -303,7 +303,7 @@ userIdExist = (req, res, next) =>
             {
                 req.user = user
 
-                logger.debug(`user id ${req.params.id} user name ${user.username} found`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.OK})
+                logger.debug(`user found ${JSON.stringify(user, null, 2)}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.OK})
 
                 return next()
             }
