@@ -27,27 +27,42 @@
     <div id="form">
         <div id="form__frame">
             <div id="form__title">
-                <img src="/static/images/carnet.png" width="40px" height="40px" draggable="false">
-                <h2>Nouvelle page du carnet</h2>
+                <img src="/static/images/icons/carnet.png" width="40px" height="40px" draggable="false">
+                <h2>Ecrire dans mon carnet</h2>
             </div>
             <p id="subtitle">Décrire une nouvelle situation.</p>
 
             <div id="form__fields">
-                <mou-input id="title" placeholder="Titre" type="text" maxlength="100" required></mou-input>
-                <mou-input id="tool" placeholder="Outil cible" type="text" maxlength="100" required></mou-input>
+                <div class="separator"></div>
+                <h3>Informations sur la situation</h3>
+
+                <mou-input-inline id="situation" placeholder="Situation vécue" type="text" maxlength="100" required></mou-input-inline>
+                <mou-input-inline id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100" icon="/static/images/icons/target.png"></mou-input-inline>
+                <mou-input-inline id="when" placeholder="Quand ? (date, heure)" type="datetime-local" min="2022-01-01T00:00" max="2030-01-01T00:00" icon="/static/images/icons/clock.png"></mou-input-inline>
+                
+                <div class="separator"></div>
+                <h3>Ressenti</h3>
+
+                <mou-opinion id="feeling" placeholder="Ressenti" soft="satisfaisant" medium="indécis" hard="insatisfaisant"></mou-opinion>
 
                 <div class="separator"></div>
+                <h3>Description de la situation</h3>
 
-                <mou-textarea id="description" placeholder="Description" maxlength="1000" required></mou-textarea>
-                <mou-textarea id="place" placeholder="Lieux, personne(s) présente(s), déroulement" maxlength="1000"></mou-textarea>
-                <mou-textarea id="ressource" placeholder="Autre(s) ressources (s) ou personne(s) mobilisée(s)" maxlength="1000"></mou-textarea>
-                <mou-textarea id="difficulty" placeholder="Difficultés ou satisfactions" maxlength="1000" required></mou-textarea>
-                <mou-textarea id="improvement" placeholder="Améliorations" maxlength="1000"></mou-textarea>
-                <mou-textarea id="more" placeholder="En dire plus" maxlength="1000"></mou-textarea>
+                <mou-input-block id="description" placeholder="Ce qu'il s'est passé" maxlength="1000" icon="/static/images/icons/book.png"></mou-input-block>
+                <mou-input-block id="ressource" placeholder="Autre(s) ressources(s)" maxlength="1000" icon="/static/images/icons/gear.png"></mou-input-block>
+                <mou-input-block id="difficulty" placeholder="Difficulté(s) rencontrée(s)" maxlength="1000" icon="/static/images/icons/lightning.png"></mou-input-block>
+                <mou-input-block id="trick" placeholder="Astuces" maxlength="1000" icon="/static/images/icons/tool.png"></mou-input-block>
+                <mou-input-block id="improvement" placeholder="Futurs imaginés" maxlength="1000" icon="/static/images/icons/light.png"></mou-input-block>
 
                 <div class="separator"></div>
+                <h3>En dire plus ?</h3>
 
-                <mou-upload></mou-upload>
+                <mou-input-block id="more" maxlength="1000" icon="/static/images/icons/cloud.png"></mou-input-block>
+
+                <div class="separator"></div>
+                <h3>Ajouter des visuels</h3>
+
+                <mou-input-picture id="picture"></mou-input-picture>
             </div>
 
             <div id="form__controls">

@@ -12,7 +12,7 @@
 
 #header
 {
-    background: #fff;
+    background: rgb(var(--white));
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
 }
 
@@ -27,9 +27,14 @@
     gap: 20px;
 }
 
+#header__logo img
+{
+    filter: invert(88%) sepia(29%) saturate(3865%) hue-rotate(330deg) brightness(90%) contrast(92%);
+}
+
 #header__logo span
 {
-    color: rgb(var(--dark-text));
+    color: rgb(var(--color-1));
     user-select: none;
 }
 
@@ -42,6 +47,10 @@ mou-link
 {
     margin-left: auto;
 }
+
+/*===============================================//
+// PC
+//===============================================*/
 
 @media screen and (min-width: 800px)
 {
@@ -80,19 +89,44 @@ mou-link
     #navigation__fields
     {
         position: absolute;
+
         top: 60px;
         right: 60px;
         width: 300px;
         gap: 20px;
-        background-color: rgb(var(--color-6));
-        border-radius: 0 0 20px 20px;
-        border: 1px solid rgb(var(--color-1));
         padding: 40px;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        z-index: 1;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
 
         display: flex;
         flex-direction: column;
     }
+
+    #navigation__fields::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        background: rgb(var(--color-1));
+        border: 1px solid rgb(var(--color-4));
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
 }
+
+/*===============================================//
+// PHONE
+//===============================================*/
+
 @media screen and (max-width: 800px)
 {
     #header__container
@@ -115,23 +149,40 @@ mou-link
     #navigation__fields
     {
         position: absolute;
+
         top: 60px;
         left: 0;
         width: 100%;
         height: calc(100vh - 60px);
         gap: 20px;
-        background-color: #fff;
         padding: 20px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 1;
 
         display: flex;
         flex-direction: column;
+    }
+
+    #navigation__fields::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        background: rgb(var(--color-1));
     }
 }
 </style>
 <div id="header">
     <div id="header__container">
         <div id="header__logo">
-            <img src="/static/images/logo.jpg" width="30px" height="30px" draggable="false">
+            <img src="/static/images/logos/logo.png" width="30px" height="30px" draggable="false">
             <span>HERCULE</span>
         </div>
 
@@ -139,7 +190,7 @@ mou-link
 
         <slot name="page"></slot>
 
-        <mou-link id="navigation" label="Navigation" css="colored" title="Ouvrir la navigation"></mou-link>
+        <mou-link id="navigation" label="Navigation" title="Ouvrir la navigation" css="colored"></mou-link>
 
         <div id="navigation__fields" class="hide">
             <slot name="controls"></slot>

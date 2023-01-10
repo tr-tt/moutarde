@@ -15,8 +15,8 @@
     <mou-headerbar>
         <label slot="page">Se connecter</label>
 
-        <mou-link slot="controls" href="/" label="Page d'accueil" css="default" title="Retourner à la page d'accueil"></mou-link>
-        <mou-link slot="controls" href="/signup" label="Créer un compte" css="colored" title="Créer un compte"></mou-link>
+        <mou-link slot="controls" href="/" label="Page d'accueil" title="Retourner à la page d'accueil" css="default"></mou-link>
+        <mou-link slot="controls" href="/signup" label="Créer un compte" title="Créer un compte" css="colored"></mou-link>
     </mou-headerbar>
 
     <div class="marge"></div>
@@ -24,14 +24,14 @@
     <div id="signin">
         <div id="signin__frame">
             <div id="signin__title">
-                <img src="/static/images/connect.png" width="40px" height="40px" draggable="false">
+                <img src="/static/images/icons/enter.png" width="40px" height="40px" draggable="false">
                 <h2>Se connecter</h2>
             </div>
             <p id="subtitle">Se connecter sur l'api HERCULE.</p>
 
             <div id="signin__fields">
-                <mou-input id="email_or_username" placeholder="Addresse email ou nom d'utilisateur" type="text" maxlength="100" required></mou-input>
-                <mou-input id="password" placeholder="Mot de passe" type="password" maxlength="100" required></mou-input>
+                <mou-input-inline id="email_or_username" placeholder="Email ou nom d'utilisateur" type="text" maxlength="100" required icon="/static/images/icons/user.png"></mou-input-inline>
+                <mou-input-inline id="password" placeholder="Mot de passe" type="password" maxlength="100" required icon="/static/images/icons/password.png"></mou-input-inline>
                 <div id="signin__password">
                     <input id="show" type="checkbox">
                     <span>Voir le mot de passe</span>
@@ -39,8 +39,8 @@
             </div>
 
             <div id="signin__controls">
-                <mou-link href="/password/forgot" label="J'ai oublié mon mot de passe" css="basic" title="Réinitialiser le mot de passe"></mou-link>
-                <mou-link id="button" label="Se connecter" css="colored" title="Se connecter"></mou-link>
+                <mou-link href="/password/forgot" label="J'ai oublié mon mot de passe" title="Réinitialiser le mot de passe" css="basic"></mou-link>
+                <mou-link id="button" label="Se connecter" title="Se connecter" css="colored"></mou-link>
             </div>
         </div>
 

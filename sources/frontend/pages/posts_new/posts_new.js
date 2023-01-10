@@ -1,9 +1,10 @@
 import './posts_new.css'
-import '../../components/MOU_input/MOU_input'
+import '../../components/MOU_input_inline/MOU_input_inline'
 import '../../components/MOU_link/MOU_link'
-import '../../components/MOU_textarea/MOU_textarea'
-import '../../components/MOU_upload/MOU_upload'
+import '../../components/MOU_input_block/MOU_input_block'
+import '../../components/MOU_input_picture/MOU_input_picture'
 import '../../components/MOU_headerbar/MOU_headerbar'
+import '../../components/MOU_opinion/MOU_opinion'
 import PostService from '../../services/post.service'
 import AuthService from '../../services/auth.service'
 
@@ -15,26 +16,28 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 const _logout = document.querySelector('#logout')
 const _subtitle = document.querySelector('#subtitle')
 const _formRings = document.querySelector('#form__rings')
-const _title = document.querySelector('#title')
+const _situation = document.querySelector('#situation')
 const _tool = document.querySelector('#tool')
+const _when = document.querySelector('#when')
+const _feeling = document.querySelector('#feeling')
 const _description = document.querySelector('#description')
-const _place = document.querySelector('#place')
 const _ressource = document.querySelector('#ressource')
 const _difficulty = document.querySelector('#difficulty')
+const _trick = document.querySelector('#trick')
 const _improvement = document.querySelector('#improvement')
 const _more = document.querySelector('#more')
-const _mouUpload = document.querySelector('mou-upload')
+const _picture = document.querySelector('mou-input-picture')
 const _button = document.querySelector('#button')
 const _popup = document.querySelector('#popup')
 const _popupProgress = document.querySelector('#popup__progress')
 const _loading = document.querySelector('#loading')
 
-_formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 44)}px`
+_formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 43 + 2)}px`
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+/*===============================================//
+// Logouts the user and redirects him to the
+// index page when _logout button is clicked
+//===============================================*/
 
 _logout.addEventListener('click', () =>
 {
@@ -54,24 +57,25 @@ _button.addEventListener('click', () =>
 {
     const formData = new FormData()
 
-    const title = _title.value
+    const situation = _situation.value
     const tool = _tool.value
+    const when = _when.value
+    const feeling = _feeling.value
     const description = _description.value
-    const place = _place.value
     const ressource = _ressource.value
     const difficulty = _difficulty.value
+    const trick = _trick.value
     const improvement = _improvement.value
     const more = _more.value
-    const image = _mouUpload.value
+    const picture = _picture.value
 
-    if(title)
+    if(situation)
     {
-        formData.append('title', title)
+        formData.append('situation', situation)
     }
     else
     {
-        _subtitle.textContent = `Titre de la situation vécue est requis.`
-        _subtitle.classList.add('error')
+        _subtitle.textContent = `Le champ "Situation vécue" est requis.`
 
         return
     }
@@ -80,29 +84,20 @@ _button.addEventListener('click', () =>
     {
         formData.append('tool', tool)
     }
-    else
-    {
-        _subtitle.textContent = `Outil cible utilisé est requis.`
-        _subtitle.classList.add('error')
 
-        return
+    if(when)
+    {
+        formData.append('when', when)
+    }
+
+    if(feeling)
+    {
+        formData.append('feeling', feeling)
     }
 
     if(description)
     {
         formData.append('description', description)
-    }
-    else
-    {
-        _subtitle.textContent = `Description de la situation est requis.`
-        _subtitle.classList.add('error')
-
-        return
-    }
-
-    if(place)
-    {
-        formData.append('place', place)
     }
 
     if(ressource)
@@ -114,12 +109,10 @@ _button.addEventListener('click', () =>
     {
         formData.append('difficulty', difficulty)
     }
-    else
-    {
-        _subtitle.textContent = `Difficulté et/ou satisfaction rencontrées est requis.`
-        _subtitle.classList.add('error')
 
-        return
+    if(trick)
+    {
+        formData.append('trick', trick)
     }
 
     if(improvement)
@@ -132,9 +125,14 @@ _button.addEventListener('click', () =>
         formData.append('more', more)
     }
 
-    if(image)
+    if(picture[0])
     {
-        formData.append('image', image)
+        formData.append(`image0`, picture[0])
+    }
+
+    if(picture[1])
+    {
+        formData.append(`image1`, picture[1])
     }
 
     _popup.style.display = 'flex'
@@ -152,11 +150,22 @@ _button.addEventListener('click', () =>
                 && exception.response.data.message)
             {
                 _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
+
+                _popup.style.display = 'none'
             }
             else
             {
                 console.error(exception)
             }
         })
+})
+
+/*===============================================//
+// Removes the loading screen when everything
+// is loaded
+//===============================================*/
+
+window.addEventListener('DOMContentLoaded', () =>
+{
+    _loading.style.display = 'none'
 })

@@ -49,22 +49,39 @@ const createPostsView = (posts) =>
     }
 
     _empty.classList.add('hide')
+    _page.classList.remove('hide')
 
     posts.forEach((post) =>
     {
         const postElement = document.createElement('mou-post')
         
         postElement.id = post.id
-        postElement.setAttribute('createdAt', post.createdAt)
-        postElement.image = post.image
-        postElement.setAttribute('title', post.title)
-        postElement.setAttribute('tool', post.tool)
-        postElement.setAttribute('description', post.description)
+
+        if(post.when)
+        {
+            postElement.setAttribute('when', post.when)
+        }
+
+        postElement.images = post.Images
+
+        postElement.setAttribute('situation', post.situation)
+
+        if(post.tool)
+        {
+            postElement.setAttribute('tool', post.tool)
+        }
+        
+        if(post.description)
+        {
+            postElement.setAttribute('description', post.description)
+        }        
+
         postElement.addEventListener('mou-post:delete', () =>
         {
             if(_page.childElementCount === 1)
             {
                 _empty.classList.remove('hide')
+                _page.classList.add('hide')
             }
         })
         
@@ -78,7 +95,15 @@ PostService
     .getApiPost()
     .then((response) =>
     {
-        createPostsView(response.data.message)
+        if(response.data
+            && response.data.message)
+        {
+            createPostsView(response.data.message)
+        }
+        else
+        {
+            console.error('response not well formated')
+        }
     })
     .catch((exception) =>
     {

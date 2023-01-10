@@ -1,6 +1,6 @@
 body
 {
-    color: #fff;
+    color: rgb(var(--white));
     min-height: 100vh;
 
     display: flex;
@@ -19,10 +19,10 @@ strong
 
 .separator
 {
-    background-color: rgb(var(--color-1));
+    background-color: rgb(var(--white));
     height: 2px;
-    -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-    box-shadow: 0px 0px 13px 0px #F8AC00;
+    -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--white)); 
+    box-shadow: 0px 0px 13px 0px rgb(var(--white));
 }
 
 #form__title
@@ -35,11 +35,6 @@ strong
 #subtitle
 {
     height: 60px;
-}
-
-#subtitle.error
-{
-    color: rgb(var(--color-error));
 }
 
 #form__frame
@@ -73,9 +68,10 @@ strong
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 20px 0 0 20px;
+    background-color: rgba(var(--black), 0.8);
+    border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
     padding: 40px;
+    z-index: 1;
 
     display: none;
 }
@@ -91,14 +87,18 @@ strong
 
 #popup__subtitle
 {
-    color: #fff;
+    color: rgb(var(--white));
 }
 
 #popup__progress
 {
-    color: #fff;
+    color: rgb(var(--white));
     text-align: center;
 }
+
+/*===============================================//
+// PC
+//===============================================*/
 
 @media screen and (min-width: 800px)
 {
@@ -118,11 +118,12 @@ strong
 
         padding: 40px 110px 40px 40px;
         margin: auto;
-        width: 700px;
+        min-width: 700px;
+        width: 50%;
         z-index: 1;
-        -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-        box-shadow: 0px 0px 13px 0px #F8AC00;
-        border-radius: 20px 0 0 20px;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
     }
 
     #form::before
@@ -134,13 +135,11 @@ strong
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgb(var(--color-5));
-        background: linear-gradient(180deg, rgba(7,88,97,1) 2%, rgba(0,139,158,1) 40%, rgba(0,139,158,1) 60%, rgba(7,88,97,1) 98%);
-        opacity: 0.8;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border-radius: 20px 0 0 20px;
+        opacity: 0.5;
+        background: rgb(var(--color-2));
+        background: linear-gradient(to bottom, rgb(var(--color-2)) 0%, rgb(var(--color-3)) 100%);
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
+        border: 1px solid rgb(var(--color-4));
         z-index: -1;
     }
 
@@ -149,11 +148,12 @@ strong
         position: absolute;
 
         top: 0;
-        right: 0px;
+        right: -1px;
         width: 70px;
         height: 100%;
-        background-color: rgb(var(--color-5));
-        border-radius: 20px 0 0 20px;
+        background-color: rgb(var(--color-3));
+        opacity: 0.7;
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
     }
 
     #form__rings 
@@ -172,12 +172,12 @@ strong
 {
     h2
     {
-        font-size: 30px;
+        font-size: 25px;
     }
 
     .marge
     {
-        height: 20px;
+        display: none;
     }
 
     #form
@@ -185,11 +185,8 @@ strong
         position: relative;
 
         z-index: 1;
-        margin: auto 20px;
         padding: 20px;
-        -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-        box-shadow: 0px 0px 13px 0px #F8AC00;
-        border-radius: var(--border-radius);
+        min-height: calc(100vh - 60px);
     }
 
     #form::before
@@ -201,14 +198,9 @@ strong
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgb(var(--color-5));
-        background: linear-gradient(180deg, rgba(7,88,97,1) 2%, rgba(0,139,158,1) 40%, rgba(0,139,158,1) 60%, rgba(7,88,97,1) 98%);
-        opacity: 0.8;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border-radius: var(--border-radius);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        opacity: 0.5;
+        background: rgb(var(--color-2));
+        background: linear-gradient(to bottom, rgb(var(--color-2)) 0%, rgb(var(--color-3)) 100%);
         z-index: -1;
     }
 

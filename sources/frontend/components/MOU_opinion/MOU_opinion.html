@@ -1,0 +1,91 @@
+<style>
+@import "/static/css/root.css";
+
+#opinion
+{
+    font-size: 18px;
+    background-color: rgb(var(--color-9));
+
+    display: flex;
+}
+
+.opinion__fields
+{
+    flex: 1;
+    cursor: pointer;
+    padding: 10px;
+
+    transition: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.opinion__fields.active
+{
+    background-color: rgb(var(--white));
+    color: rgb(var(--color-9));
+    transform: scale(1.1);
+
+    transition: transform 0.2s;
+}
+
+label
+{
+    margin: auto;
+    pointer-events: none;
+    user-select: none;
+    font-size: 18px;
+}
+
+/*===============================================//
+// PC
+//===============================================*/
+
+@media screen and (min-width: 800px)
+{
+    img
+    {
+        max-width: 100px;
+        max-height: 100px;
+        pointer-events: none;
+        user-select: none;
+
+        margin: auto;
+    }
+}
+
+/*===============================================//
+// PHONE
+//===============================================*/
+
+@media screen and (max-width: 800px)
+{
+    img
+    {
+        max-width: 60px;
+        max-height: 60px;
+        pointer-events: none;
+        user-select: none;
+
+        margin: auto;
+    }
+}
+</style>
+<div id="opinion">
+    <div id="Satisfaisant" class="opinion__fields">
+        <img src="/static/images/icons/weather_good.png">
+        <label>Satisfaisant</label>
+    </div>
+    
+    <div id="Indécis" class="opinion__fields">
+        <img src="/static/images/icons/weather_medium.png">
+        <label>Indécis</label>
+    </div>
+
+    <div id="Insatisfaisant" class="opinion__fields">
+        <img src="/static/images/icons/weather_bad.png">
+        <label>Insatisfaisant</label>
+    </div>
+</div>

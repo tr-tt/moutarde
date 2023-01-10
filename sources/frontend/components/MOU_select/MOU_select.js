@@ -10,20 +10,37 @@ class MOUselect extends HTMLElement
 
         this.shadowRoot.innerHTML = template
 
+        this._inputSelectFields = this.shadowRoot.querySelector('#input__select__fields')
         this._select = this.shadowRoot.querySelector('select')
+        this._icon = this.shadowRoot.querySelector('#icon')
+        this._img = this.shadowRoot.querySelector('img')
         this._label = this.shadowRoot.querySelector('label')
     }
 
     connectedCallback()
     {
-        if(this.hasAttribute('required'))
-        {
-            this._select.required = true
-        }
-
         if(this.hasAttribute('placeholder'))
         {
             this._label.textContent = this.getAttribute('placeholder')
+        }
+        else
+        {
+            this._label.classList.add('hide')
+        }
+
+        if(this.hasAttribute('icon'))
+        {
+            this._img.src = this.getAttribute('icon')
+            this._label.classList.add('icon')
+        }
+        else
+        {
+            this._icon.classList.add('hide')
+        }
+
+        if(this.hasAttribute('required'))
+        {
+            this._select.required = true
         }
 
         this.shadowRoot.addEventListener('slotchange', this._onSlotChangeHandler.bind(this))
@@ -55,39 +72,49 @@ class MOUselect extends HTMLElement
             
             if(node.selected && node.value !== '')
             {
-                this._select.classList.add('notempty')
+                this._label.classList.add('move')
+                this._label.classList.add('filled')
             }
         }
     }
 
     _onFocusHandler()
     {
-        this._select.classList.remove('error')
-        this._select.classList.add('notempty')
+        this._inputSelectFields.classList.remove('error')
+        this._inputSelectFields.classList.add('focus')
+
+        this._icon.classList.add('focus')
+
+        this._label.classList.remove('filled')
+        this._label.classList.remove('error')
+        this._label.classList.add('move')
     }
 
     _onBlurHandler()
     {
+        this._inputSelectFields.classList.remove('focus')
+
+        this._icon.classList.remove('focus')
+
         if(!this._select.value)
         {
-            this._select.classList.remove('notempty')
+            this._label.classList.remove('move')
+        }
+        else
+        {
+            this._label.classList.add('filled')
         }
     }
 
     get value()
     {
-        let value = this._select.value
+        const value = this._select.value
 
-        if(this._select.required && !value)
+        if(!value && this._select.required)
         {
-            this._select.classList.add('error')
-        }
-        
-        if(!this._select.validity.valid)
-        {
-            this._select.classList.add('error')
+            this._inputSelectFields.classList.add('error')
 
-            value = ''
+            this._label.classList.add('error')
         }
 
         return value
@@ -97,7 +124,8 @@ class MOUselect extends HTMLElement
     {
         if(value)
         {
-            this._select.classList.add('notempty')
+            this._label.classList.add('move')
+            this._label.classList.add('filled')
         }
         
         this._select.value = value

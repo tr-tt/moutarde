@@ -1,76 +1,132 @@
 <style>
 @import "/static/css/root.css";
 
-#field
+#input__select
 {
     position: relative;
+}
+
+#input__select__fields
+{
+    border: 2px solid rgb(var(--color-9));
+    border-radius: 4px;
+    background-color: rgb(var(--white));
+    height: 50px;
 
     display: flex;
 }
 
-select
-{
-    border: 1px solid rgb(var(--dark-text));
-    color: rgb(var(--dark-text));
-    padding: 10px;
-    border-radius: 4px;
-    outline: none;
-    flex: 1;
-    height: 40px;
-    background-color:#fff;
-}
-
-select:focus
+#input__select__fields.focus
 {
     border-color: rgb(var(--color-1));
 }
 
-select:focus ~ label
+#input__select__fields.error
 {
-    top: -9px;
-    left: 5px;
-    font-size: small;
-    color: rgb(var(--color-1));
-    background-color:#fff;
-    padding: 0 5px;
-    border-color: rgb(var(--color-1)) !important;
+    border-color: rgb(var(--color-10));
 }
 
-select.notempty ~ label
+select
 {
-    top: -9px;
-    left: 5px;
-    font-size: small;
-    background-color:#fff;
-    padding: 0 5px;
-    border-color: rgb(var(--dark-text));
-}
-
-select.error
-{
-    border-color: rgb(var(--color-error));
-}
-
-select.error ~ label
-{
-    color: rgb(var(--color-error));
+    border: none;
+    color: rgb(var(--color-9));
+    padding: 13px 10px;
+    flex: 1;
+    outline: none;
+    font-size: 18px;
 }
 
 label
 {
-    color: rgb(var(--dark-text));
     position: absolute;
+
+    color: rgb(var(--color-9));
     pointer-events: none;
-    left: 10px;
-    top: 11px;
-    transition: 0.2s;
-    background-color:#fff;
-    border: 1px solid transparent;
-    border-radius: 20px;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 13px 10px;
+    background-color: rgb(var(--white));
+    border: 2px solid rgb(var(--color-9));
+    border-radius: 4px;
+    font-size: 18px;
+
+    transition: none;
 }
+
+label.icon
+{
+    width: calc(100% - 50px);
+    border-radius: 4px 0 0 4px;
+}
+
+label.move
+{
+    top: -9px;
+    left: 5px;
+    width: inherit;
+    height: inherit;
+    font-size: small;
+    padding: 0 5px;
+    color: rgb(var(--color-1));
+    border-color: rgb(var(--color-1));
+    border-radius: 4px;
+
+    transition: top 0.2s;
+}
+
+label.filled
+{
+    color: rgb(var(--color-9));
+    border-color: rgb(var(--color-9));
+}
+
+label.hide
+{
+    display: none;
+}
+
+label.error
+{
+    color: rgb(var(--color-10));
+    border-color: rgb(var(--color-10));
+}
+
+#icon
+{
+    width: 50px;
+    border-left: 2px solid rgb(var(--color-9));
+
+    display: flex;
+}
+
+#icon.focus
+{
+    border-color: rgb(var(--color-1));
+}
+
+#icon.hide
+{
+    display: none;
+}
+
+#icon img
+{
+    max-width: 40px;
+    max-height: 40px;
+    margin: auto;
+}
+
 </style>
-<div id="field">
-    <select></select>
-    <slot></slot>
+<div id="input__select">
+    <div id="input__select__fields">
+        <select></select>
+        <slot></slot>
+        <div id="icon">
+            <img draggable="false">
+        </div>
+    </div>
+    
     <label></label>
 </div>

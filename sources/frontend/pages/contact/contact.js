@@ -43,38 +43,56 @@ UserService
     .getApiUser()
     .then((response) =>
     {
-        const school = response.data.message.school || ''
-
-        if(school)
+        if(response.data
+            && response.data.message)
         {
-            SchoolService
-                .getApiSchoolByName(school)
-                .then((response) =>
-                {
-                    const contacts = response.data.message.Contacts
+            const school = response.data.message.school || ''
 
-                    contacts.forEach((contact) =>
+            if(school)
+            {
+                SchoolService
+                    .getApiSchoolByName(school)
+                    .then((response) =>
                     {
-                        const contactElement = document.createElement('mou-contact')
+                        if(response.data
+                            && response.data.message)
+                        {
+                            const contacts = response.data.message.Contacts || []
+    
+                            contacts.forEach((contact) =>
+                            {
+                                const contactElement = document.createElement('mou-contact')
+    
+                                contactElement.setAttribute('name', contact.name)
+                                contactElement.setAttribute('job', contact.job)
+                                contactElement.setAttribute('email', contact.email)
+    
+                                _page.appendChild(contactElement)
+                            })
+                        }
+                        else
+                        {
+                            console.error('response not well formated')
+                        }
 
-                        contactElement.setAttribute('name', contact.name)
-                        contactElement.setAttribute('job', contact.job)
-                        contactElement.setAttribute('email', contact.email)
-
-                        _page.appendChild(contactElement)
+                        _loading.style.display = 'none'
                     })
-
-                    _loading.style.display = 'none'
-                })
-                .catch((exception) =>
-                {
-                    console.error(exception)
-                })
+                    .catch((exception) =>
+                    {
+                        console.error(exception)
+                    })
+            }
+            else
+            {
+                console.error('no user school found')
+            }
         }
         else
         {
-            console.error('no school provided')
+            console.error('response not well formated')
         }
+
+        _loading.style.display = 'none'
     })
     .catch((exception) =>
     {

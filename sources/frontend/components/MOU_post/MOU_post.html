@@ -6,15 +6,16 @@ h3
 {
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 p
 {
     display: -webkit-box;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    font-size: 18px;
 }
 
 strong
@@ -24,41 +25,64 @@ strong
 
 .separator
 {
-    background-color: rgb(var(--color-1));
+    background-color: rgb(var(--white));
     height: 2px;
-    -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-    box-shadow: 0px 0px 13px 0px #F8AC00;
+    -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--white)); 
+    box-shadow: 0px 0px 13px 0px rgb(var(--white));
 }
 
 #post__frame
 {
     display: grid;
-    grid-template-rows: 18px 3px 150px 3px 30px 25px 3px 110px auto;
+    grid-template-rows: 18px 150px 3px 30px 25px 3px 105px auto;
     gap: 10px;
 }
 
-#date
+#when
 {
     text-align: center;
 }
 
 #post__image
 {
-    display: flex;
-    
+    position: relative;
+
+    display: flex; 
 }
 
-#post__image img
+#camera
 {
+    fill: rgb(var(--white));
     margin: auto;
-    max-width: 100%;
-    max-height: 100%;
+    width: 80px;
+    height: 80px;
+}
+
+#camera.hide
+{
+    display: none;
+}
+
+img
+{
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+img.hide
+{
+    display: none;
 }
 
 #post__controls
 {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     gap: 5px;
 }
 
@@ -70,8 +94,8 @@ strong
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 20px 0 0 20px;
+    background-color: rgba(var(--black), 0.8);
+    border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
     padding: 40px;
 
     display: none;
@@ -88,12 +112,7 @@ strong
 
 #popup__subtitle
 {
-    color: #fff;
-}
-
-#popup__subtitle.error
-{
-    color: rgb(var(--color-error));
+    color: rgb(var(--white));
 }
 
 #popup__controls
@@ -101,6 +120,10 @@ strong
     display: flex;
     justify-content: space-between;
 }
+
+/*===============================================//
+// PC
+//===============================================*/
 
 @media screen and (min-width: 800px)
 {
@@ -110,11 +133,11 @@ strong
 
         padding: 40px 90px 40px 40px;
         width: 400px;
-        transition: .2s;
+        transition: transform .2s;
         cursor: pointer;
-        -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-        box-shadow: 0px 0px 13px 0px #F8AC00;
-        border-radius: 20px 0 0 20px;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
         z-index: 1;
     }
 
@@ -127,13 +150,11 @@ strong
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgb(var(--color-5));
-        background: linear-gradient(180deg, rgba(7,88,97,1) 2%, rgba(0,139,158,1) 40%, rgba(0,139,158,1) 60%, rgba(7,88,97,1) 98%);
-        opacity: 0.8;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border-radius: 20px 0 0 20px;
+        opacity: 0.5;
+        background: rgb(var(--color-2));
+        background: linear-gradient(to bottom, rgb(var(--color-2)) 0%, rgb(var(--color-3)) 100%);
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
+        border: 1px solid rgb(var(--color-4));
         z-index: -1;
     }
 
@@ -147,11 +168,12 @@ strong
         position: absolute;
 
         top: 0;
-        right: 0px;
+        right: -1px;
         width: 50px;
         height: 100%;
-        background-color: rgb(var(--color-5));
-        border-radius: 20px 0 0 20px;
+        background-color: rgb(var(--color-3));
+        opacity: 0.7;
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
     }
 
     #post__rings 
@@ -161,11 +183,15 @@ strong
         top: 20px;
         right: -28px;
         width: 50px;
-        height: 565px;
+        height: 510px;
         background: url("/static/images/ring.png");
         background-size: contain;
     }
 }
+
+/*===============================================//
+// PHONE
+//===============================================*/
 
 @media screen and (max-width: 800px)
 {
@@ -174,10 +200,9 @@ strong
         position: relative;
 
         z-index: 1;
-        margin: auto 20px;
         padding: 20px;
-        -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-        box-shadow: 0px 0px 13px 0px #F8AC00;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
         border-radius: var(--border-radius);
     }
 
@@ -190,14 +215,12 @@ strong
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgb(var(--color-5));
-        background: linear-gradient(180deg, rgba(7,88,97,1) 2%, rgba(0,139,158,1) 40%, rgba(0,139,158,1) 60%, rgba(7,88,97,1) 98%);
-        opacity: 0.8;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
+        opacity: 0.5;
+        background: rgb(var(--color-2));
+        background: linear-gradient(to bottom, rgb(var(--color-2)) 0%, rgb(var(--color-3)) 100%);
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
+        border: 1px solid rgb(var(--color-4));
         border-radius: var(--border-radius);
-        border: 1px solid rgba(255, 255, 255, 0.18);
         z-index: -1;
     }
 
@@ -214,18 +237,19 @@ strong
 </style>
 <div id="post">
     <div id="post__frame">
-
-        <p id="date"></p>
-
-        <div class="separator"></div>
+        <span id="when"></span>
 
         <div id="post__image">
-            <img src="/static/images/logo.jpg" draggable="false">
+            <svg id="camera" viewBox="0 0 24 24">
+                <use xlink:href="#SvgCameraoutline"></use>
+            </svg>
+        
+            <img class="hide" draggable="false">
         </div>
 
         <div class="separator"></div>
 
-        <h2 id="title"></h2>
+        <h2 id="situation"></h2>
         <h3 id="tool"></h3>
         
         <div class="separator"></div>
@@ -233,8 +257,8 @@ strong
         <p id="description"></p>
 
         <div id="post__controls">
-            <mou-link id="edit" label="Editer" css="colored" title="Editer la page du carnet"></mou-link>
             <mou-link id="delete" label="Supprimer" css="basic" title="Supprimer la page du carnet"></mou-link>
+            <mou-link id="edit" label="Editer" css="colored" title="Editer la page du carnet"></mou-link>
         </div>
     </div>
     
@@ -252,4 +276,10 @@ strong
         </div>
     </div>
 </div>
+
+<svg height="0" width="0" style="display: none;">
+    <symbol id="SvgCameraoutline">
+        <path d="M21.6 3.54h-3.8L15.6 1.1H8.4L6.2 3.54H2.4A2.43 2.43 0 000 6v14.66a2.43 2.43 0 002.4 2.44h19.2a2.43 2.43 0 002.4-2.44V6a2.43 2.43 0 00-2.4-2.46zm0 17.12H2.4V6h4.86l2.2-2.45h5.08L16.74 6h4.86zM12 7.21a6.11 6.11 0 106 6.11 6.06 6.06 0 00-6-6.11zM12 17a3.67 3.67 0 113.6-3.67A3.65 3.65 0 0112 17z"></path>
+    </symbol>    
+</svg>
 

@@ -1,6 +1,6 @@
 import './users_edit.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import '../../components/MOU_input/MOU_input'
+import '../../components/MOU_input_inline/MOU_input_inline'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_select/MOU_select'
 import UserService from '../../services/user.service'
@@ -38,6 +38,7 @@ const _confirm = document.querySelector('#confirm')
 let _current_username = ''
 let _current_email = ''
 let _userId = 0
+let _buttonReady = true
 
 /*===============================================//
 // Open the chart in a new tab
@@ -60,17 +61,25 @@ SchoolService
     .then((response) =>
     {
         // SCHOOLS
-        const schools = response.data.message || []
-
-        schools.forEach((school) =>
+        if(response.data
+            && response.data.message)
         {
-            const _option = document.createElement('option')
+            const schools = response.data.message || []
 
-            _option.value = school.name
-            _option.textContent = school.name
+            schools.forEach((school) =>
+            {
+                const _option = document.createElement('option')
 
-            _school.appendChild(_option)
-        })
+                _option.value = school.name
+                _option.textContent = school.name
+
+                _school.appendChild(_option)
+            })
+        }
+        else
+        {
+            console.error('response not well formated')
+        }
 
         // BIRTHDAY
         const startYear = 1930
@@ -91,32 +100,42 @@ SchoolService
             .getApiUser()
             .then((response) =>
             {
-                _current_username = response.data.message.username || ''
-                _current_email = response.data.message.email || ''
-
-                _userId = response.data.message.id || 0
-                _job.value = response.data.message.job
-                _username.value = _current_username
-                _email.value = _current_email
-                _lastname.value = response.data.message.lastname || ''
-                _firstname.value = response.data.message.firstname || ''
-                _birthday.value = response.data.message.birthday || ''
-                _sex.value = response.data.message.sex || ''
-                _school.value = response.data.message.school || ''
-                _schoolYear.value = response.data.message.schoolYear || ''
-                _seniority.value = response.data.message.seniority || ''
-
-                if(_job.value === 'Etudiant')
+                if(response.data
+                    && response.data.message)
                 {
-                    _seniority.style.display = 'none'
-                }
-                else if(_job.value === 'Enseignant')
-                {
-                    _schoolYear.style.display = 'none'
+                    _current_username = response.data.message.username || ''
+                    _current_email = response.data.message.email || ''
+    
+                    _userId = response.data.message.id || 0
+                    _job.value = response.data.message.job
+                    _username.value = _current_username
+                    _email.value = _current_email
+                    _lastname.value = response.data.message.lastname || ''
+                    _firstname.value = response.data.message.firstname || ''
+                    _birthday.value = response.data.message.birthday || ''
+                    _sex.value = response.data.message.sex || ''
+                    _school.value = response.data.message.school || ''
+                    _schoolYear.value = response.data.message.schoolYear || ''
+                    _seniority.value = response.data.message.seniority || ''
+    
+                    if(_job.value === 'Etudiant')
+                    {
+                        _seniority.style.display = 'none'
+                    }
+                    else if(_job.value === 'Enseignant')
+                    {
+                        _schoolYear.style.display = 'none'
+                    }
+                    else
+                    {
+                        console.error(`[ERROR] job ${_job.value} not supported`)
+                    }
+    
+                    
                 }
                 else
                 {
-                    console.error(`[ERROR] job ${_job.value} not supported`)
+                    console.error('response not well formated')
                 }
 
                 _loading.style.display = 'none'
@@ -125,6 +144,8 @@ SchoolService
             {
                 console.error(exception)
             })
+
+        _loading.style.display = 'none'
     })
     .catch((exception) =>
     {
@@ -214,7 +235,7 @@ _logout.addEventListener('click', () =>
 // database when _button is clicked
 //===============================================*/
 
-_button.addEventListener('click', () =>
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -236,7 +257,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Fonction" est requis.`
-        _subtitle.classList.add('error')
+    
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -251,7 +275,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Nom d'utilisateur" est requis, il doit être unique.`
-        _subtitle.classList.add('error')
+        
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -266,7 +293,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Addresse email" est requis, il doit être unique et valide.`
-        _subtitle.classList.add('error')
+        
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -298,7 +328,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Etablissement scolaire" est requis.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -321,6 +354,10 @@ _button.addEventListener('click', () =>
     {
         console.error(`Unknown ${job}`)
 
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
+
         return
     }
 
@@ -328,8 +365,15 @@ _button.addEventListener('click', () =>
         .putApiUser(formData)
         .then((response) =>
         {
-            _subtitle.textContent = response.data.message
-            _subtitle.classList.remove('error')
+            if(response.data
+                && response.data.message)
+            {
+                _subtitle.textContent = response.data.message
+            }
+            else
+            {
+                console.error('response not well formated')
+            }
 
             _profileFields.innerHTML = ''
             _button.style.display = 'none'
@@ -350,7 +394,23 @@ _button.addEventListener('click', () =>
             {
                 console.error(exception)
             }
+
+            _button.setAttribute('css', 'error')
         })
+        .finally(() =>
+        {
+            _buttonReady = true
+        })
+}
+
+_button.addEventListener('click', () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
 })
 
 

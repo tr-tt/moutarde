@@ -13,8 +13,8 @@ strong
 {
     background-color: rgb(var(--color-1));
     height: 2px;
-    -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-    box-shadow: 0px 0px 13px 0px #F8AC00;
+    -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1)); 
+    box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
 }
 
 /*===============================================//
@@ -24,6 +24,7 @@ strong
 #copyright
 {
     background: rgb(var(--color-1));
+    color: rgb(var(--white));
     height: 60px;
     padding: 0 20px;
 
@@ -40,6 +41,10 @@ strong
     white-space: nowrap;
 }
 
+/*===============================================//
+// PC
+//===============================================*/
+
 @media screen and (min-width: 800px)
 {    
     /*===============================================//
@@ -52,10 +57,13 @@ strong
 
         background: url("/static/images/background.jpg");
         background-size: cover;
-        color: #fff;
+        background-position: center;
+
+        color: rgb(var(--white));
         padding: 100px;
         min-height: calc(100vh - 60px);
         z-index: 1;
+        border: 10px solid rgb(var(--color-1));
 
         display: flex;
         justify-content: space-around;
@@ -72,7 +80,7 @@ strong
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: black;
+        background-color: rgb(var(--black));
         opacity: 0.6;
         z-index: -1;
     }
@@ -109,11 +117,11 @@ strong
     
     #home__right img
     {
-        background: #fff;
+        background: rgb(var(--white));
         border-radius: var(--border-radius);
         max-width: 100%;
         max-height: 100%;
-        padding: 20px;
+        padding: 2px;
 
         margin: auto; 
     }
@@ -125,7 +133,7 @@ strong
     #step
     {
         padding: 100px;
-        color: rgb(var(--dark-text));
+        color: rgb(var(--color-9));
     }
 
     #step h2
@@ -138,6 +146,7 @@ strong
     #step h3
     {
         font-size: 30px;
+        color: rgb(var(--color-2))
     }
 
     #step__page
@@ -174,7 +183,7 @@ strong
 
     .step__field
     {
-        border-left: 2px solid rgb(var(--color-1));
+        border-left: 2px solid rgb(var(--color-2));
         padding: 0 0 0 20px;
         cursor: pointer;
         transition: .2s;
@@ -196,7 +205,7 @@ strong
     #partner
     {
         padding: 100px;
-        color: rgb(var(--dark-text));
+        color: rgb(var(--color-9));
 
         display: flex;
         flex-direction: column;
@@ -232,6 +241,10 @@ strong
     }
 }
 
+/*===============================================//
+// PHONE
+//===============================================*/
+
 @media screen and (max-width: 800px)
 {
     /*===============================================//
@@ -244,10 +257,13 @@ strong
 
         background: url("/static/images/background.jpg");
         background-size: cover;
-        color: #fff;
+        background-position: center;
+
+        color: rgb(var(--white));
         padding: 20px;
         min-height: calc(100vh - 60px);
         z-index: 1;
+        border: 5px solid rgb(var(--color-1));
 
         display: flex;
         flex-direction: column;
@@ -263,8 +279,8 @@ strong
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: black;
-        opacity: 0.6;
+        background-color: rgb(var(--black));
+        opacity: 0.4;
         z-index: -1;
     }
 
@@ -299,11 +315,11 @@ strong
 
     #home__right img
     {
-        background: #fff;
+        background: rgb(var(--white));
         border-radius: var(--border-radius);
         max-width: 100%;
         max-height: 100%;
-        padding: 20px;
+        padding: 2px;
 
         margin: auto; 
     }
@@ -315,7 +331,7 @@ strong
     #step
     {
         padding: 20px;
-        color: rgb(var(--dark-text));
+        color: rgb(var(--color-9));
     }
 
     #step h2
@@ -328,6 +344,7 @@ strong
     #step h3
     {
         font-size: 20px;
+        color: rgb(var(--color-2))
     }
 
     #step__page
@@ -363,7 +380,7 @@ strong
 
     .step__field
     {
-        border-left: 2px solid rgb(var(--color-1));
+        border-left: 2px solid rgb(var(--color-2));
         padding: 0 0 0 20px;
 
         display: flex;
@@ -378,7 +395,7 @@ strong
     #partner
     {
         padding: 20px;
-        color: rgb(var(--dark-text));
+        color: rgb(var(--color-9));
 
         display: flex;
         flex-direction: column;

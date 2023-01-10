@@ -1,5 +1,5 @@
 import './signup.css'
-import '../../components/MOU_input/MOU_input'
+import '../../components/MOU_input_inline/MOU_input_inline'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_select/MOU_select'
 import '../../components/MOU_headerbar/MOU_headerbar'
@@ -30,7 +30,10 @@ const _chart = document.querySelector('#chart')
 const _gotoChart = document.querySelector('#goto__chart')
 const _signin = document.querySelector('#signin')
 const _button = document.querySelector('#button')
+const _popup = document.querySelector('#popup')
 const _loading = document.querySelector('#loading')
+
+let _buttonReady = true
 
 /*===============================================//
 // Retrieves all schools stored in database and
@@ -41,18 +44,25 @@ SchoolService
     .getApiSchool()
     .then((response) =>
     {
-        console.log(response.data.message);
-        const schools = response.data.message || []
-
-        schools.forEach((school) =>
+        if(response.data
+            && response.data.message)
         {
-            const _option = document.createElement('option')
+            const schools = response.data.message || []
 
-            _option.value = school.name
-            _option.textContent = school.name
-
-            _school.appendChild(_option)
-        })
+            schools.forEach((school) =>
+            {
+                const _option = document.createElement('option')
+    
+                _option.value = school.name
+                _option.textContent = school.name
+    
+                _school.appendChild(_option)
+            })
+        }
+        else
+        {
+            console.error('response not well formated')
+        }
     })
     .catch((exception) =>
     {
@@ -133,7 +143,7 @@ _show.addEventListener('click', () =>
 // clicked
 //===============================================*/
 
-_button.addEventListener('click', () =>
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -157,7 +167,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Fonction" est requis.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -169,7 +182,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Nom d'utilisateur" est requis, il doit être unique.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -181,7 +197,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Addresse email" est requis, il doit être unique et valide.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -213,7 +232,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Etablissement scolaire" est requis.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -236,6 +258,10 @@ _button.addEventListener('click', () =>
     {
         console.error(`Unknown ${job}`)
 
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
+
         return
     }
 
@@ -246,7 +272,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Mot de passe" est requis, il doit être non vide.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -258,7 +287,10 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Confirmation du mot de passe" est requis, il doit être identique au mot de passe.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -266,7 +298,10 @@ _button.addEventListener('click', () =>
     if(password !== confirmPassword)
     {
         _subtitle.textContent = `Attention, votre mot de passe est différent du mot de passe de confirmation.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -274,21 +309,27 @@ _button.addEventListener('click', () =>
     if(!_chart.checked)
     {
         _subtitle.textContent = `Vous devez avoir lu et accepter la charte du consentement éclairé avant de pouvoir créer un compte.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
+
+    _popup.style.display = 'flex'
 
     UserService
         .postApiUser(formData)
         .then(() =>
         {
             _subtitle.textContent = `Votre compte a été crée, vous pouvez dès à présent vous connecter.`
-            _subtitle.classList.remove('error')
 
             _signupFields.innerHTML = ''
             _button.style.display = 'none'
             _signin.setAttribute('css', 'colored')
+
+            _popup.style.display = 'none'
         })
         .catch((exception) =>
         {
@@ -297,13 +338,28 @@ _button.addEventListener('click', () =>
                 && exception.response.data.message)
             {
                 _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
             }
             else
             {
                 console.error(exception)
             }
+
+            _button.setAttribute('css', 'error')
         })
+        .finally(() =>
+        {
+            _buttonReady = true
+        })
+}
+
+_button.addEventListener('click', () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
 })
 
 /*===============================================//

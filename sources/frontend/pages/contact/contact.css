@@ -1,6 +1,6 @@
 body
 {
-    color: #fff;
+    color: rgb(var(--white));
     min-height: 100vh;
 
     display: flex;
@@ -27,7 +27,6 @@ body
     #page
     {
         padding: 20px;
-        margin: auto;
 
         display: flex;
         flex-direction: column;

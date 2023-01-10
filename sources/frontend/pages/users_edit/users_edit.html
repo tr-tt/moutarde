@@ -27,24 +27,24 @@
     <div id="profile">
         <div id="profile__frame">
             <div id="profile__title">
-                <img src="/static/images/profil.png" width="40px" height="40px" draggable="false">
+                <img src="/static/images/icons/profil.png" width="40px" height="40px" draggable="false">
                 <h2>Mon profil</h2>
             </div>
-            <p>Relire la <strong id="goto__chart">charte de concentement éclairé</strong>.</p>
+            <p>Relire la <span id="goto__chart">charte de concentement éclairé</span>.</p>
             <p id="subtitle">Modifier mon profil utilisateur.</p>
                         
             <div id="profile__fields">
-                <mou-input id="job" placeholder="Fonction" type="text" disabled></mou-input>
+                <mou-input-inline id="job" placeholder="Fonction" type="text" disabled></mou-input-inline>
 
                 <div class="separator"></div>
 
-                <mou-input id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input>
-                <mou-input id="email" placeholder="Addresse email" type="text" maxlength="100" required></mou-input>
+                <mou-input-inline id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input-inline>
+                <mou-input-inline id="email" placeholder="Addresse email" type="text" maxlength="100" required></mou-input-inline>
 
                 <div class="separator"></div>
 
-                <mou-input id="lastname" placeholder="Nom" type="text" maxlength="100"></mou-input>
-                <mou-input id="firstname" placeholder="Prénom" type="text" maxlength="100"></mou-input>
+                <mou-input-inline id="lastname" placeholder="Nom" type="text" maxlength="100"></mou-input-inline>
+                <mou-input-inline id="firstname" placeholder="Prénom" type="text" maxlength="100"></mou-input-inline>
                 <mou-select id="birthday" placeholder="Année de naissance">
                     <option value=""></option>
                 </mou-select>

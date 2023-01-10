@@ -1,9 +1,9 @@
 import './password_forgot.css'
-import '../../components/MOU_input/MOU_input'
+import '../../components/MOU_input_inline/MOU_input_inline'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import userService from '../../services/user.service'
-import authService from '../../services/auth.service'
+import UserService from '../../services/user.service'
+import AuthService from '../../services/auth.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -49,13 +49,15 @@ const _navigation =
     }
 ]
 
+let _buttonReady = true
+
 /*===============================================//
 // Populate the navigation widget with all paths
 // if the user is logged in or only connexion and
 // create account path otherwise.
 //===============================================*/
 
-authService
+AuthService
     .getApiAuthSignin()
     .then(() =>
     {
@@ -80,7 +82,7 @@ authService
         _logout.setAttribute('title', 'Se déconnecter')
         _logout.addEventListener('click', () =>
         {
-            authService
+            AuthService
                 .getApiAuthSignout()
                 .then(() =>
                 {
@@ -125,7 +127,7 @@ authService
 // clicked
 //===============================================*/
 
-_button.addEventListener('click', () =>
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -137,18 +139,28 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Une addresse email ou un nom d'utilisateur est requis pour changer votre mot de passe.`
-        _subtitle.classList.add('error')
+        _subtitle.textContent = `Le champ "Email ou nom d'utilisateur" est requis.`
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
 
-    userService
+    UserService
         .postApiUserPasswordForgot(formData)
         .then((response) =>
         {
-            _subtitle.textContent = response.data.message
-            _subtitle.classList.remove('error')
+            if(response.data
+                && response.data.message)
+            {
+                _subtitle.textContent = response.data.message
+            }
+            else
+            {
+                console.error('response not well formated')
+            }
         })
         .catch((exception) =>
         {
@@ -157,11 +169,26 @@ _button.addEventListener('click', () =>
                 && exception.response.data.message)
             {
                 _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
             }
             else
             {
                 console.error(exception)
             }
+
+            _button.setAttribute('css', 'error')
         })
+        .finally(() =>
+        {
+            _buttonReady = true
+        })
+}
+
+_button.addEventListener('click', () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
 })

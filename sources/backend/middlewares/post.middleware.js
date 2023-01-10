@@ -1,39 +1,21 @@
-const db = require('../postgres')
 const httpCodes = require('../httpCodes')
 const logger = require('../logger')
+const PostTable = require('../tables/post.table')
 
-titleExist = (req, res, next) =>
+situationExist = (req, res, next) =>
 {
-    if(req.body.title)
+    if(req.body.situation)
     {
         return next()
     }
     else
     {
-        logger.warn(`no title provided`, {file: 'post.middleware.js', function: 'titleExist', http: httpCodes.BAD_REQUEST})
+        logger.warn(`no situation provided`, {file: 'post.middleware.js', function: 'situationExist', http: httpCodes.BAD_REQUEST})
 
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Titre de la situation vécue est requis.`,
-            })
-    }
-}
-
-toolExist = (req, res, next) =>
-{
-    if(req.body.tool)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no tool provided`, {file: 'post.middleware.js', function: 'toolExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Outil cible utilisé est requis.`,
+                message: `Le champ "Situation vécue" est requis.`,
             })
     }
 }
@@ -47,19 +29,19 @@ postIdExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Un id de formulaire est requis.`,
+                message: `Un id de page de carnet est requis.`,
             })
     }
 
-    db.Post
-        .findByPk(req.params.id)
+    PostTable
+        .findById(req.params.id)
         .then((post) =>
         {
             if(post)
             {
                 req.post = post
 
-                logger.debug(`post id ${req.params.id} found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.OK})
+                logger.debug(`post found ${JSON.stringify(post, null, 2)} found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.OK})
 
                 return next()
             }
@@ -70,65 +52,26 @@ postIdExist = (req, res, next) =>
                 return res
                     .status(httpCodes.NOT_FOUND)
                     .json({
-                        message: `Le formulaire n'a pas été trouvé.`,
+                        message: `La page de carnet n'a pas été trouvé.`,
                     })
             }
         })
         .catch((exception) =>
         {
-            logger.error(`post id ${req.params.id} exception ${exception.message}`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
+            logger.error(`Error when finding post by id ${req.params.id} exception ${exception.message}`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
-                    message: `Une erreur est survenue lors de la recherche du formulaire`,
+                    message: `Une erreur est survenue lors de la recherche de la page de carnet`,
                 })
         })
 }
 
-descriptionExist = (req, res, next) =>
-{
-    if(req.body.description)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no description provided`, {file: 'post.middleware.js', function: 'descriptionExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Description de la situation est requis.`,
-            })
-    }
-}
-
-difficultyExist = (req, res, next) =>
-{
-    if(req.body.difficulty)
-    {
-        return next()
-    }
-    else
-    {
-        logger.warn(`no difficulty provided`, {file: 'post.middleware.js', function: 'difficultyExist', http: httpCodes.BAD_REQUEST})
-
-        return res
-            .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Difficulté et/ou satisfaction rencontrées est requis.`,
-            })
-    }
-}
-
 const postMiddleware =
 {
-    titleExist,
-    toolExist,
-    postIdExist,
-    descriptionExist,
-    difficultyExist
+    situationExist,
+    postIdExist
 }
 
 module.exports = postMiddleware

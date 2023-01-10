@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) =>
 {
     const Post = sequelize.define('Post',
     {
-        title:
+        situation:
         {
             type: DataTypes.STRING(100),
             allowNull: false,
@@ -10,65 +10,54 @@ module.exports = (sequelize, DataTypes) =>
             {
                 notEmpty:
                 {
-                    msg: `Titre de la situation vécue est requis.`
+                    msg: `Le champ "Situation vécue" est requis.`
                 }
             }
         },
         tool:
         {
             type: DataTypes.STRING(100),
-            allowNull: false,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `Outil cible utilisé est requis.`
-                }
-            }
+            defaultValue: ''
+        },
+        when:
+        {
+            type: DataTypes.DATE,
+            defaultValue: null
+        },
+        feeling:
+        {
+            type: DataTypes.STRING(100),
+            defaultValue: ''
         },
         description:
         {
             type: DataTypes.TEXT,
-            allowNull: false,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `Description de la situation est requis.`
-                }
-            }
-        },
-        place:
-        {
-            type: DataTypes.TEXT
+            defaultValue: ''
         },
         ressource:
         {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
+            defaultValue: ''
         },
         difficulty:
         {
             type: DataTypes.TEXT,
-            allowNull: false,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `Difficulté et/ou satisfaction rencontrées est requis.`
-                }
-            }
+            defaultValue: ''
+        },
+        trick:
+        {
+            type: DataTypes.TEXT,
+            defaultValue: ''
         },
         improvement:
         {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
+            defaultValue: ''
         },
         more:
         {
-            type: DataTypes.TEXT
-        },
-        image:
-        {
-            type: DataTypes.BLOB
+            type: DataTypes.TEXT,
+            defaultValue: ''
         }
     },
     {

@@ -19,6 +19,7 @@ class MOUheaderbar extends HTMLElement
     {
         this._headerLogo.addEventListener('click', this._onClickHandler.bind(this))
         this._navigation.addEventListener('click', this._onNavigationClickHandler.bind(this))
+        this._navigationFields.addEventListener('click', this._onWindowClickHandler.bind(this))
         window.addEventListener('click', this._onWindowClickHandler.bind(this))
     }
 
@@ -26,6 +27,7 @@ class MOUheaderbar extends HTMLElement
     {
         this._headerLogo.removeEventListener('click', this._onClickHandler)
         this._navigation.removeEventListener('click', this._onNavigationClickHandler)
+        this._navigationFields.removeEventListener('click', this._onWindowClickHandler)
         window.removeEventListener('click', this._onWindowClickHandler)
     }
 
@@ -37,6 +39,15 @@ class MOUheaderbar extends HTMLElement
     _onNavigationClickHandler()
     {
         this._navigationFields.classList.toggle('hide')
+
+        if(this._navigationFields.classList.contains('hide'))
+        {
+            this._navigation.setAttribute('css', 'colored')
+        }
+        else
+        {
+            this._navigation.setAttribute('css', 'active')
+        }
     }
 
     _onWindowClickHandler(event)
@@ -44,6 +55,7 @@ class MOUheaderbar extends HTMLElement
         if(event.target !== this)
         {
             this._navigationFields.classList.add('hide')
+            this._navigation.setAttribute('css', 'colored')
         }
     }
 }

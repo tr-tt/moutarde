@@ -1,0 +1,138 @@
+<style>
+@import "/static/css/root.css";
+
+#input__inline
+{
+    position: relative;
+}
+
+#input__inline__fields
+{
+    border: 2px solid rgb(var(--color-9));
+    border-radius: 4px;
+    background-color:#fff;
+    height: 50px;
+
+    display: flex;
+}
+
+#input__inline__fields.focus
+{
+    border-color: rgb(var(--color-1));
+}
+
+#input__inline__fields.error
+{
+    border-color: rgb(var(--color-10));
+}
+
+input
+{
+    border: none;
+    color: rgb(var(--color-9));
+    padding: 13px 10px;
+    flex: 1;
+    outline: none;
+    font-size: 18px;
+}
+
+input:disabled
+{
+    opacity: 0.5;
+}
+
+label
+{
+    position: absolute;
+
+    color: rgb(var(--color-9));
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 13px 10px;
+    background-color:#fff;
+    border: 2px solid rgb(var(--color-9));
+    border-radius: 4px;
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: none;
+}
+
+label.icon
+{
+    width: calc(100% - 50px);
+    border-radius: 4px 0 0 4px;
+}
+
+label.move
+{
+    top: -9px;
+    left: 5px;
+    width: inherit;
+    height: inherit;
+    font-size: small;
+    padding: 0 5px;
+    color: rgb(var(--color-1));
+    border-color: rgb(var(--color-1));
+    border-radius: 4px;
+
+    transition: top 0.2s;
+}
+
+label.filled
+{
+    color: rgb(var(--color-9));
+    border-color: rgb(var(--color-9));
+}
+
+label.hide
+{
+    display: none;
+}
+
+label.error
+{
+    color: rgb(var(--color-10));
+    border-color: rgb(var(--color-10));
+}
+
+#icon
+{
+    width: 50px;
+    border-left: 2px solid rgb(var(--color-9));
+
+    display: flex;
+}
+
+#icon.focus
+{
+    border-color: rgb(var(--color-1));
+}
+
+#icon.hide
+{
+    display: none;
+}
+
+#icon img
+{
+    max-width: 40px;
+    max-height: 40px;
+    margin: auto;
+}
+</style>
+<div id="input__inline">
+    <div id="input__inline__fields">
+        <input>
+        <div id="icon">
+            <img draggable="false">
+        </div>
+    </div>
+    
+    <label></label>
+</div>

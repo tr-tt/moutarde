@@ -17,10 +17,7 @@ module.exports = (app) =>
         [
             authMiddleware.tokenExistVerify,
             authMiddleware.rejectIfBadToken,
-            postMiddleware.titleExist,
-            postMiddleware.toolExist,
-            postMiddleware.descriptionExist,
-            postMiddleware.difficultyExist
+            postMiddleware.situationExist
         ],
         controller.postApiPost
     )
@@ -50,10 +47,7 @@ module.exports = (app) =>
             authMiddleware.tokenExistVerify,
             authMiddleware.rejectIfBadToken,
             postMiddleware.postIdExist,
-            postMiddleware.titleExist,
-            postMiddleware.toolExist,
-            postMiddleware.descriptionExist,
-            postMiddleware.difficultyExist
+            postMiddleware.situationExist
         ],
         controller.putApiPostId
     )

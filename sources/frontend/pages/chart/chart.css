@@ -1,6 +1,6 @@
 body
 {
-    color: rgb(var(--dark-text));
+    color: rgb(var(--color-9));
     min-height: 100vh;
 
     display: flex;
@@ -17,22 +17,17 @@ strong
     color: rgb(var(--color-1));
 }
 
-h2
-{
-    color: rgb(var(--color-4));
-}
-
 .separator
 {
     background-color: rgb(var(--color-1));
     height: 2px;
-    -webkit-box-shadow: 0px 0px 13px 0px #F8AC00; 
-    box-shadow: 0px 0px 13px 0px #F8AC00;
+    -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1)); 
+    box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
 }
 
 .chart__field
 {
-    border-left: 2px solid rgb(var(--color-4));
+    border-left: 2px solid rgb(var(--color-2));
     padding: 0 20px;
 
     display: flex;
@@ -40,12 +35,21 @@ h2
     gap: 20px;
 }
 
+/*===============================================//
+// PC
+//===============================================*/
+
 @media screen and (min-width: 800px)
 {
     h1
     {
         font-size: 40px;
         text-align: center;
+    }
+
+    h2
+    {
+        color: rgb(var(--color-2));
     }
 
     .marge
@@ -58,7 +62,10 @@ h2
         box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
         margin: auto;
         padding: 40px;
-        max-width: 900px;
+        min-width: 800px;
+        width: 50%;
+        z-index: 1;
+        background-color: rgb(var(--white));
 
         display: flex;
         flex-direction: column;
@@ -78,25 +85,36 @@ h2
     }
 }
 
+/*===============================================//
+// PHONE
+//===============================================*/
+
 @media screen and (max-width: 800px)
 {
     h1
     {
-        font-size: 30px;
+        font-size: 25px;
         text-align: center;
+    }
+
+    h2
+    {
+        color: rgb(var(--color-2));
+        font-size: 20px;
+        font-weight: bold;
     }
 
     .marge
     {
-        height: 20px;
+        display: none;
     }
 
     #chart
     {
-        box-shadow: 0 2px 6px 0 rgb(0 0 0 / 12%), inset 0 -1px 0 0 #dadce0;
-        margin: auto;
         padding: 20px;
-        width: 100%;
+        z-index: 1;
+        background-color: rgb(var(--white));
+        min-height: calc(100vh - 60px);
 
         display: flex;
         flex-direction: column;

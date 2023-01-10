@@ -13,9 +13,10 @@ class MOUpost extends HTMLElement
 
         this._id = 0
 
-        this._date = this.shadowRoot.querySelector('#date')
+        this._when = this.shadowRoot.querySelector('#when')
+        this._svg = this.shadowRoot.querySelector('#camera')
         this._image = this.shadowRoot.querySelector('img')
-        this._title = this.shadowRoot.querySelector('#title')
+        this._situation = this.shadowRoot.querySelector('#situation')
         this._tool = this.shadowRoot.querySelector('#tool')
         this._description = this.shadowRoot.querySelector('#description')
         this._popup = this.shadowRoot.querySelector('#popup')
@@ -29,16 +30,16 @@ class MOUpost extends HTMLElement
 
     connectedCallback()
     {
-        if(this.hasAttribute('createdAt'))
+        if(this.hasAttribute('when'))
         {
-            const date = new Date(this.getAttribute('createdAt'))
+            const date = new Date(this.getAttribute('when'))
 
-            this._date.textContent = date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
+            this._when.textContent = date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
         }
 
-        if(this.hasAttribute('title'))
+        if(this.hasAttribute('situation'))
         {
-            this._title.textContent = this.getAttribute('title')
+            this._situation.textContent = this.getAttribute('situation')
         }
 
         if(this.hasAttribute('tool'))
@@ -107,15 +108,40 @@ class MOUpost extends HTMLElement
         this._edit.setAttribute('href', `/posts/edit/${this._id}`)
     }
 
-    set image(value)
+    set images(value)
     {
-        if(value)
+        if(value
+            && value[0]
+            && value[0].blob
+            && value[0].blob.data
+            && value[0].type
+        )
         {
-            const image = new Uint8Array(value.data)
-
             try
             {
-                this._image.src = URL.createObjectURL(new Blob([image]))
+                this._image.src = URL.createObjectURL(new Blob([new Uint8Array(value[0].blob.data)], {type: value[0].type}))
+
+                this._svg.classList.add('hide')
+                this._image.classList.remove('hide')
+            }
+            catch(exception)
+            {
+                console.error(exception)
+            }
+        }
+        else if(value
+            && value[1]
+            && value[1].blob
+            && value[1].blob.data
+            && value[1].type
+        )
+        {
+            try
+            {
+                this._image.src = URL.createObjectURL(new Blob([new Uint8Array(value[1].blob.data)], {type: value[1].type}))
+
+                this._svg.classList.add('hide')
+                this._image.classList.remove('hide')
             }
             catch(exception)
             {

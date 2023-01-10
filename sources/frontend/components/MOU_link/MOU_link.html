@@ -1,72 +1,86 @@
 <style>
 @import "/static/css/root.css";
 
+:host([css=basic]) a
+{
+    color: rgb(var(--white));
+}
+
+:host([css=default]) a
+{
+    border-color: rgb(var(--white));
+    color: rgb(var(--white));
+}
+
+:host([css=colored]) a
+{
+    background-color: rgb(var(--color-1));
+    color: rgb(var(--white));
+}
+
+:host([css=active]) a
+{
+    border-color: rgb(var(--color-1));
+    background-color: rgb(var(--white));
+    color: rgb(var(--color-1));
+}
+
+:host([css=error]) a
+{
+    background-color: rgb(var(--color-10));
+    color: rgb(var(--white));
+}
+
 a
 {
     font-size: 16px;
     font-weight: 600;
-    line-height: 24px;
-    align-items: center;
     appearance: none;
     -webkit-appearance: none;
-    border: 1px solid rgba(0, 0, 0, 0);
+    border: 2px solid transparent;
     border-radius: 4px;
     cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    padding: 12px 24px 11px;
+    padding: 13px 24px;
     text-decoration: none;
     text-rendering: optimizeLegibility;
     transition: background-color .2s, color .2s;
-    width: 100%;
     user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-a.basic
-{
-    background-color: #fff;
-    color: rgb(var(--color-1));
-}
-a.basic:hover
-{
-    background-color: #f1f3f4;
-    color: rgb(var(--color-1-shade-4));
-}
+/*===============================================//
+// PC
+//===============================================*/
 
-a.default
+@media screen and (min-width: 800px)
 {
-    border-color: #dadce0;
-    background-color: rgba(0, 0, 0, 0);
-    color: rgb(var(--color-1));
-}
-a.default:hover
-{
-    background-color: #f1f3f4;
-    border-color: rgb(var(--color-1-shade-3));
-    color: rgb(var(--color-1-shade-4));
-}
+    :host([css=basic]) a:hover
+    {
+        color: rgb(var(--color-1));
+    }
 
-a.colored
-{
-    background-color: rgb(var(--color-1));
-    color: #fff;
-}
-a.colored:hover
-{
-    background-color: rgb(var(--color-1-shade-4));
-    color: #fff;
-}
+    :host([css=default]) a:hover
+    {
+        background-color: rgb(var(--white));
+        border-color: rgb(var(--color-1));
+        color: rgb(var(--color-1));
+    }
 
-a.error
-{
-    background-color: rgb(var(--color-error));
-    color: #fff;
-}
-a.error:hover
-{
-    background-color: rgb(var(--color-error-shade-1));
-    color: #fff;
-}
+    :host([css=colored]) a:hover
+    {
+        border-color: rgb(var(--color-1));
+        background-color: rgb(var(--white));
+        color: rgb(var(--color-1));
+    }
 
+    :host([css=error]) a:hover
+    {
+        background-color: rgb(var(--color-10-shade-1));
+        color: rgb(var(--white));
+    }
+}
 </style>
 <a draggable="false"></a>

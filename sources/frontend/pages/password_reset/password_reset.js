@@ -1,5 +1,5 @@
 import './password_reset.css'
-import '../../components/MOU_input/MOU_input'
+import '../../components/MOU_input_inline/MOU_input_inline'
 import '../../components/MOU_link/MOU_link'
 import '../../components/MOU_headerbar/MOU_headerbar'
 import UserService from '../../services/user.service'
@@ -54,6 +54,8 @@ const _navigation =
         title: 'Voir les contacts'
     }
 ]
+
+let _buttonReady = true
 
 /*===============================================//
 // Populate the navigation widget with all paths
@@ -148,7 +150,7 @@ _show.addEventListener('click', () =>
 // clicked
 //===============================================*/
 
-_button.addEventListener('click', () =>
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -161,8 +163,11 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Un mot de passe non vide est requis.`
-        _subtitle.classList.add('error')
+        _subtitle.textContent = `Le champ "Nouveau mot de passe" est requis, il doit être non vide.`
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -173,16 +178,22 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Le mot de passe de confirmation est requis.`
-        _subtitle.classList.add('error')
+        _subtitle.textContent = `Le champ "Confirmation du mot de passe" est requis, il doit être identique au mot de passe.`
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
 
     if(password !== confirmPassword)
     {
-        _subtitle.textContent = `Votre mot de passe est différent du mot de passe de confirmation.`
-        _subtitle.classList.add('error')
+        _subtitle.textContent = `Attention, votre mot de passe est différent du mot de passe de confirmation.`
+
+        _buttonReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -191,8 +202,15 @@ _button.addEventListener('click', () =>
         .postApiUserPasswordReset(formData)
         .then((response) =>
         {
-            _subtitle.textContent = response.data.message
-            _subtitle.classList.remove('error')
+            if(response.data
+                && response.data.message)
+            {
+                _subtitle.textContent = response.data.message
+            }
+            else
+            {
+                console.error('response not well formated')
+            }
 
             AuthService
                 .getApiAuthSignout()
@@ -215,13 +233,28 @@ _button.addEventListener('click', () =>
                 && exception.response.data.message)
             {
                 _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
             }
             else
             {
                 console.error(exception)
-            }            
+            }
+            
+            _button.setAttribute('css', 'error')
         })
+        .finally(() =>
+        {
+            _buttonReady = true
+        })
+}
+
+_button.addEventListener('click', () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
 })
 
 /*===============================================//

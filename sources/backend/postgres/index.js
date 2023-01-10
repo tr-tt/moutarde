@@ -29,25 +29,33 @@ db.User = require('./user.model.js')(sequelize, DataTypes)
 db.Post = require('./post.model.js')(sequelize, DataTypes)
 db.School = require('./school.model.js')(sequelize, DataTypes)
 db.Contact = require('./contact.model.js')(sequelize, DataTypes)
+db.Image = require('./image.model.js')(sequelize, DataTypes)
 
 db.User.hasMany(db.Post,
     {
-        foreignKey:
-        {
-            allowNull: false
-        }
-    })
+        onDelete: 'CASCADE'
+    }
+)
 db.Post.belongsTo(db.User)
 
 db.School.belongsToMany(db.Contact,
     {
         through: 'school_contact',
         foreignKey: 'school_id'
-    })
+    }
+)
 db.Contact.belongsToMany(db.School,
     {
         through: 'school_contact',
         foreignKey: 'contact_id'
-    })
+    }
+)
+
+db.Post.hasMany(db.Image,
+    {
+        onDelete: 'CASCADE'
+    }
+)
+db.Image.belongsTo(db.Post)
 
 module.exports = db

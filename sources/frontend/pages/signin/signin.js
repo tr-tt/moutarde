@@ -1,6 +1,6 @@
 import './signin.css'
 import '../../components/MOU_headerbar/MOU_headerbar'
-import '../../components/MOU_input/MOU_input'
+import '../../components/MOU_input_inline/MOU_input_inline'
 import '../../components/MOU_link/MOU_link'
 import AuthService from '../../services/auth.service'
 
@@ -15,6 +15,9 @@ const _password = document.querySelector('#password')
 const _show = document.querySelector('#show')
 const _button = document.querySelector('#button')
 const _loading = document.querySelector('#loading')
+
+let _keyReady = true
+let _buttonReady = true
 
 /*===============================================//
 // Hides or shows the password when the _show
@@ -35,10 +38,10 @@ _show.addEventListener('click', () =>
 
 /*===============================================//
 // Tries to submit the form when the _button is
-// clicked
+// clicked or Enter pressed
 //===============================================*/
 
-_button.addEventListener('click', () =>
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -52,7 +55,11 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Addresse email ou nom d'utilisateur" est requis.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+        _keyReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -64,7 +71,11 @@ _button.addEventListener('click', () =>
     else
     {
         _subtitle.textContent = `Le champ "Mot de passe" est requis.`
-        _subtitle.classList.add('error')
+
+        _buttonReady = true
+        _keyReady = true
+
+        _button.setAttribute('css', 'error')
 
         return
     }
@@ -82,13 +93,39 @@ _button.addEventListener('click', () =>
                 && exception.response.data.message)
             {
                 _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
             }
             else
             {
                 console.error(exception)
             }
+
+            _button.setAttribute('css', 'error')
         })
+        .finally(() =>
+        {
+            _buttonReady = true
+            _keyReady = true
+        })
+}
+
+_button.addEventListener('click', async () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
+})
+
+window.addEventListener('keydown', (event) =>
+{
+    if(event.key === 'Enter' && _keyReady)
+    {
+        _keyReady = false
+
+        buildFormAndSend()
+    }
 })
 
 /*===============================================//
