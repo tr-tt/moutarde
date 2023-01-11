@@ -32,6 +32,12 @@ class MOUpost extends HTMLElement
     {
         if(this.hasAttribute('when'))
         {
+            /*===============================================//
+            // [WARNING]
+            // Real date = 11/01/2023 15:00
+            // date stored in db = 2023-01-11 15:00:00+01
+            // date returnded by pg = 2023-01-11T14:00:00.000Z
+            //===============================================*/
             const date = new Date(this.getAttribute('when'))
 
             this._when.textContent = date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})

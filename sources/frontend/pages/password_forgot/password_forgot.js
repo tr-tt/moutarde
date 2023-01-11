@@ -13,8 +13,11 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 const _loading = document.querySelector('#loading')
 const _mouHeaderbar = document.querySelector('mou-headerbar')
 const _subtitle = document.querySelector('#subtitle')
+const _forgotFields = document.querySelector('#forgot__fields')
 const _emailOrUsername = document.querySelector('#email_or_username')
+const _cancel = document.querySelector('#cancel')
 const _button = document.querySelector('#button')
+const _popup = document.querySelector('#popup')
 const _navigation = 
 [
     {
@@ -127,6 +130,36 @@ AuthService
 // clicked
 //===============================================*/
 
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+
+    _popup.style.display = 'none'
+    
+    window.scrollTo(0, 0)
+}
+
+const ok = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.remove('error')
+
+    _forgotFields.innerHTML = ''
+
+    _button.style.display = 'none'
+
+    _cancel.setAttribute('css', 'colored')
+    _cancel.setAttribute('label', 'Continuer')
+
+    _popup.style.display = 'none'
+
+    window.scrollTo(0, 0)
+}
+
 const buildFormAndSend = () =>
 {
     const formData = new FormData()
@@ -139,14 +172,10 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Email ou nom d'utilisateur" est requis.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Email ou nom d'utilisateur" est requis.`)
     }
+
+    _popup.style.display = 'flex'
 
     UserService
         .postApiUserPasswordForgot(formData)
@@ -155,11 +184,13 @@ const buildFormAndSend = () =>
             if(response.data
                 && response.data.message)
             {
-                _subtitle.textContent = response.data.message
+                ok(response.data.message)
             }
             else
             {
                 console.error('response not well formated')
+
+                ok(`Une erreur est survenue.`)
             }
         })
         .catch((exception) =>
@@ -168,18 +199,14 @@ const buildFormAndSend = () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
-            }
 
-            _button.setAttribute('css', 'error')
-        })
-        .finally(() =>
-        {
-            _buttonReady = true
+                error(`Une erreur est survenue.`)
+            }
         })
 }
 

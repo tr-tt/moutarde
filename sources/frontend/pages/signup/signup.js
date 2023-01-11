@@ -34,6 +34,7 @@ const _popup = document.querySelector('#popup')
 const _loading = document.querySelector('#loading')
 
 let _buttonReady = true
+const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
 /*===============================================//
 // Retrieves all schools stored in database and
@@ -143,6 +144,35 @@ _show.addEventListener('click', () =>
 // clicked
 //===============================================*/
 
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+
+    _popup.style.display = 'none'
+    
+    window.scrollTo(0, 0)
+}
+
+const ok = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.remove('error')
+
+    _signupFields.innerHTML = ''
+
+    _button.style.display = 'none'
+
+    _signin.setAttribute('css', 'colored')
+
+    _popup.style.display = 'none'
+
+    window.scrollTo(0, 0)
+}
+
 const buildFormAndSend = () =>
 {
     const formData = new FormData()
@@ -166,13 +196,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Fonction" est requis.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Fonction" est requis.`)
     }
 
     if(username)
@@ -181,28 +205,23 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Nom d'utilisateur" est requis, il doit être unique.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Nom d'utilisateur" est requis, il doit être unique.`)
     }
 
     if(email)
     {
-        formData.append('email', email)
+        if(emailRegex.test(email))
+        {
+            formData.append('email', email)
+        }
+        else
+        {
+            return error(`Le champ "Adresse email" est invalide.`)
+        }
     }
     else
     {
-        _subtitle.textContent = `Le champ "Addresse email" est requis, il doit être unique et valide.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Adresse email" est requis, il doit être unique et valide.`)
     }
 
     if(lastname)
@@ -231,13 +250,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Etablissement scolaire" est requis.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Etablissement scolaire" est requis.`)
     }
 
     if(job === 'Etudiant')
@@ -256,13 +269,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        console.error(`Unknown ${job}`)
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Fonction" ${job} est inconnu.`)
     }
 
     if(password)
@@ -271,13 +278,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Mot de passe" est requis, il doit être non vide.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Mot de passe" est requis, il doit être non vide.`)
     }
 
     if(confirmPassword)
@@ -286,35 +287,17 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Confirmation du mot de passe" est requis, il doit être identique au mot de passe.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Confirmation du mot de passe" est requis, il doit être identique au mot de passe.`)
     }
 
     if(password !== confirmPassword)
     {
-        _subtitle.textContent = `Attention, votre mot de passe est différent du mot de passe de confirmation.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Attention, votre mot de passe est différent du mot de passe de confirmation.`)
     }
 
     if(!_chart.checked)
     {
-        _subtitle.textContent = `Vous devez avoir lu et accepter la charte du consentement éclairé avant de pouvoir créer un compte.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Vous devez avoir lu et accepter la charte du consentement éclairé avant de pouvoir créer un compte.`)
     }
 
     _popup.style.display = 'flex'
@@ -323,13 +306,7 @@ const buildFormAndSend = () =>
         .postApiUser(formData)
         .then(() =>
         {
-            _subtitle.textContent = `Votre compte a été crée, vous pouvez dès à présent vous connecter.`
-
-            _signupFields.innerHTML = ''
-            _button.style.display = 'none'
-            _signin.setAttribute('css', 'colored')
-
-            _popup.style.display = 'none'
+            ok(`Votre compte a été crée, vous pouvez dès à présent vous connecter.`)
         })
         .catch((exception) =>
         {
@@ -337,18 +314,14 @@ const buildFormAndSend = () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
-            }
 
-            _button.setAttribute('css', 'error')
-        })
-        .finally(() =>
-        {
-            _buttonReady = true
+                error(`Une erreur est survenue.`)
+            }
         })
 }
 

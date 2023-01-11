@@ -12,9 +12,10 @@ p
     font-size: 18px;
 }
 
-strong
+span
 {
-    color: rgb(var(--color-1));
+    color: rgb(var(--color-4));
+    font-weight: bold;
 }
 
 #empty__fields

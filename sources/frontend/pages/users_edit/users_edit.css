@@ -19,11 +19,9 @@ strong
 
 span
 {
-    position: relative;
-
-    font-weight: bold;
-    color: rgb(var(--color-2));
+    color: rgb(var(--color-4));
     cursor: pointer;
+    font-weight: bold;
 }
 
 .separator
@@ -44,6 +42,11 @@ span
 #subtitle
 {
     height: 60px;
+}
+
+#subtitle.error
+{
+    color: rgb(var(--color-10));
 }
 
 #profile__frame
@@ -106,16 +109,9 @@ span
 
 @media screen and (min-width: 800px)
 {
-    span:hover::before
+    span:hover
     {
-        position: absolute;
-
-        content: '';
-        top: 20px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: rgb(var(--color-2));
+        text-decoration: underline;
     }
     
     h2

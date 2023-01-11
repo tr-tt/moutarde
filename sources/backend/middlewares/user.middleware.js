@@ -107,7 +107,7 @@ emailExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Le champ "Addresse email" est requis.`,
+                message: `Le champ "Adresse email" est requis.`,
             })
     }
 }
@@ -235,7 +235,7 @@ emailOrUsernameExist = (req, res, next) =>
         return res
             .status(httpCodes.BAD_REQUEST)
             .json({
-                message: `Une addresse email ou un nom d'utilisateur est requis.`
+                message: `Une adresse email ou un nom d'utilisateur est requis.`
             })
     }
 }
@@ -266,7 +266,7 @@ emailOrUsernameExistInDB = (req, res, next) =>
                 return res
                     .status(httpCodes.NOT_FOUND)
                     .json({
-                        message: `L'utilisateur avec l'addresse email ou le nom d'utilisateur ${req.body.emailOrUsername} n'a pas été trouvé.`
+                        message: `L'utilisateur avec l'adresse email ou le nom d'utilisateur ${req.body.emailOrUsername} n'a pas été trouvé.`
                     })
             }
         })

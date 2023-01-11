@@ -35,6 +35,8 @@ const _loading = document.querySelector('#loading')
 
 _formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 43 + 2)}px`
 
+let _buttonReady = true
+
 /*===============================================//
 // Logouts the user and redirects him to the
 // index page when _logout button is clicked
@@ -68,10 +70,19 @@ PostService.
 
             if(when)
             {
-                const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/
-                const [match] = regex.exec(when)
+                /*===============================================//
+                // [WARNING]
+                // Real date = 11/01/2023 15:00
+                // date stored in db = 2023-01-11 15:00:00+01
+                // date returnded by pg = 2023-01-11T14:00:00.000Z
+                //===============================================*/
+                const date = when.split('T')[0] || ''
+                const time = new Date(when).toLocaleTimeString([]) || ''
 
-                _when.value = match || ''
+                if(date && time)
+                {
+                    _when.value = `${date}T${time}`
+                }
             }
 
             _feeling.value = response.data.message.feeling || ''
@@ -104,7 +115,25 @@ PostService.
         }
     })
 
-_button.addEventListener('click', () =>
+/*===============================================//
+// Tries to submit the form when the _button is
+// clicked
+//===============================================*/
+
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+
+    _popup.style.display = 'none'
+    
+    window.scrollTo(0, 0)
+}
+
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -126,9 +155,7 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Situation vécue" est requis.`
-
-        return
+        return error(`Le champ "Situation vécue" est requis.`)
     }
 
     if(tool)
@@ -200,11 +227,23 @@ _button.addEventListener('click', () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
+
+                error(`Une erreur est survenue.`)
             }
         })
+}
+
+_button.addEventListener('click', () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
 })

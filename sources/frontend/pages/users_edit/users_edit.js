@@ -31,7 +31,6 @@ const _delete = document.querySelector('#delete')
 const _posts = document.querySelector('#posts')
 const _button = document.querySelector('#button')
 const _popup = document.querySelector('#popup')
-const _popupSubtitle = document.querySelector('#popup__subtitle')
 const _cancel = document.querySelector('#cancel')
 const _confirm = document.querySelector('#confirm')
 
@@ -39,6 +38,7 @@ let _current_username = ''
 let _current_email = ''
 let _userId = 0
 let _buttonReady = true
+const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
 /*===============================================//
 // Open the chart in a new tab
@@ -201,8 +201,7 @@ _confirm.addEventListener('click', () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _popupSubtitle.textContent = exception.response.data.message
-                _popupSubtitle.classList.add('error')
+                _subtitle.textContent = exception.response.data.message
             }
             else
             {
@@ -235,6 +234,37 @@ _logout.addEventListener('click', () =>
 // database when _button is clicked
 //===============================================*/
 
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+
+    _popup.style.display = 'none'
+    
+    window.scrollTo(0, 0)
+}
+
+const ok = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.remove('error')
+
+    _profileFields.innerHTML = ''
+
+    _button.style.display = 'none'
+
+    _posts.setAttribute('label', 'Mon carnet')
+    _posts.setAttribute('css', 'colored')
+    _posts.setAttribute('title', 'Voir mon carnet')
+
+    _popup.style.display = 'none'
+
+    window.scrollTo(0, 0)
+}
+
 const buildFormAndSend = () =>
 {
     const formData = new FormData()
@@ -256,13 +286,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Fonction" est requis.`
-    
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Fonction" est requis.`)
     }
 
     if(username)
@@ -274,31 +298,26 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Nom d'utilisateur" est requis, il doit être unique.`
-        
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Nom d'utilisateur" est requis, il doit être unique.`)
     }
 
     if(email)
     {
         if(email !== _current_email)
         {
-            formData.append('email', email)
+            if(emailRegex.test(email))
+            {
+                formData.append('email', email)
+            }
+            else
+            {
+                return error(`Le champ "Adresse email" est invalide.`)
+            }
         }
     }
     else
     {
-        _subtitle.textContent = `Le champ "Addresse email" est requis, il doit être unique et valide.`
-        
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Adresse email" est requis, il doit être unique et valide.`)
     }
 
     if(lastname)
@@ -327,13 +346,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Etablissement scolaire" est requis.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Etablissement scolaire" est requis.`)
     }
 
     if(job === 'Etudiant')
@@ -352,34 +365,14 @@ const buildFormAndSend = () =>
     }
     else
     {
-        console.error(`Unknown ${job}`)
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Fonction" ${job} est inconnu.`)
     }
 
     UserService
         .putApiUser(formData)
-        .then((response) =>
+        .then(() =>
         {
-            if(response.data
-                && response.data.message)
-            {
-                _subtitle.textContent = response.data.message
-            }
-            else
-            {
-                console.error('response not well formated')
-            }
-
-            _profileFields.innerHTML = ''
-            _button.style.display = 'none'
-            _posts.setAttribute('label', 'Mon carnet')
-            _posts.setAttribute('css', 'colored')
-            _posts.setAttribute('title', 'Voir mon carnet')
+            ok(`Votre profil a été mis à jour.`)
         })
         .catch((exception) =>
         {
@@ -387,19 +380,14 @@ const buildFormAndSend = () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
-                _subtitle.classList.add('error')
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
-            }
 
-            _button.setAttribute('css', 'error')
-        })
-        .finally(() =>
-        {
-            _buttonReady = true
+                error(`Une erreur est survenue`)
+            }
         })
 }
 

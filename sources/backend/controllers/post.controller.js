@@ -88,7 +88,7 @@ exports.postApiPost = async (req, res) =>
 
             await transactionInstance.commit()
 
-            logger.debug(`user id ${req.user_id} new post ${JSON.stringify(post, null, 2)} created`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.OK})
+            logger.debug(`user id ${req.user_id} new post ${post.Id} created`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.OK})
 
             return res
                 .status(httpCodes.OK)

@@ -21,6 +21,7 @@ const _confirmPassword = document.querySelector('#confirm__password')
 const _show = document.querySelector('#show')
 const _redirect = document.querySelector('#redirect')
 const _button = document.querySelector('#button')
+const _popup = document.querySelector('#popup')
 const _navigation = 
 [
     {
@@ -150,6 +151,36 @@ _show.addEventListener('click', () =>
 // clicked
 //===============================================*/
 
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+
+    _popup.style.display = 'none'
+    
+    window.scrollTo(0, 0)
+}
+
+const ok = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.remove('error')
+
+    _resetFields.innerHTML = ''
+
+    _button.style.display = 'none'
+
+    _redirect.setAttribute('label', 'Se connecter')
+    _redirect.setAttribute('css', 'colored')
+
+    _popup.style.display = 'none'
+
+    window.scrollTo(0, 0)
+}
+
 const buildFormAndSend = () =>
 {
     const formData = new FormData()
@@ -163,13 +194,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Nouveau mot de passe" est requis, il doit être non vide.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Nouveau mot de passe" est requis, il doit être non vide.`)
     }
 
     if(confirmPassword)
@@ -178,52 +203,29 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Confirmation du mot de passe" est requis, il doit être identique au mot de passe.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Confirmation du mot de passe" est requis, il doit être identique au mot de passe.`)
     }
 
     if(password !== confirmPassword)
     {
-        _subtitle.textContent = `Attention, votre mot de passe est différent du mot de passe de confirmation.`
-
-        _buttonReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Attention, votre mot de passe est différent du mot de passe de confirmation.`)
     }
 
     UserService
         .postApiUserPasswordReset(formData)
-        .then((response) =>
+        .then(() =>
         {
-            if(response.data
-                && response.data.message)
-            {
-                _subtitle.textContent = response.data.message
-            }
-            else
-            {
-                console.error('response not well formated')
-            }
-
             AuthService
                 .getApiAuthSignout()
                 .then(() =>
                 {
-                    _resetFields.style.display = 'none'
-                    _button.style.display = 'none'
-                    _redirect.setAttribute('label', 'Se connecter')
-                    _redirect.setAttribute('css', 'colored')
+                    ok(`Votre mot de passe à été mis à jour.`)
                 })
                 .catch((exception) =>
                 {
                     console.error(exception)
+
+                    error(`Une erreur est survenue.`)
                 })
         })
         .catch((exception) =>
@@ -232,18 +234,14 @@ const buildFormAndSend = () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
+
+                error(`Une erreur est survenue.`)
             }
-            
-            _button.setAttribute('css', 'error')
-        })
-        .finally(() =>
-        {
-            _buttonReady = true
         })
 }
 

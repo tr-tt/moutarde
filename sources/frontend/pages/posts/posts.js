@@ -58,7 +58,7 @@ const createPostsView = (posts) =>
         postElement.id = post.id
 
         if(post.when)
-        {
+        {          
             postElement.setAttribute('when', post.when)
         }
 

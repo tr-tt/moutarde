@@ -34,6 +34,8 @@ const _loading = document.querySelector('#loading')
 
 _formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 43 + 2)}px`
 
+let _buttonReady = true
+
 /*===============================================//
 // Logouts the user and redirects him to the
 // index page when _logout button is clicked
@@ -53,7 +55,25 @@ _logout.addEventListener('click', () =>
         })
 })
 
-_button.addEventListener('click', () =>
+/*===============================================//
+// Tries to submit the form when the _button is
+// clicked
+//===============================================*/
+
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+
+    _popup.style.display = 'none'
+    
+    window.scrollTo(0, 0)
+}
+
+const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
@@ -75,9 +95,7 @@ _button.addEventListener('click', () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Situation vécue" est requis.`
-
-        return
+        return error(`Le champ "Situation vécue" est requis.`)
     }
 
     if(tool)
@@ -149,15 +167,25 @@ _button.addEventListener('click', () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
-
-                _popup.style.display = 'none'
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
+
+                error(`Une erreur est survenue.`)
             }
         })
+}
+
+_button.addEventListener('click', () =>
+{
+    if(_buttonReady)
+    {
+        _buttonReady = false
+
+        buildFormAndSend()
+    }
 })
 
 /*===============================================//

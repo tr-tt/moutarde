@@ -41,7 +41,7 @@ postIdExist = (req, res, next) =>
             {
                 req.post = post
 
-                logger.debug(`post found ${JSON.stringify(post, null, 2)} found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.OK})
+                logger.debug(`post ${post.Id} found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.OK})
 
                 return next()
             }
