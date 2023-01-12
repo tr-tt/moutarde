@@ -50,19 +50,6 @@ strong
     display: flex; 
 }
 
-#camera
-{
-    fill: rgb(var(--white));
-    margin: auto;
-    width: 80px;
-    height: 80px;
-}
-
-#camera.hide
-{
-    display: none;
-}
-
 img
 {
     position: absolute;
@@ -76,7 +63,8 @@ img
 
 img.hide
 {
-    display: none;
+    object-fit: contain;
+    background-color: rgb(var(--white));
 }
 
 #post__controls
@@ -244,12 +232,8 @@ img.hide
     <div id="post__frame">
         <span id="when"></span>
 
-        <div id="post__image">
-            <svg id="camera" viewBox="0 0 24 24">
-                <use xlink:href="#SvgCameraoutline"></use>
-            </svg>
-        
-            <img class="hide" draggable="false">
+        <div id="post__image">        
+            <img src="/static/images/icons/10_appareil_photo.png" class="hide" draggable="false">
         </div>
 
         <div class="separator"></div>
@@ -282,9 +266,4 @@ img.hide
     </div>
 </div>
 
-<svg height="0" width="0" style="display: none;">
-    <symbol id="SvgCameraoutline">
-        <path d="M21.6 3.54h-3.8L15.6 1.1H8.4L6.2 3.54H2.4A2.43 2.43 0 000 6v14.66a2.43 2.43 0 002.4 2.44h19.2a2.43 2.43 0 002.4-2.44V6a2.43 2.43 0 00-2.4-2.46zm0 17.12H2.4V6h4.86l2.2-2.45h5.08L16.74 6h4.86zM12 7.21a6.11 6.11 0 106 6.11 6.06 6.06 0 00-6-6.11zM12 17a3.67 3.67 0 113.6-3.67A3.65 3.65 0 0112 17z"></path>
-    </symbol>    
-</svg>
 

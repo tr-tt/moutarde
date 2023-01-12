@@ -53,12 +53,8 @@ img
 
 img.hide
 {
-    display: none;
-}
-
-svg.hide
-{
-    display: none;
+    object-fit: contain;
+    background-color: rgb(var(--white));
 }
 
 .delete.above
@@ -78,20 +74,11 @@ svg.hide
 
         height: 300px;
         border: 2px solid rgb(var(--color-9));
-        background-color: rgb(var(--white));
         color: rgb(var(--color-1));
         border-radius: var(--border-radius);
 
         display: flex;
         flex-direction: column;
-    }
-
-    svg
-    {
-        max-width: 80px;
-        max-height: 80px;
-        margin: auto;
-        fill: rgb(var(--color-1));
     }
 }
 
@@ -107,20 +94,11 @@ svg.hide
 
         height: 200px;
         border: 2px solid rgb(var(--color-9));
-        background-color: rgb(var(--white));
         color: rgb(var(--color-1));
         border-radius: var(--border-radius);
 
         display: flex;
         flex-direction: column;
-    }
-
-    svg
-    {
-        max-width: 40px;
-        max-height: 40px;
-        margin: auto;
-        fill: rgb(var(--color-1));
     }
 }
 
@@ -128,10 +106,7 @@ svg.hide
 <div id="input__picture">
     <div class="input__picture__fields">
         <div id="photo__0" class="photo">
-            <svg id="svg__0" viewBox="0 0 24 24">
-                <use xlink:href="#SvgCameraoutline"></use>
-            </svg>
-            <img id="img__0" class="hide">
+            <img id="img__0" src="/static/images/icons/10_appareil_photo.png" class="hide">
         </div>
 
         <input id="input__0" accept="image/jpeg, image/png, image/gif, image/heic, image/heif, image/tiff, image/webp" type="file" autocomplete="off" tabindex="-1">
@@ -141,10 +116,7 @@ svg.hide
 
     <div class="input__picture__fields">
         <div id="photo__1" class="photo">
-            <svg id="svg__1" viewBox="0 0 24 24">
-                <use xlink:href="#SvgCameraoutline"></use>
-            </svg>
-            <img id="img__1" class="hide">
+            <img id="img__1" src="/static/images/icons/10_appareil_photo.png" class="hide">
         </div>
 
         <input id="input__1" accept="image/jpeg, image/png, image/gif, image/heic, image/heif, image/tiff, image/webp" type="file" autocomplete="off" tabindex="-1">
@@ -153,9 +125,3 @@ svg.hide
     </div>
 
 </div>
-
-<svg height="0" width="0">
-    <symbol id="SvgCameraoutline">
-        <path d="M21.6 3.54h-3.8L15.6 1.1H8.4L6.2 3.54H2.4A2.43 2.43 0 000 6v14.66a2.43 2.43 0 002.4 2.44h19.2a2.43 2.43 0 002.4-2.44V6a2.43 2.43 0 00-2.4-2.46zm0 17.12H2.4V6h4.86l2.2-2.45h5.08L16.74 6h4.86zM12 7.21a6.11 6.11 0 106 6.11 6.06 6.06 0 00-6-6.11zM12 17a3.67 3.67 0 113.6-3.67A3.65 3.65 0 0112 17z"></path>
-    </symbol>    
-</svg>

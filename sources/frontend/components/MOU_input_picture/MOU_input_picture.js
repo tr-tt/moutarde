@@ -14,8 +14,6 @@ class MOUInputPicture extends HTMLElement
         this._photo1 = this.shadowRoot.querySelector('#photo__1')
         this._input0 = this.shadowRoot.querySelector('#input__0')
         this._input1 = this.shadowRoot.querySelector('#input__1')
-        this._svg0 = this.shadowRoot.querySelector('#svg__0')
-        this._svg1 = this.shadowRoot.querySelector('#svg__1')
         this._img0 = this.shadowRoot.querySelector('#img__0')
         this._img1 = this.shadowRoot.querySelector('#img__1')
         this._delete0 = this.shadowRoot.querySelector('#delete__0')
@@ -47,8 +45,6 @@ class MOUInputPicture extends HTMLElement
         
         if(file)
         {
-            this._svg0.classList.add('hide')
-
             this._img0.src = URL.createObjectURL(file)
             this._img0.classList.remove('hide')
 
@@ -66,8 +62,6 @@ class MOUInputPicture extends HTMLElement
         
         if(file)
         {
-            this._svg1.classList.add('hide')
-
             this._img1.src = URL.createObjectURL(file)
             this._img1.classList.remove('hide')
 
@@ -81,10 +75,8 @@ class MOUInputPicture extends HTMLElement
 
     _onDelete0Handler()
     {
-        this._svg0.classList.remove('hide')
-
+        this._img0.src = '/static/images/icons/10_appareil_photo.png'
         this._img0.classList.add('hide')
-        this._img0.src = ''
 
         this._delete0.setAttribute('label', 'Photo n°1')
         this._delete0.setAttribute('css', 'colored')
@@ -95,10 +87,8 @@ class MOUInputPicture extends HTMLElement
 
     _onDelete1Handler()
     {
-        this._svg1.classList.remove('hide')
-
+        this._img1.src = '/static/images/icons/10_appareil_photo.png'
         this._img1.classList.add('hide')
-        this._img1.src = ''
 
         this._delete1.setAttribute('label', 'Photo n°2')
         this._delete1.setAttribute('css', 'colored')
@@ -125,8 +115,6 @@ class MOUInputPicture extends HTMLElement
 
             this._file0 = new File([blob], value[0].name)
 
-            this._svg0.classList.add('hide')
-
             this._img0.src = URL.createObjectURL(this._file0)
             this._img0.classList.remove('hide')
 
@@ -145,8 +133,6 @@ class MOUInputPicture extends HTMLElement
             const blob = new Blob([new Uint8Array(value[1].blob.data)], {type: value[1].type})
 
             this._file1 = new File([blob], value[1].name)
-
-            this._svg1.classList.add('hide')
 
             this._img1.src = URL.createObjectURL(this._file1)
             this._img1.classList.remove('hide')

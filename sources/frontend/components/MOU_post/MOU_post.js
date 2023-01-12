@@ -14,7 +14,6 @@ class MOUpost extends HTMLElement
         this._id = 0
 
         this._when = this.shadowRoot.querySelector('#when')
-        this._svg = this.shadowRoot.querySelector('#camera')
         this._image = this.shadowRoot.querySelector('img')
         this._situation = this.shadowRoot.querySelector('#situation')
         this._tool = this.shadowRoot.querySelector('#tool')
@@ -127,7 +126,6 @@ class MOUpost extends HTMLElement
             {
                 this._image.src = URL.createObjectURL(new Blob([new Uint8Array(value[0].blob.data)], {type: value[0].type}))
 
-                this._svg.classList.add('hide')
                 this._image.classList.remove('hide')
             }
             catch(exception)
@@ -146,7 +144,6 @@ class MOUpost extends HTMLElement
             {
                 this._image.src = URL.createObjectURL(new Blob([new Uint8Array(value[1].blob.data)], {type: value[1].type}))
 
-                this._svg.classList.add('hide')
                 this._image.classList.remove('hide')
             }
             catch(exception)
