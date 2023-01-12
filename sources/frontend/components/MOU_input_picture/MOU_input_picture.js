@@ -1,4 +1,5 @@
 import template from 'raw-loader!./MOU_input_picture.html'
+import {compressAccurately} from 'image-conversion'
 
 class MOUInputPicture extends HTMLElement
 {
@@ -22,10 +23,7 @@ class MOUInputPicture extends HTMLElement
         this._file0 = null
         this._file1 = null
 
-        this._maxSize = 1048576 * 10 // 10MB in Bytes binary
-        this._maxWidth = 800
-        this._maxHeight = 600
-        this._quality = 0.6
+        this._maxSize = 1000 // KB = 1MB
     }
 
     connectedCallback()
@@ -47,128 +45,53 @@ class MOUInputPicture extends HTMLElement
         this._delete1.removeEventListener('click', this._onDelete1Handler)
     }
 
-    _resizeImg(srcFile)
-    {
-        return new Promise((resolve, reject) =>
-        {
-            const reader = new FileReader()
-
-            reader.onload = (event) =>
-            {
-                const img = document.createElement('img')
-                const canvas = document.createElement('canvas')
-                const ctx = canvas.getContext('2d')
-    
-                img.src = event.target.result
-    
-                img.onload = () =>
-                {
-                    let width = img.width
-                    let height = img.height
-    
-                    if(width > height)
-                    {
-                        if (width > this._maxWidth)
-                        {
-                            height *= this._maxWidth / width
-                            width = this._maxWidth
-                        }
-                    }
-                    else
-                    {
-                        if(height > this._maxHeight)
-                        {
-                            width *= this._maxHeight / height
-                            height = this._maxHeight
-                        }
-                    }
-    
-                    canvas.width = width
-                    canvas.height = height
-                    ctx.drawImage(img, 0, 0, width, height)
-    
-                    canvas.toBlob(
-                        (blob) =>
-                        {
-                            const file = new File([blob], srcFile.name)
-            
-                            if(file.size < this._maxSize)
-                            {
-                                resolve(file)
-                            }
-                            else
-                            {
-                                reject('Taille max 10MB')
-                            }
-                        },
-                        srcFile.type,
-                        this._quality
-                    )
-                }
-            }
-    
-            if(srcFile.size > this._maxSize)
-            {
-                reader.readAsDataURL(srcFile)
-            }
-            else
-            {
-                resolve(srcFile)
-            }
-        })
-    }
-
     _onChangeInput0Handler()
     {
-        const [srcFile] = this._input0.files
+        const [file] = this._input0.files
 
-        if(srcFile)
+        if(file)
         {
-            this._resizeImg(srcFile)
-                .then((dstFile) =>
-                    {
-                        this._file0 = dstFile
+            compressAccurately(file, this._maxSize)
+                .then((blob) =>
+                {
+                    this._file0 = new File([blob], file.name)
 
-                        this._img0.src = URL.createObjectURL(this._file0)
-                        this._img0.classList.remove('hide')
+                    this._img0.src = URL.createObjectURL(this._file0)
+                    this._img0.classList.remove('hide')
 
-                        this._delete0.setAttribute('label', 'Supprimer')
-                        this._delete0.setAttribute('css', 'default')
-                        this._delete0.classList.add('above')
-
-                    })
-                    .catch((exception) =>
-                    {
-                        this._delete0.setAttribute('label', exception)
-                        this._delete0.setAttribute('css', 'error')
-                    })
+                    this._delete0.setAttribute('label', 'Supprimer')
+                    this._delete0.setAttribute('css', 'default')
+                    this._delete0.classList.add('above')
+                })
+                .catch((exception) =>
+                {
+                    console.error(exception)
+                })
         }
     }
 
     _onChangeInput1Handler()
     {
-        const [srcFile] = this._input1.files
+        const [file] = this._input1.files
 
-        if(srcFile)
+        if(file)
         {
-            this._resizeImg(srcFile)
-                .then((dstFile) =>
-                    {
-                        this._file1 = dstFile
+            compressAccurately(file, this._maxSize)
+                .then((blob) =>
+                {
+                    this._file1 = new File([blob], file.name)
 
-                        this._img1.src = URL.createObjectURL(this._file1)
-                        this._img1.classList.remove('hide')
+                    this._img1.src = URL.createObjectURL(this._file1)
+                    this._img1.classList.remove('hide')
 
-                        this._delete1.setAttribute('label', 'Supprimer')
-                        this._delete1.setAttribute('css', 'default')
-                        this._delete1.classList.add('above')
-
-                    })
-                    .catch((exception) =>
-                    {
-                        this._delete1.setAttribute('label', exception)
-                        this._delete1.setAttribute('css', 'error')
-                    })
+                    this._delete1.setAttribute('label', 'Supprimer')
+                    this._delete1.setAttribute('css', 'default')
+                    this._delete1.classList.add('above')
+                })
+                .catch((exception) =>
+                {
+                    console.error(exception)
+                })
         }
     }
 
