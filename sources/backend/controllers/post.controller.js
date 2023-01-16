@@ -111,7 +111,7 @@ exports.postApiPost = async (req, res) =>
     }
     else
     {
-        logger.error(`Error when saving finding user by id ${req.user_id} exception ${exception.message}`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
+        logger.error(`Error when retrieving user by id ${req.user_id} not found`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
     
         return res
             .status(httpCodes.INTERNAL_SERVER_ERROR)

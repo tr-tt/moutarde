@@ -6,7 +6,7 @@ exports.count = () =>
         .count()
 }
 
-exports.create = (contact, transactionInstance) =>
+exports.createWithTransaction = (contact, transactionInstance) =>
 {
     return db.Contact
         .create(

@@ -6,7 +6,7 @@ exports.count = () =>
         .count()
 }
 
-exports.create = (school, transactionInstance) =>
+exports.createWithTransaction = (school, transactionInstance) =>
 {
     return db.School
         .create(

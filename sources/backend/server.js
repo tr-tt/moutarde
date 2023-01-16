@@ -36,25 +36,25 @@ const populate = async () =>
 
         try
         {
-            const aptParis = await SchoolTable.create({name: 'APT - Paris'}, transactionInstance)
-            const bsaBordeaux = await SchoolTable.create({name: 'BSA - Bordeaux'}, transactionInstance)
-            const ensiacet = await SchoolTable.create({name: 'ENSIACET - Toulouse'}, transactionInstance)
-            const envt = await SchoolTable.create({name: 'ENVT - Toulouse'}, transactionInstance)
-            const institutAgroDijon = await SchoolTable.create({name: 'Institut Agro Dijon'}, transactionInstance)
-            const institutAgroRennes = await SchoolTable.create({name: 'Institut Agro Rennes'}, transactionInstance)
-            const oniris = await SchoolTable.create({name: 'ONIRIS - Nantes'}, transactionInstance)
-            const vetAgroSup = await SchoolTable.create({name: 'Vetagrosup - Clermont'}, transactionInstance)
-            const autre = await SchoolTable.create({name: 'Autre'}, transactionInstance)
+            const aptParis = await SchoolTable.createWithTransaction({name: 'APT - Paris'}, transactionInstance)
+            const bsaBordeaux = await SchoolTable.createWithTransaction({name: 'BSA - Bordeaux'}, transactionInstance)
+            const ensiacet = await SchoolTable.createWithTransaction({name: 'ENSIACET - Toulouse'}, transactionInstance)
+            const envt = await SchoolTable.createWithTransaction({name: 'ENVT - Toulouse'}, transactionInstance)
+            const institutAgroDijon = await SchoolTable.createWithTransaction({name: 'Institut Agro Dijon'}, transactionInstance)
+            const institutAgroRennes = await SchoolTable.createWithTransaction({name: 'Institut Agro Rennes'}, transactionInstance)
+            const oniris = await SchoolTable.createWithTransaction({name: 'ONIRIS - Nantes'}, transactionInstance)
+            const vetAgroSup = await SchoolTable.createWithTransaction({name: 'Vetagrosup - Clermont'}, transactionInstance)
+            const autre = await SchoolTable.createWithTransaction({name: 'Autre'}, transactionInstance)
 
-            const emelineAh = await ContactTable.create({name: 'Emeline Ah-Tchine', job: 'Ingénieure de recherche', email: 'emeline.ah-tchine@agrosupdijon.fr'}, transactionInstance)
-            const samanthaPagliaro = await ContactTable.create({name: 'Samantha Pagliaro', job: 'Contact Agro Paris Tech', email: 'samantha.pagliaro@agroparistech.fr'}, transactionInstance)
-            const nathalieVentola = await ContactTable.create({name: 'Nathalie Ventola', job: 'Contact Bordeaux Sup Agro', email: 'nathalie.ventola@agro-bordeaux.fr'}, transactionInstance)
-            const julitteHuez = await ContactTable.create({name: 'Julitte Huez', job: 'Contact ENSIACET', email: 'julitte.huez@ensiacet.fr'}, transactionInstance)
-            const ismelineMathet = await ContactTable.create({name: 'Ismeline Mathet', job: 'Contact ENVT', email: 'ismeline.mathet@envt.fr'}, transactionInstance)
-            const anaisLoizon = await ContactTable.create({name: 'Anaïs Loizon', job: 'Contact Institut Agro Dijon', email: 'anais.loizon@agrosupdijon.fr'}, transactionInstance)
-            const celineMartel = await ContactTable.create({name: 'Céline Martel', job: 'Contact Institut Agro Rennes', email: 'celine.martel@agrocampus-ouest.fr'}, transactionInstance)
-            const juliaPoirier = await ContactTable.create({name: 'Julia Poirier', job: 'Contact ONIRIS', email: 'julia.poirier@oniris-nantes.fr'}, transactionInstance)
-            const yvesMonlien = await ContactTable.create({name: 'Yves Monlien', job: 'Contact VetagroSup', email: 'yves.monlien@vetagro-sup.fr'}, transactionInstance)
+            const emelineAh = await ContactTable.createWithTransaction({name: 'Emeline Ah-Tchine', job: 'Ingénieure de recherche', email: 'emeline.ah-tchine@agrosupdijon.fr'}, transactionInstance)
+            const samanthaPagliaro = await ContactTable.createWithTransaction({name: 'Samantha Pagliaro', job: 'Contact Agro Paris Tech', email: 'samantha.pagliaro@agroparistech.fr'}, transactionInstance)
+            const nathalieVentola = await ContactTable.createWithTransaction({name: 'Nathalie Ventola', job: 'Contact Bordeaux Sup Agro', email: 'nathalie.ventola@agro-bordeaux.fr'}, transactionInstance)
+            const julitteHuez = await ContactTable.createWithTransaction({name: 'Julitte Huez', job: 'Contact ENSIACET', email: 'julitte.huez@ensiacet.fr'}, transactionInstance)
+            const ismelineMathet = await ContactTable.createWithTransaction({name: 'Ismeline Mathet', job: 'Contact ENVT', email: 'ismeline.mathet@envt.fr'}, transactionInstance)
+            const anaisLoizon = await ContactTable.createWithTransaction({name: 'Anaïs Loizon', job: 'Contact Institut Agro Dijon', email: 'anais.loizon@agrosupdijon.fr'}, transactionInstance)
+            const celineMartel = await ContactTable.createWithTransaction({name: 'Céline Martel', job: 'Contact Institut Agro Rennes', email: 'celine.martel@agrocampus-ouest.fr'}, transactionInstance)
+            const juliaPoirier = await ContactTable.createWithTransaction({name: 'Julia Poirier', job: 'Contact ONIRIS', email: 'julia.poirier@oniris-nantes.fr'}, transactionInstance)
+            const yvesMonlien = await ContactTable.createWithTransaction({name: 'Yves Monlien', job: 'Contact VetagroSup', email: 'yves.monlien@vetagro-sup.fr'}, transactionInstance)
             
             await aptParis.addContact([emelineAh, samanthaPagliaro], {transaction: transactionInstance})
             await bsaBordeaux.addContact([emelineAh, nathalieVentola], {transaction: transactionInstance})
@@ -115,7 +115,7 @@ if(process.env.NODE_ENV === 'development')
             console.log('[DEBUG] Drop and re-sync database')
         })*/
     db.sequelize
-        .sync({alter: true})
+        .sync()
         .then(() =>
         {
             populate()

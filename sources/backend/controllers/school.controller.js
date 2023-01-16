@@ -1,4 +1,4 @@
-const SchoolTable = require('../tables/school.table.js')
+const SchoolTable = require('../tables/school.table')
 const logger = require('../logger')
 const httpCodes = require('../httpCodes')
 

@@ -103,6 +103,7 @@ SchoolService
                 if(response.data
                     && response.data.message)
                 {
+                    console.log(response.data.message);
                     _current_username = response.data.message.username || ''
                     _current_email = response.data.message.email || ''
     
@@ -114,9 +115,13 @@ SchoolService
                     _firstname.value = response.data.message.firstname || ''
                     _birthday.value = response.data.message.birthday || ''
                     _sex.value = response.data.message.sex || ''
-                    _school.value = response.data.message.school || ''
                     _schoolYear.value = response.data.message.schoolYear || ''
                     _seniority.value = response.data.message.seniority || ''
+
+                    if(response.data.message.School)
+                    {
+                        _school.value = response.data.message.School.name || ''
+                    }
     
                     if(_job.value === 'Etudiant')
                     {
@@ -129,9 +134,7 @@ SchoolService
                     else
                     {
                         console.error(`[ERROR] job ${_job.value} not supported`)
-                    }
-    
-                    
+                    }                    
                 }
                 else
                 {

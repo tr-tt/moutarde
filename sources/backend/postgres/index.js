@@ -31,6 +31,9 @@ db.School = require('./school.model.js')(sequelize, DataTypes)
 db.Contact = require('./contact.model.js')(sequelize, DataTypes)
 db.Image = require('./image.model.js')(sequelize, DataTypes)
 
+/*===============================================//
+// USER 1 <==> n POST
+//===============================================*/
 db.User.hasMany(db.Post,
     {
         onDelete: 'CASCADE'
@@ -38,6 +41,15 @@ db.User.hasMany(db.Post,
 )
 db.Post.belongsTo(db.User)
 
+/*===============================================//
+// USER n <==> 1 SCHOOL
+//===============================================*/
+db.School.hasMany(db.User)
+db.User.belongsTo(db.School)
+
+/*===============================================//
+// SCHOOL n <==> n CONTACT
+//===============================================*/
 db.School.belongsToMany(db.Contact,
     {
         through: 'school_contact',
@@ -51,6 +63,9 @@ db.Contact.belongsToMany(db.School,
     }
 )
 
+/*===============================================//
+// POST 1 <==> n IMAGE
+//===============================================*/
 db.Post.hasMany(db.Image,
     {
         onDelete: 'CASCADE'

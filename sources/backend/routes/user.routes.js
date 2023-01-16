@@ -35,7 +35,8 @@ module.exports = (app) =>
             authMiddleware.rejectIfBadToken,
             userMiddleware.jobExist,
             userMiddleware.usernameDuplicated,
-            userMiddleware.emailDuplicated
+            userMiddleware.emailDuplicated,
+            userMiddleware.schoolExist
         ],
         controller.putApiUser
     )

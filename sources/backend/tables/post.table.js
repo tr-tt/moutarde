@@ -1,30 +1,11 @@
 const db = require('../postgres')
 
-exports.create = (postData) =>
-{
-    return db.Post
-        .create(postData)
-}
-
 exports.createWithTransaction = (postData, transactionInstance) =>
 {
     return db.Post
         .create(postData,
             {
                 transaction: transactionInstance
-            }
-        )
-}
-
-exports.update = (postData, id) =>
-{
-    return db.Post
-        .update(postData,
-            {
-                where:
-                {
-                    id: id
-                }
             }
         )
 }

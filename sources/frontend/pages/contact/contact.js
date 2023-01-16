@@ -44,9 +44,10 @@ UserService
     .then((response) =>
     {
         if(response.data
-            && response.data.message)
+            && response.data.message
+            && response.data.message.School)
         {
-            const school = response.data.message.school || ''
+            const school = response.data.message.School.name || ''
 
             if(school)
             {

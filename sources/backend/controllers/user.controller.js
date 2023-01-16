@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 const logger = require('../logger')
 const mailer = require('../email')
 const UserTable = require('../tables/user.table')
+const SchoolTable = require('../tables/school.table')
+const db = require('../postgres')
 
 exports.getApiUser = (req, res) =>
 {
@@ -17,6 +19,7 @@ exports.getApiUser = (req, res) =>
                 user.dataValues.createdAt && delete user.dataValues.createdAt
                 user.dataValues.updatedAt && delete user.dataValues.updatedAt
                 user.dataValues.password && delete user.dataValues.password
+                user.dataValues.SchoolId && delete user.dataValues.SchoolId
 
                 return res
                     .status(httpCodes.OK)
@@ -47,7 +50,7 @@ exports.getApiUser = (req, res) =>
         })
 }
 
-exports.postApiUser = (req, res) =>
+exports.postApiUser = async (req, res) =>
 {
     const userData = {}
 
@@ -58,17 +61,26 @@ exports.postApiUser = (req, res) =>
     userData.firstname = req.body.firstname || ''
     userData.birthday = req.body.birthday || null
     userData.sex = req.body.sex || ''
-    userData.school = req.body.school
     userData.schoolYear = userData.job === 'Etudiant' ? req.body.schoolYear : ''
     userData.seniority = userData.job === 'Enseignant' ?  req.body.seniority : ''
     userData.password = req.body.password
 
-    UserTable
-        .create(userData)
-        .then(async (user) =>
-        {
-            logger.debug(`User ${JSON.stringify(user, null, 2)} created`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK})
+    const school = await SchoolTable.findByName(req.body.school)
 
+    if(school)
+    {
+        const transactionInstance = await db.sequelize.transaction()
+
+        try
+        {
+            const user = await UserTable.createWithTransaction(userData, transactionInstance)
+
+            await school.addUser(user, {transaction: transactionInstance})
+
+            await transactionInstance.commit()
+
+            logger.debug(`User ${JSON.stringify(user, null, 2)} created`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK})
+        
             await mailer
                 .sendAccountCreated(
                     {
@@ -97,9 +109,11 @@ exports.postApiUser = (req, res) =>
                             message: `Une erreur est survenue lors de l'envoi de l'email de confirmation de l'enregistrement de l'utilisateur.`,
                         })
                 })
-        })
-        .catch((exception) =>
+        }
+        catch(exception)
         {
+            await transactionInstance.rollback()
+
             logger.error(`Error when creating new user username ${req.body.username} user email ${req.body.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
@@ -107,10 +121,21 @@ exports.postApiUser = (req, res) =>
                 .json({
                     message: `Une erreur est survenue lors de l'enregistrement de l'utilisateur.`,
                 })
-        })
+        }
+    }
+    else
+    {
+        logger.error(`Error when retrieving school by name ${req.body.school} not found`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
+    
+        return res
+            .status(httpCodes.INTERNAL_SERVER_ERROR)
+            .json({
+                message: `Une erreur est survenue lors de la recherche de l'établissement scolaire.`,
+            })
+    }
 }
 
-exports.putApiUser = (req, res) =>
+exports.putApiUser = async (req, res) =>
 {
     const userData = {}
 
@@ -120,32 +145,54 @@ exports.putApiUser = (req, res) =>
     userData.firstname = req.body.firstname || ''
     userData.birthday = req.body.birthday || null
     userData.sex = req.body.sex || ''
-    userData.school = req.body.school
     userData.schoolYear = req.body.job === 'Etudiant' ? req.body.schoolYear : ''
     userData.seniority = req.body.job === 'Enseignant' ?  req.body.seniority : ''
 
-    UserTable
-        .update(userData, req.user_id)
-        .then((count) =>
+    const school = await SchoolTable.findByName(req.body.school)
+
+    if(school)
+    {
+        const transactionInstance = await db.sequelize.transaction()
+
+        try
         {
-            logger.debug(`user id ${req.user_id} row(s) ${count} updated`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.OK})
+            const [count, user] = await UserTable.updateWithTransaction(userData, req.user_id, transactionInstance)
+
+            await school.addUser(user, {transaction: transactionInstance})
+
+            await transactionInstance.commit()
+
+            logger.info(`User ${JSON.stringify(user, null, 2)} row(s) ${count} updated`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.OK})
 
             return res
                 .status(httpCodes.OK)
                 .json({
                     message: `Votre profil a été mis à jour.`
                 })
-        })
-        .catch((exception) =>
+        }
+        catch(exception)
         {
-            logger.error(`Error when updating user by id ${req.user_id} user data ${JSON.stringify(userData, null, 2)} exception ${exception.message}`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
+            await transactionInstance.rollback()
+
+            logger.error(`Error when updating user by id ${req.user_id} user data ${JSON.stringify(userData, null, 2)} school ${JSON.stringify(school, null, 2)} exception ${exception.message}`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
                 .json({
                     message: `Une erreur est survenue lors de la mise à jour de l'utilisateur.`,
                 })
-        })
+        }
+    }
+    else
+    {
+        logger.error(`Error when retrieving school by name ${req.body.school} not found`, {file: 'user.controller.js', function: 'putApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
+    
+        return res
+            .status(httpCodes.INTERNAL_SERVER_ERROR)
+            .json({
+                message: `Une erreur est survenue lors de la recherche de l'établissement scolaire.`,
+            })
+    }
 }
 
 exports.deleteApiUserId = (req, res) =>

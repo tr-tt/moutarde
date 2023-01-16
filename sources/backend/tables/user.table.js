@@ -1,9 +1,13 @@
 const db = require('../postgres')
 
-exports.create = (userData) =>
+exports.createWithTransaction = (userData, transactionInstance) =>
 {
     return db.User
-        .create(userData)
+        .create(userData,
+            {
+                transaction: transactionInstance
+            }
+        )
 }
 
 exports.update = (userData, id) =>
@@ -15,6 +19,23 @@ exports.update = (userData, id) =>
                 {
                     id: id
                 }
+            }
+        )
+}
+
+exports.updateWithTransaction = (userData, id, transactionInstance) =>
+{
+    return db.User
+        .update(userData,
+            {
+                where:
+                {
+                    id: id
+                },
+                returning: true
+            },
+            {
+                transaction: transactionInstance
             }
         )
 }
@@ -74,5 +95,15 @@ exports.findByEmailOrUsername = (emailOrUsername) =>
 exports.findById = (id) =>
 {
     return db.User
-        .findByPk(id)
+        .findByPk(id,
+            {
+                include:
+                [
+                    {
+                        model: db.School,
+                        attributes: ['name']
+                    }
+                ]
+            }
+        )
 }

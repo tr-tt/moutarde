@@ -66,18 +66,6 @@ module.exports = (sequelize, DataTypes) =>
             type: DataTypes.STRING(100),
             defaultValue: ''
         },
-        school:
-        {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `Le champ "Etablissement scolaire" est requis.`
-                }
-            }
-        },
         schoolYear:
         {
             type: DataTypes.STRING(100),

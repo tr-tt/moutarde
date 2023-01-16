@@ -297,7 +297,7 @@ const buildFormAndSend = () =>
 
     if(!_chart.checked)
     {
-        return error(`Vous devez avoir lu et accepter la charte du consentement éclairé avant de pouvoir créer un compte.`)
+        return error(`Vous devez avoir lu et accepté la charte du consentement éclairé avant de pouvoir créer un compte.`)
     }
 
     _popup.style.display = 'flex'
