@@ -8,9 +8,9 @@
     <title>HERCULE</title>
 </head>
 <body>
-    <div id="loading" class="loading"></div>
+    <div id="loading" class="root__loading"></div>
 
-    <div id="background" class="background"></div>
+    <div class="root__background"></div>
     
     <mou-headerbar>
         <label slot="page">Mon profil</label>
@@ -22,26 +22,28 @@
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored" title="Se déconnecter"></mou-link>
     </mou-headerbar>
 
-    <div class="marge"></div>
+    <div class="root__marge"></div>
     
-    <div id="profile">
-        <div id="profile__frame">
-            <div id="profile__title">
-                <img src="/static/images/icons/profil.png" width="40px" height="40px" draggable="false">
+    <div class="root__form">
+        <div class="root__bar"></div>
+        
+        <div class="root__frame">
+            <div class="root__title">
+                <img src="/static/images/icons/hercule.png" width="40px" height="40px" draggable="false">
                 <h2>Mon profil</h2>
             </div>
-            <p>Relire la <span id="goto__chart">charte de concentement éclairé</span>.</p>
-            <p id="subtitle">Modifier mon profil utilisateur.</p>
+            <p>Relire la <strong id="goto__chart">charte de concentement éclairé</strong>.</p>
+            <p id="subtitle" class="root__subtitle">Modifier mon profil utilisateur.</p>
                         
-            <div id="profile__fields">
+            <div id="profile__fields" class="root__fields">
                 <mou-input-inline id="job" placeholder="Fonction" type="text" disabled></mou-input-inline>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
 
                 <mou-input-inline id="username" placeholder="Nom d'utilisateur" type="text" maxlength="100" required></mou-input-inline>
                 <mou-input-inline id="email" placeholder="Adresse email" type="text" maxlength="100" required></mou-input-inline>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
 
                 <mou-input-inline id="lastname" placeholder="Nom" type="text" maxlength="100"></mou-input-inline>
                 <mou-input-inline id="firstname" placeholder="Prénom" type="text" maxlength="100"></mou-input-inline>
@@ -55,7 +57,7 @@
                     <option value="Autre">Autre</option>
                 </mou-select>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
 
                 <mou-select id="school" placeholder="Etablissement scolaire" required>
                     <option value=""></option>
@@ -76,28 +78,30 @@
                     <option value="Plus de 20 ans">Plus de 20 ans</option>
                 </mou-select>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
 
-                <mou-link href="/password/forgot" label="Changer mon mot de passe" css="basic"></mou-link>
+                <mou-link href="/password/forgot" label="Changer mon mot de passe" css="basic" title="Changer mon mot de passe"></mou-link>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
+
+                <mou-link label="Télécharger mon carnet" css="basic" title="non implemente"></mou-link>
+
+                <div class="root__separator"></div>
 
                 <mou-link id="delete" label="Supprimer mon profil" css="error"></mou-link>
             </div>
 
-            <div id="profile__controls">
+            <div class="root__controls">
                 <mou-link id="posts" href="/posts" label="Annuler" css="basic" title="Annuler"></mou-link>
                 <mou-link id="button" label="Enregistrer" css="colored" title="Mettre à jour mon profil"></mou-link>
             </div>
         </div>
-
-        <div id="profile__bar"></div>
         
-        <div id="popup">
-            <div id="popup__frame">
-                <p id="popup__subtitle">Etes vous <strong>certain</strong> de vouloir supprimer votre compte utilisateur ? Toutes vos données seront perdues et cette action est <strong>irréversible</strong>.</p>
+        <div id="popup" class="root__popup">
+            <div class="root__popup__frame">
+                <p>Etes vous <strong>certain</strong> de vouloir supprimer votre compte utilisateur ? Toutes vos données seront perdues et cette action est <strong>irréversible</strong>.</p>
             
-                <div id="popup__controls">
+                <div class="root__popup__controls">
                     <mou-link id="cancel" label="Annuler" css="colored" title="Annuler"></mou-link>
                     <mou-link id="confirm" label="Supprimer" css="basic" title="Confirmer la suppression de mon profil"></mou-link>
                 </div>
@@ -105,6 +109,6 @@
         </div>
     </div>
 
-    <div class="marge"></div>
+    <div class="root__marge"></div>
 </body>
 </html>

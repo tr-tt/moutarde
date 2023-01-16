@@ -12,8 +12,6 @@ class MOUInputInline extends HTMLElement
 
         this._inputInlineFields = this.shadowRoot.querySelector('#input__inline__fields')
         this._input = this.shadowRoot.querySelector('input')
-        this._icon = this.shadowRoot.querySelector('#icon')
-        this._img = this.shadowRoot.querySelector('img')
         this._label = this.shadowRoot.querySelector('label')
     }
 
@@ -57,16 +55,6 @@ class MOUInputInline extends HTMLElement
         {
             this._label.classList.add('hide')
         }
-
-        if(this.hasAttribute('icon'))
-        {
-            this._img.src = this.getAttribute('icon')
-            this._label.classList.add('icon')
-        }
-        else
-        {
-            this._icon.classList.add('hide')
-        }
         
         this._input.addEventListener('focus', this._onFocusHandler.bind(this))
         this._input.addEventListener('blur', this._onBlurHandler.bind(this))
@@ -101,8 +89,6 @@ class MOUInputInline extends HTMLElement
         this._inputInlineFields.classList.remove('error')
         this._inputInlineFields.classList.add('focus')
 
-        this._icon.classList.add('focus')
-
         this._label.classList.remove('filled')
         this._label.classList.remove('error')
         this._label.classList.add('move')
@@ -111,8 +97,6 @@ class MOUInputInline extends HTMLElement
     _onBlurHandler()
     {
         this._inputInlineFields.classList.remove('focus')
-
-        this._icon.classList.remove('focus')
 
         if(!this._input.value)
         {

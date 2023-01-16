@@ -55,12 +55,6 @@ label
     transition: none;
 }
 
-label.icon
-{
-    width: calc(100% - 50px);
-    border-radius: 4px 0 0 4px;
-}
-
 label.move
 {
     top: -9px;
@@ -93,39 +87,11 @@ label.error
     border-color: rgb(var(--color-10));
 }
 
-#icon
-{
-    width: 50px;
-    border-left: 2px solid rgb(var(--color-9));
-
-    display: flex;
-}
-
-#icon.focus
-{
-    border-color: rgb(var(--color-1));
-}
-
-#icon.hide
-{
-    display: none;
-}
-
-#icon img
-{
-    max-width: 40px;
-    max-height: 40px;
-    margin: auto;
-}
-
 </style>
 <div id="input__select">
     <div id="input__select__fields">
         <select></select>
         <slot></slot>
-        <div id="icon">
-            <img draggable="false">
-        </div>
     </div>
     
     <label></label>

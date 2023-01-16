@@ -1,12 +1,22 @@
 <style>
 @import "/static/css/root.css";
 
-h2,
-h3
+h3,
+h4
 {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+h3
+{
+    font-size: 30px;
+}
+
+h4
+{
+    font-size: 25px;
 }
 
 p
@@ -16,19 +26,6 @@ p
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-size: 18px;
-}
-
-strong
-{
-    color: rgb(var(--color-1));
-}
-
-.separator
-{
-    background-color: rgb(var(--white));
-    height: 2px;
-    -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--white)); 
-    box-shadow: 0px 0px 13px 0px rgb(var(--white));
 }
 
 #post__frame
@@ -71,47 +68,6 @@ img.hide
 {
     display: flex;
     justify-content: space-between;
-    gap: 5px;
-}
-
-#popup
-{
-    position: absolute;
-    
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(var(--black), 0.8);
-    border-radius: var(--border-radius);
-    padding: 40px;
-
-    display: none;
-}
-
-#popup__frame
-{
-    margin: auto;
-    
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-#popup__subtitle
-{
-    color: rgb(var(--white));
-}
-
-#popup__subtitle.error
-{
-    color: rgb(var(--color-10));
-}
-
-#popup__controls
-{
-    display: flex;
-    justify-content: space-between;
 }
 
 /*===============================================//
@@ -124,14 +80,18 @@ img.hide
     {
         position: relative;
 
-        padding: 40px 90px 40px 40px;
+        padding: 40px;
         width: 400px;
         transition: transform .2s;
         cursor: pointer;
-        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
-        box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
-        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        border-radius: var(--border-radius-big);
         z-index: 1;
+
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap: 20px;
     }
 
     #post::before
@@ -144,41 +104,15 @@ img.hide
         width: 100%;
         height: 100%;
         opacity: 0.5;
-        background: rgb(var(--color-2));
-        background: linear-gradient(to bottom, rgb(var(--color-2)) 0%, rgb(var(--color-3)) 100%);
-        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
-        border: 1px solid rgb(var(--color-4));
+        background-color: rgb(var(--white));
+        border-radius: var(--border-radius-big);
+        border: 1px solid rgb(var(--color-1));
         z-index: -1;
     }
 
     #post:hover
     {
         transform: scale(1.1);
-    }
-
-    #post__bar
-    {
-        position: absolute;
-
-        top: 0;
-        right: -1px;
-        width: 50px;
-        height: 100%;
-        background-color: rgb(var(--color-3));
-        opacity: 0.7;
-        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
-    }
-
-    #post__rings 
-    {
-        position: absolute;
-
-        top: 20px;
-        right: -28px;
-        width: 50px;
-        height: 510px;
-        background: url("/static/images/ring.png");
-        background-size: contain;
     }
 }
 
@@ -194,9 +128,9 @@ img.hide
 
         z-index: 1;
         padding: 20px;
-        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
-        box-shadow: 0px 0px 13px 0px rgb(var(--color-2));
-        border-radius: var(--border-radius);
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        border-radius: var(--border-radius-big);
     }
 
     #post::before
@@ -209,26 +143,16 @@ img.hide
         width: 100%;
         height: 100%;
         opacity: 0.5;
-        background: rgb(var(--color-2));
-        background: linear-gradient(to bottom, rgb(var(--color-2)) 0%, rgb(var(--color-3)) 100%);
-        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
-        border: 1px solid rgb(var(--color-4));
-        border-radius: var(--border-radius);
+        background-color: rgb(var(--white));
+        border-radius: var(--border-radius-big);
+        border: 1px solid rgb(var(--color-1));
         z-index: -1;
-    }
-
-    #post__bar
-    {
-        display: none;
-    }
-
-    #post__rings
-    {
-        display: none;
     }
 }
 </style>
 <div id="post">
+    <div class="root__bar"></div>
+
     <div id="post__frame">
         <span id="when"></span>
 
@@ -236,12 +160,12 @@ img.hide
             <img src="/static/images/icons/10_appareil_photo.png" class="hide" draggable="false">
         </div>
 
-        <div class="separator"></div>
+        <div class="root__separator"></div>
 
-        <h2 id="situation"></h2>
-        <h3 id="tool"></h3>
+        <h3 id="situation"></h3>
+        <h4 id="tool"></h4>
         
-        <div class="separator"></div>
+        <div class="root__separator"></div>
         
         <p id="description"></p>
 
@@ -250,15 +174,12 @@ img.hide
             <mou-link id="edit" label="Editer" css="colored" title="Editer la page du carnet"></mou-link>
         </div>
     </div>
-    
-    <div id="post__bar"></div>
-    <div id="post__rings"></div>
 
-    <div id="popup">
-        <div id="popup__frame">
+    <div id="popup" class="root__popup">
+        <div class="root__popup__frame">
             <p id="popup__subtitle">Etes vous <strong>certain</strong> de vouloir supprimer cette page du carnet ? Cette action est <strong>irréversible</strong>.</p>
         
-            <div id="popup__controls">
+            <div class="root__popup__controls">
                 <mou-link id="cancel" label="Annuler" css="colored" title="Annuler"></mou-link>
                 <mou-link id="confirm" label="Supprimer" css="basic" title="Confirmer la suppression de la page du carnet"></mou-link>
             </div>

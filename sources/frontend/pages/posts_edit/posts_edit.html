@@ -8,9 +8,9 @@
     <title>HERCULE</title>
 </head>
 <body>
-    <div id="loading" class="loading"></div>
+    <div id="loading" class="root__loading"></div>
 
-    <div id="background" class="background"></div>
+    <div class="root__background"></div>
     
     <mou-headerbar>
         <label slot="page">Editer la page du carnet</label>
@@ -23,30 +23,29 @@
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored" title="Se déconnecter"></mou-link>
     </mou-headerbar>
 
-    <div class="marge"></div>
+    <div class="root__marge"></div>
 
-    <div id="form">
-        <div id="form__frame">
-            <div id="form__title">
-                <img src="/static/images/icons/carnet.png" width="40px" height="40px" draggable="false">
+    <div class="root__form">
+        <div class="root__bar"></div>
+
+        <div class="root__frame">
+            <div class="root__title">
+                <img src="/static/images/icons/hercule.png" width="40px" height="40px" draggable="false">
                 <h2>Editer la page du carnet</h2>
             </div>
-            <p id="subtitle">Editer la situation.</p>
+            <p id="subtitle" class="root__subtitle">Editer la situation.</p>
 
-            <div id="form__fields">
-                <div class="separator"></div>
-                <h3>Informations sur la situation</h3>
-
+            <div class="root__fields">
                 <mou-input-inline id="situation" placeholder="Situation vécue" type="text" maxlength="100" required></mou-input-inline>
                 <mou-input-inline id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100"></mou-input-inline>
                 <mou-input-inline id="when" placeholder="Quand ? (date, heure)" type="datetime-local" min="2022-01-01T00:00" max="2030-01-01T00:00"></mou-input-inline>
                 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
                 <h3>Ressenti</h3>
 
                 <mou-opinion id="feeling"></mou-opinion>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
                 <h3>Description de la situation</h3>
 
                 <mou-input-block id="description" placeholder="Ce qu'il s'est passé" maxlength="1000" icon="/static/images/icons/4_ce_qu_il_s_est_passe.png"></mou-input-block>
@@ -55,34 +54,31 @@
                 <mou-input-block id="trick" placeholder="Astuces" maxlength="1000" icon="/static/images/icons/7_astuces.png"></mou-input-block>
                 <mou-input-block id="improvement" placeholder="Futurs imaginés" maxlength="1000" icon="/static/images/icons/8_futurs_imagines.png"></mou-input-block>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
                 <h3>En dire plus ?</h3>
 
                 <mou-input-block id="more" maxlength="1000" icon="/static/images/icons/9_en_dire_plus.png"></mou-input-block>
 
-                <div class="separator"></div>
+                <div class="root__separator"></div>
                 <h3>Ajouter des visuels</h3>
 
                 <mou-input-picture id="picture"></mou-input-picture>
             </div>
 
-            <div id="form__controls">
+            <div class="root__controls">
                 <mou-link id="posts" href="/posts" label="Annuler" css="basic" title="Annuler"></mou-link>
                 <mou-link id="button" label="Enregistrer" css="colored" title="Mettre à jour la page du carnet"></mou-link>
             </div>
         </div>
             
-        <div id="form__bar"></div>
-        <div id="form__rings"></div>
-
-        <div id="popup">
-            <div id="popup__frame">
-                <p id="popup__subtitle">La page du carnet est en cours de <strong>mise à jour</strong>, merci de patienter.</p>
-                <h1 id="popup__progress">0%</h1>
+        <div id="popup" class="root__popup">
+            <div class="root__popup__frame">
+                <p>La page du carnet est en cours de <strong>mise à jour</strong>, merci de patienter.</p>
+                <h1 id="popup__progress" class="root__popup__progress">0%</h1>
             </div>
         </div>
     </div>
 
-    <div class="marge"></div>
+    <div class="root__marge"></div>
 </body>
 </html>

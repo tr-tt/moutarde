@@ -41,6 +41,18 @@ _show.addEventListener('click', () =>
 // clicked or Enter pressed
 //===============================================*/
 
+const error = (message) =>
+{
+    _subtitle.textContent = message
+    _subtitle.classList.add('error')
+
+    _button.setAttribute('css', 'error')
+    _buttonReady = true
+    _keyReady = true
+    
+    window.scrollTo(0, 0)
+}
+
 const buildFormAndSend = () =>
 {
     const formData = new FormData()
@@ -54,14 +66,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Addresse email ou nom d'utilisateur" est requis.`
-
-        _buttonReady = true
-        _keyReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Addresse email ou nom d'utilisateur" est requis.`)
     }
 
     if(password)
@@ -70,14 +75,7 @@ const buildFormAndSend = () =>
     }
     else
     {
-        _subtitle.textContent = `Le champ "Mot de passe" est requis.`
-
-        _buttonReady = true
-        _keyReady = true
-
-        _button.setAttribute('css', 'error')
-
-        return
+        return error(`Le champ "Mot de passe" est requis.`)
     }
 
     AuthService
@@ -92,19 +90,14 @@ const buildFormAndSend = () =>
                 && exception.response.data
                 && exception.response.data.message)
             {
-                _subtitle.textContent = exception.response.data.message
+                error(exception.response.data.message)
             }
             else
             {
                 console.error(exception)
-            }
 
-            _button.setAttribute('css', 'error')
-        })
-        .finally(() =>
-        {
-            _buttonReady = true
-            _keyReady = true
+                error(`Une erreur est survenue.`)
+            }
         })
 }
 

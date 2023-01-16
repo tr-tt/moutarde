@@ -15,7 +15,6 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 
 const _logout = document.querySelector('#logout')
 const _subtitle = document.querySelector('#subtitle')
-const _formRings = document.querySelector('#form__rings')
 const _situation = document.querySelector('#situation')
 const _tool = document.querySelector('#tool')
 const _when = document.querySelector('#when')
@@ -31,8 +30,6 @@ const _button = document.querySelector('#button')
 const _popup = document.querySelector('#popup')
 const _popupProgress = document.querySelector('#popup__progress')
 const _loading = document.querySelector('#loading')
-
-_formRings.style.backgroundSize = `100% ${Math.round(_formRings.offsetHeight / 43 + 2)}px`
 
 let _buttonReady = true
 

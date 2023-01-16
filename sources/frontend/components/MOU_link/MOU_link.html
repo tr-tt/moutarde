@@ -3,13 +3,13 @@
 
 :host([css=basic]) a
 {
-    color: rgb(var(--white));
+    color: rgb(var(--color-1));
 }
 
 :host([css=default]) a
 {
-    border-color: rgb(var(--white));
-    color: rgb(var(--white));
+    border-color: rgb(var(--color-1));
+    color: rgb(var(--color-1));
 }
 
 :host([css=colored]) a
@@ -59,21 +59,18 @@ a
 {
     :host([css=basic]) a:hover
     {
-        color: rgb(var(--color-1));
+        color: rgb(var(--color-1-shade-1));
     }
 
     :host([css=default]) a:hover
     {
-        background-color: rgb(var(--white));
-        border-color: rgb(var(--color-1));
-        color: rgb(var(--color-1));
+        border-color: rgb(var(--color-1-shade-1));
+        color: rgb(var(--color-1-shade-1));
     }
 
     :host([css=colored]) a:hover
     {
-        border-color: rgb(var(--color-1));
-        background-color: rgb(var(--white));
-        color: rgb(var(--color-1));
+        background-color: rgb(var(--color-1-shade-1));
     }
 
     :host([css=error]) a:hover

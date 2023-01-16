@@ -26,6 +26,7 @@ This file include generic style that can be used inside shadowdom of webcomponen
     --white:    255, 255, 255; /* #FFFFFF */
     --black:      0,   0,   0; /* #000000 */
 
+    --color-1-shade-1:  237, 200, 146; /* #edc892 */
     --color-10-shade-1: 229, 110, 103; /* #e56e67 */ 
 
     /*===============================================//
@@ -45,9 +46,279 @@ This file include generic style that can be used inside shadowdom of webcomponen
     letter-spacing: .1px;
 }
 
+body
+{
+    color: rgb(var(--color-9));
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+p,
+span,
+label
+{
+    font-size: 18px;
+}
+
+strong
+{
+    color: rgb(var(--color-1));
+    cursor: pointer;
+}
+
+.root__loading
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+
+    background-color: rgb(var(--white));
+    background-image: url("/static/images/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.root__background
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    background-image: url("/static/images/background1.jpg");
+    background-size: cover;  
+}
+
+.root__separator
+{
+    background-color: rgb(var(--color-1));
+    height: 2px;
+    -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1)); 
+    box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+}
+
+.root__frame
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.root__title
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.root__subtitle
+{
+    height: 60px;
+}
+
+.root__subtitle.error
+{
+    color: rgb(var(--color-10));
+}
+
+.root__fields
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.root__checkbox__div
+{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.root__checkbox
+{
+    min-height: 37px;
+    min-width: 37px;
+}
+
+.root__controls
+{
+    margin-top: 40px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.root__popup__frame
+{
+    margin: auto;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.root__popup__icon
+{
+    display: flex;
+}
+
+.root__popup__icon img
+{
+    max-width: 40px;
+    max-height: 40px;
+    margin: auto;
+}
+
+.root__popup__progress
+{
+    text-align: center;
+}
+
+.root__popup__controls
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+/*===============================================//
+// PC
+//===============================================*/
 
 @media screen and (min-width: 800px)
 {
+    h1
+    {
+        font-size: 60px;
+    }
+
+    h2
+    {
+        font-size: 40px;
+    }
+
+    strong:hover
+    {
+        text-decoration: underline;
+    }
+
+    .root__bar
+    {
+        background-color: rgb(var(--color-1));
+        border-radius: var(--border-radius);
+        opacity: 0.5;
+    }
+
+    .root__marge
+    {
+        height: 100px;
+    }
+
+    .root__form
+    {
+        position: relative;
+
+        padding: 40px;
+        margin: auto;
+        min-width: 700px;
+        width: 50%;
+        z-index: 1;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        border-radius: var(--border-radius-big);
+
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 40px;
+    }
+
+    .root__form::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        background-color: rgb(var(--white));
+        border-radius: var(--border-radius-big);
+        border: 1px solid rgb(var(--color-1));
+    }
+
+    .root__form__small
+    {
+        position: relative;
+
+        padding: 40px;
+        transition: transform .2s;
+        z-index: 1;
+        cursor: pointer;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        border-radius: var(--border-radius-big);
+
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap: 40px;
+    }
+
+    .root__form__small::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        background-color: rgb(var(--white));
+        border-radius: var(--border-radius-big);
+        border: 1px solid rgb(var(--color-1));
+    }
+
+    .root__form__small:hover
+    {
+        transform: scale(1.1);
+    }
+
+    .root__popup
+    {
+        position: absolute;
+        
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(var(--black), 0.8);
+        color: rgb(var(--white));
+        border-radius: var(--border-radius-big);
+        padding: 40px;
+        z-index: 2;
+    
+        display: none;
+    }
+
+    .root__page
+    {
+        padding: 40px;
+        
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+
     ::-webkit-scrollbar
     {
         width: 5px;
@@ -64,29 +335,104 @@ This file include generic style that can be used inside shadowdom of webcomponen
     }
 }
 
-.loading
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 3;
+/*===============================================//
+// PHONE
+//===============================================*/
 
-    background-color: rgb(var(--white));
-    background-image: url("/static/images/loading.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.background
+@media screen and (max-width: 800px)
 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    h1
+    {
+        font-size: 35px;
+    }
+
+    h2
+    {
+        font-size: 25px;
+    }
+
+    .root__bar
+    {
+        display: none;
+    }
+
+    .root__marge
+    {
+        display: none;
+    }
+
+    .root__form    
+    {
+        position: relative;
+
+        z-index: 1;
+        padding: 20px;
+        min-height: calc(100vh - 60px);
+    }
+
+    .root__form::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        background-color: rgb(var(--white));
+    }
+
+    .root__form__small
+    {
+        position: relative;
+
+        z-index: 1;
+        padding: 20px;
+        -webkit-box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        box-shadow: 0px 0px 13px 0px rgb(var(--color-1));
+        border-radius: var(--border-radius-big);
+    }
+
+    .root__form__small::before
+    {
+        position: absolute;
+
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        background-color: rgb(var(--white));
+        border-radius: var(--border-radius-big);
+        border: 1px solid rgb(var(--color-1));
+    }
+
+    .root__popup
+    {
+        position: absolute;
+        
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(var(--black), 0.8);
+        color: rgb(var(--white));
+        padding: 40px;
+        z-index: 2;
     
-    background-image: url("/static/images/background1.jpg");
-    background-size: cover;  
+        display: none;
+    }
+
+    .root__page
+    {
+        padding: 20px;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 }

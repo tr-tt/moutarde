@@ -8,9 +8,9 @@
     <title>HERCULE</title>
 </head>
 <body>
-    <div id="loading" class="loading"></div>
+    <div id="loading" class="root__loading"></div>
 
-    <div id="background" class="background"></div>
+    <div class="root__background"></div>
 
     <mou-headerbar>
         <label slot="page">Mon carnet</label>
@@ -23,9 +23,11 @@
     </mou-headerbar>
 
     <div id="empty">
-        <div id="empty__fields">
+        <div class="root__bar"></div>
+
+        <div class="root__fields">
             <p>
-                Pour commencer à <span>créer une nouvelle page</span> de carnet vous pouvez cliquer sur le bouton ci dessous :
+                Pour commencer à <strong>créer une nouvelle page</strong> de carnet vous pouvez cliquer sur le bouton ci dessous :
             </p>
             <div style="display: flex;">
                 <mou-link href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
@@ -33,6 +35,6 @@
         </div>
     </div>
 
-    <div id="page" class="hide"></div>
+    <div id="page" class="root__page hide"></div>
 </body>
 </html>

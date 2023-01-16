@@ -8,9 +8,9 @@
     <title>HERCULE</title>
 </head>
 <body>
-    <div id="loading" class="loading"></div>
+    <div id="loading" class="root__loading"></div>
 
-    <div id="background" class="background"></div>
+    <div class="root__background"></div>
     
     <mou-headerbar>
         <label slot="page">Se connecter</label>
@@ -19,34 +19,34 @@
         <mou-link slot="controls" href="/signup" label="Créer un compte" title="Créer un compte" css="colored"></mou-link>
     </mou-headerbar>
 
-    <div class="marge"></div>
+    <div class="root__marge"></div>
 
-    <div id="signin">
-        <div id="signin__frame">
-            <div id="signin__title">
-                <img src="/static/images/icons/enter.png" width="40px" height="40px" draggable="false">
+    <div class="root__form">
+        <div class="root__bar"></div>
+
+        <div class="root__frame">
+            <div class="root__title">
+                <img src="/static/images/icons/hercule.png" width="40px" height="40px" draggable="false">
                 <h2>Se connecter</h2>
             </div>
-            <p id="subtitle">Se connecter sur l'api HERCULE.</p>
+            <p id="subtitle" class="root__subtitle">Se connecter sur l'api HERCULE.</p>
 
-            <div id="signin__fields">
+            <div class="root__fields">
                 <mou-input-inline id="email_or_username" placeholder="Email ou nom d'utilisateur" type="text" maxlength="100" required></mou-input-inline>
                 <mou-input-inline id="password" placeholder="Mot de passe" type="password" maxlength="100" required></mou-input-inline>
-                <div id="signin__password">
-                    <input id="show" type="checkbox">
+                <div class="root__checkbox__div">
+                    <input id="show" type="checkbox" class="root__checkbox">
                     <span>Voir le mot de passe</span>
                 </div>
             </div>
 
-            <div id="signin__controls">
+            <div class="root__controls">
                 <mou-link href="/password/forgot" label="J'ai oublié mon mot de passe" title="Réinitialiser le mot de passe" css="basic"></mou-link>
                 <mou-link id="button" label="Se connecter" title="Se connecter" css="colored"></mou-link>
             </div>
         </div>
-
-        <div id="signin__bar"></div>
     </div>
 
-    <div class="marge"></div>
+    <div class="root__marge"></div>
 </body>
 </html>

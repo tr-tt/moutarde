@@ -12,8 +12,6 @@ class MOUselect extends HTMLElement
 
         this._inputSelectFields = this.shadowRoot.querySelector('#input__select__fields')
         this._select = this.shadowRoot.querySelector('select')
-        this._icon = this.shadowRoot.querySelector('#icon')
-        this._img = this.shadowRoot.querySelector('img')
         this._label = this.shadowRoot.querySelector('label')
     }
 
@@ -26,16 +24,6 @@ class MOUselect extends HTMLElement
         else
         {
             this._label.classList.add('hide')
-        }
-
-        if(this.hasAttribute('icon'))
-        {
-            this._img.src = this.getAttribute('icon')
-            this._label.classList.add('icon')
-        }
-        else
-        {
-            this._icon.classList.add('hide')
         }
 
         if(this.hasAttribute('required'))
@@ -83,8 +71,6 @@ class MOUselect extends HTMLElement
         this._inputSelectFields.classList.remove('error')
         this._inputSelectFields.classList.add('focus')
 
-        this._icon.classList.add('focus')
-
         this._label.classList.remove('filled')
         this._label.classList.remove('error')
         this._label.classList.add('move')
@@ -93,8 +79,6 @@ class MOUselect extends HTMLElement
     _onBlurHandler()
     {
         this._inputSelectFields.classList.remove('focus')
-
-        this._icon.classList.remove('focus')
 
         if(!this._select.value)
         {
