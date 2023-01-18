@@ -13,7 +13,7 @@
     <div class="root__background"></div>
     
     <mou-headerbar>
-        <label slot="page">Editer la page du carnet</label>
+        <label slot="page">Consulter une page du carnet</label>
 
         <mou-link slot="controls" href="/" label="Page d'accueil" css="default" title="Retourner à la page d'accueil"></mou-link>
         <mou-link slot="controls" href="/posts" label="Mon carnet" css="default" title="Voir mon carnet"></mou-link>
@@ -31,11 +31,15 @@
         <div class="root__frame">
             <div class="root__title">
                 <img src="/static/images/icons/hercule.png" width="40px" height="40px" draggable="false">
-                <h2>Editer la page du carnet</h2>
+                <h2>Relire mon carnet</h2>
             </div>
-            <p id="subtitle" class="root__subtitle">Editer la situation.</p>
+            <p id="subtitle" class="root__subtitle">Relire ou modifier la situation.</p>
 
             <div class="root__fields">
+                <div class="root__checkbox__div">
+                    <input id="confidential" type="checkbox" class="root__checkbox">
+                    <p>Je souhaite garder cette situation confidentielle</p>
+                </div>
                 <mou-input-inline id="situation" placeholder="Situation vécue" type="text" maxlength="100" required></mou-input-inline>
                 <mou-input-inline id="tool" placeholder="Outil cible utilisé" type="text" maxlength="100"></mou-input-inline>
                 <mou-input-inline id="when" placeholder="Quand ? (date, heure)" type="datetime-local" min="2022-01-01T00:00" max="2030-01-01T00:00"></mou-input-inline>
@@ -48,11 +52,11 @@
                 <div class="root__separator"></div>
                 <h3>Description de la situation</h3>
 
-                <mou-input-block id="description" placeholder="Ce qu'il s'est passé" maxlength="1000" icon="/static/images/icons/4_ce_qu_il_s_est_passe.png"></mou-input-block>
-                <mou-input-block id="ressource" placeholder="Autre(s) ressources(s)" maxlength="1000" icon="/static/images/icons/5_autres_ressources.png"></mou-input-block>
+                <mou-input-block id="description" placeholder="Ce qu'il s'est passé (personnes impliquées, lieu(x) et déroulement)" maxlength="1000" icon="/static/images/icons/4_ce_qu_il_s_est_passe.png"></mou-input-block>
+                <mou-input-block id="ressource" placeholder="Autre(s) ressource(s) ou support(s) mobilisé(s)" maxlength="1000" icon="/static/images/icons/5_autres_ressources.png"></mou-input-block>
                 <mou-input-block id="difficulty" placeholder="Difficulté(s) rencontrée(s)" maxlength="1000" icon="/static/images/icons/6_difficulte.png"></mou-input-block>
                 <mou-input-block id="trick" placeholder="Astuces" maxlength="1000" icon="/static/images/icons/7_astuces.png"></mou-input-block>
-                <mou-input-block id="improvement" placeholder="Futurs imaginés" maxlength="1000" icon="/static/images/icons/8_futurs_imagines.png"></mou-input-block>
+                <mou-input-block id="improvement" placeholder="Futurs imaginés pour cette situation" maxlength="1000" icon="/static/images/icons/8_futurs_imagines.png"></mou-input-block>
 
                 <div class="root__separator"></div>
                 <h3>En dire plus ?</h3>

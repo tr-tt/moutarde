@@ -6,9 +6,11 @@ const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
 const fileUpload = require('express-fileupload')
 
-dotenv.config({
-    path: path.resolve(`.env.${process.env.NODE_ENV}`)
-})
+dotenv.config(
+    {
+        path: path.resolve(`.env.${process.env.NODE_ENV}`)
+    }
+)
 
 const app = express()
 const server = http.createServer(app)
@@ -20,11 +22,17 @@ app.use(cookieParser())
 app.use(favicon(path.resolve('sources', 'backend', 'public', 'images', 'favicon.ico')))
 app.use(fileUpload())
 
+/*===============================================//
 // DATABASE
+//===============================================*/
 const db = require('./postgres')
 const SchoolTable = require('./tables/school.table')
 const ContactTable = require('./tables/contact.table.js')
 
+/*===============================================//
+// Fill the database with defined school names
+// and contacts
+//===============================================*/
 const populate = async () =>
 {
     const schoolCount = await SchoolTable.count()
@@ -77,6 +85,10 @@ const populate = async () =>
     }
 }
 
+/*===============================================//
+// Adds a middleware for hot reloading pages
+// only in development mode
+//===============================================*/
 if(process.env.NODE_ENV === 'development')
 {
     const webpack = require('webpack')
@@ -88,38 +100,54 @@ if(process.env.NODE_ENV === 'development')
     const webpackHotMiddleware = require('webpack-hot-middleware')(compiler, {log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000})
     const sourcesFiles = `${path.resolve('sources', 'frontend')}/**/*`
     const rootCssFile = path.resolve('sources', 'backend', 'public', 'css', 'root.css')
-    const watcher = chokidar.watch([
-        sourcesFiles,
-        rootCssFile
-    ])
+    const watcher = chokidar.watch(
+        [
+            sourcesFiles,
+            rootCssFile
+        ]
+    )
 
-    watcher.on('ready', () =>
-    {
-        console.debug('[DEBUG] watcher ready')
-    })
+    watcher.on(
+        'ready',
+        () =>
+        {
+            console.debug('[DEBUG] watcher ready')
+        }
+    )
 
-    watcher.on('change', (path) => 
-    {
-        console.debug(`[DEBUG] change detected on >>> ${path} <<<`)
+    watcher.on(
+        'change',
+        (path) => 
+        {
+            console.debug(`[DEBUG] change detected on >>> ${path} <<<`)
 
-        webpackHotMiddleware.publish({action: 'reload'})
-    })
+            webpackHotMiddleware.publish({action: 'reload'})
+        }
+    )
 
     app.use(webpackDevMiddleware)
     app.use(webpackHotMiddleware)
 
-    /*db.sequelize
+    // Uncomment these lines to drop all data in database
+    /*
+    db.sequelize
         .sync({force: true})
-        .then(() =>
-        {
-            console.log('[DEBUG] Drop and re-sync database')
-        })*/
+        .then(
+            () =>
+            {
+                console.log('[DEBUG] Drop and re-sync database')
+            }
+        )
+    */
+
     db.sequelize
         .sync()
-        .then(() =>
-        {
-            populate()
-        })
+        .then(
+            () =>
+            {
+                populate()
+            }
+        )
 }
 else
 {
@@ -128,17 +156,25 @@ else
     db.sequelize.sync()
 }
 
-// PUBLIC FILES (like images)
+/*===============================================//
+// PUBLIC Route
+//===============================================*/
 app.use('/static', express.static(path.resolve('sources', 'backend', 'public')))
 
+/*===============================================//
 // ROUTES
+// [BEWARE] order matters
+//===============================================*/
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
 require('./routes/post.routes')(app)
-require('./routes/page.routes')(app)
 require('./routes/school.routes')(app)
+require('./routes/page.routes')(app)
 
-server.listen(APP_PORT, () => 
-{
-    console.log(`[INFO] Server is running at http://${server.address().address}:${server.address().port}`)
-})
+server.listen(
+    APP_PORT,
+    () => 
+    {
+        console.log(`[INFO] Server is running at http://${server.address().address}:${server.address().port}`)
+    }
+)

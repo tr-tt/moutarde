@@ -1,52 +1,54 @@
 module.exports = (sequelize, DataTypes) =>
 {
-    const Contact = sequelize.define('Contact',
-    {
-        name:
+    const Contact = sequelize.define(
+        'Contact',
         {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            validate:
+            name:
             {
-                notEmpty:
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                validate:
                 {
-                    msg: `Le nom du contact est requis.`
+                    notEmpty:
+                    {
+                        msg: `Le nom du contact est requis.`
+                    }
+                }
+            },
+            job:
+            {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                validate:
+                {
+                    notEmpty:
+                    {
+                        msg: `La profession du contact est requise.`
+                    }
+                }
+            },
+            email:
+            {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                unique: true,
+                validate:
+                {
+                    notEmpty:
+                    {
+                        msg: `L'email du contact est requis.`
+                    },
+                    isEmail:
+                    {
+                        msg: `L'email du contact doit être valide.`
+                    }
                 }
             }
         },
-        job:
         {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `La profession du contact est requise.`
-                }
-            }
-        },
-        email:
-        {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            unique: true,
-            validate:
-            {
-                notEmpty:
-                {
-                    msg: `L'email du contact est requis.`
-                },
-                isEmail:
-                {
-                    msg: `L'email du contact doit être valide.`
-                }
-            }
+            tableName: 'Contacts'
         }
-    },
-    {
-        tableName: 'Contacts'
-    })
+    )
 
     return Contact
 }

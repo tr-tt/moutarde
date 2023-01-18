@@ -51,4 +51,13 @@ module.exports = (app) =>
         ],
         controller.putApiPostId
     )
+
+    app.get(
+        '/api/pdf/post',
+        [
+            authMiddleware.tokenExistVerify,
+            authMiddleware.rejectIfBadToken
+        ],
+        controller.getApiPdfPost
+    )
 }

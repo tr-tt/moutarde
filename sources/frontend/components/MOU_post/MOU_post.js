@@ -84,26 +84,30 @@ class MOUpost extends HTMLElement
     {
         postService
             .deleteApiPost(this._id)
-            .then(() =>
-            {
-                this.dispatchEvent(new Event('mou-post:delete'))
-                
-                this.remove()
-            })
-            .catch((exception) =>
-            {
-                if(exception.response
-                    && exception.response.data
-                    && exception.response.data.message)
+            .then(
+                () =>
                 {
-                    this._popupSubtitle.textContent = exception.response.data.message
-                    this._popupSubtitle.classList.add('error')
+                    this.dispatchEvent(new Event('mou-post:delete'))
+                    
+                    this.remove()
                 }
-                else
+            )
+            .catch(
+                (exception) =>
                 {
-                    console.error(exception)
+                    if(exception.response
+                        && exception.response.data
+                        && exception.response.data.message)
+                    {
+                        this._popupSubtitle.textContent = exception.response.data.message
+                        this._popupSubtitle.classList.add('error')
+                    }
+                    else
+                    {
+                        console.error(exception)
+                    }
                 }
-            })
+            )
     }
 
     set id(value)

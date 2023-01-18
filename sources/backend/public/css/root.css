@@ -37,6 +37,10 @@ This file include generic style that can be used inside shadowdom of webcomponen
     --border-radius-big: 20px;
 }
 
+/*===============================================//
+// GENERIC CSS STYLE
+//===============================================*/
+
 *
 {
     margin: 0;

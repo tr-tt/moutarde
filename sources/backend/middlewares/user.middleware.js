@@ -21,9 +21,11 @@ jobExist = (req, res, next) =>
 
             return res
                 .status(httpCodes.BAD_REQUEST)
-                .json({
-                    message: `La fonction ${req.body.job} est invalide.`
-                })
+                .json(
+                    {
+                        message: `La fonction ${req.body.job} est invalide.`
+                    }
+                )
         }
     }
     else
@@ -32,9 +34,11 @@ jobExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Fonction" est requis.`
-            })
+            .json(
+                {
+                    message: `Le champ "Fonction" est requis.`
+                }
+            )
     }
 }
 
@@ -50,9 +54,11 @@ usernameExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Nom d'utilisateur" est requis.`,
-            })
+            .json(
+                {
+                    message: `Le champ "Nom d'utilisateur" est requis.`,
+                }
+            )
     }
 }
 
@@ -65,33 +71,41 @@ usernameDuplicated = (req, res, next) =>
 
     UserTable
         .findByUsername(req.body.username)
-        .then((user) =>
-        {
-            if(user)
+        .then(
+            (user) =>
             {
-                logger.warn(`username ${req.body.username} is already taken`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.BAD_REQUEST})
+                if(user)
+                {
+                    logger.warn(`username ${req.body.username} is already taken`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.BAD_REQUEST})
+
+                    return res
+                        .status(httpCodes.BAD_REQUEST)
+                        .json(
+                            {
+                                message: `Le nom d'utilisateur ${req.body.username} est déjà utilisé.`,
+                            }
+                        )
+                }
+                else
+                {
+                    return next()
+                }
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when finding user by username ${req.body.username} exception ${exception.message}`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return res
-                    .status(httpCodes.BAD_REQUEST)
-                    .json({
-                        message: `Le nom d'utilisateur ${req.body.username} est déjà utilisé.`,
-                    })
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la vérification de la duplication du nom d'utilisateur ${req.body.username}.`,
+                        }
+                    )
             }
-            else
-            {
-                return next()
-            }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when finding user by username ${req.body.username} exception ${exception.message}`, {file: 'user.middleware.js', function: 'usernameDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la vérification de la duplication du nom d'utilisateur ${req.body.username}.`,
-                })
-        })
+        )
 }
 
 emailExist = (req, res, next) =>
@@ -106,9 +120,11 @@ emailExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Adresse email" est requis.`,
-            })
+            .json(
+                {
+                    message: `Le champ "Adresse email" est requis.`,
+                }
+            )
     }
 }
 
@@ -121,33 +137,41 @@ emailDuplicated = (req, res, next) =>
 
     UserTable
         .findByEmail(req.body.email)
-        .then((user) =>
-        {
-            if(user)
+        .then(
+            (user) =>
             {
-                logger.warn(`user email ${req.body.email} is already taken`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.BAD_REQUEST})
+                if(user)
+                {
+                    logger.warn(`user email ${req.body.email} is already taken`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.BAD_REQUEST})
+
+                    return res
+                        .status(httpCodes.BAD_REQUEST)
+                        .json(
+                            {
+                                message: `L'adresse email ${req.body.email} est déjà utilisée.`,
+                            }
+                        )
+                }
+                else
+                {
+                    return next()
+                }
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when finding user by email ${req.body.email} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return res
-                    .status(httpCodes.BAD_REQUEST)
-                    .json({
-                        message: `L'adresse email ${req.body.email} est déjà utilisée.`,
-                    })
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la vérification de la duplication de l'adresse email ${req.body.email}.`,
+                        }
+                    )
             }
-            else
-            {
-                return next()
-            }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when finding user by email ${req.body.email} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailDuplicated', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la vérification de la duplication de l'adresse email ${req.body.email}.`,
-                })
-        })
+        )
 }
 
 schoolExist = (req, res, next) =>
@@ -162,9 +186,11 @@ schoolExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Etablissement scolaire" est requis.`,
-            })
+            .json(
+                {
+                    message: `Le champ "Etablissement scolaire" est requis.`,
+                }
+            )
     }
 }
 
@@ -180,9 +206,11 @@ passwordExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Mot de passe" est requis.`,
-            })
+            .json(
+                {
+                    message: `Le champ "Mot de passe" est requis.`,
+                }
+            )
     }
 }
 
@@ -198,9 +226,11 @@ confirmPasswordExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Confirmation du mot de passe" est requis.`,
-            })
+            .json(
+                {
+                    message: `Le champ "Confirmation du mot de passe" est requis.`,
+                }
+            )
     }
 }
 
@@ -216,9 +246,11 @@ passwordAndConfirmPasswordIdentity = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Attention, votre mot de passe est différent du mot de passe de confirmation.`,
-            })
+            .json(
+                {
+                    message: `Attention, votre mot de passe est différent du mot de passe de confirmation.`,
+                }
+            )
     }
 }
 
@@ -234,9 +266,11 @@ emailOrUsernameExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Une adresse email ou un nom d'utilisateur est requis.`
-            })
+            .json(
+                {
+                    message: `Une adresse email ou un nom d'utilisateur est requis.`
+                }
+            )
     }
 }
 
@@ -249,37 +283,45 @@ emailOrUsernameExistInDB = (req, res, next) =>
 
     UserTable
         .findByEmailOrUsername(req.body.emailOrUsername)
-        .then((user) =>
-        {
-            if(user)
+        .then(
+            (user) =>
             {
-                req.user = user
+                if(user)
+                {
+                    req.user = user
 
-                logger.debug(`username or email ${req.body.emailOrUsername} found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.OK})
+                    logger.debug(`username or email ${req.body.emailOrUsername} found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.OK})
 
-                return next()
+                    return next()
+                }
+                else
+                {
+                    logger.warn(`username or email ${req.body.emailOrUsername} not found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.NOT_FOUND})
+
+                    return res
+                        .status(httpCodes.NOT_FOUND)
+                        .json(
+                            {
+                                message: `L'utilisateur avec l'adresse email ou le nom d'utilisateur ${req.body.emailOrUsername} n'a pas été trouvé.`
+                            }
+                        )
+                }
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                logger.warn(`username or email ${req.body.emailOrUsername} not found`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.NOT_FOUND})
+                logger.error(`Error when finding user by username or email ${req.body.emailOrUsername} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return res
-                    .status(httpCodes.NOT_FOUND)
-                    .json({
-                        message: `L'utilisateur avec l'adresse email ou le nom d'utilisateur ${req.body.emailOrUsername} n'a pas été trouvé.`
-                    })
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la recherche de l'utilisateur avec l'adresse email ou le nom d'utilisateur.`
+                        }
+                    )
             }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when finding user by username or email ${req.body.emailOrUsername} exception ${exception.message}`, {file: 'user.middleware.js', function: 'emailOrUsernameExistInDB', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la recherche de l'utilisateur avec l'adresse email ou le nom d'utilisateur.`
-                })
-        })
+        )
 }
 
 userIdExist = (req, res, next) =>
@@ -290,44 +332,54 @@ userIdExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un id d'utilisateur est requis.`,
-            })
+            .json(
+                {
+                    message: `Un id d'utilisateur est requis.`,
+                }
+            )
     }
 
     UserTable
         .findById(req.params.id)
-        .then((user) =>
-        {
-            if(user)
+        .then(
+            (user) =>
             {
-                req.user = user
+                if(user)
+                {
+                    req.user = user
 
-                logger.debug(`user found ${JSON.stringify(user, null, 2)}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.OK})
+                    logger.debug(`user found ${JSON.stringify(user, null, 2)}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.OK})
 
-                return next()
+                    return next()
+                }
+                else
+                {
+                    logger.warn(`user id ${req.params.id} not found`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.NOT_FOUND})
+
+                    return res
+                        .status(httpCodes.NOT_FOUND)
+                        .json(
+                            {
+                                message: `L'utilisateur n'a pas été trouvé.`,
+                            }
+                        )
+                }
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                logger.warn(`user id ${req.params.id} not found`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.NOT_FOUND})
+                logger.error(`Error when finding user by id ${req.params.id} exception ${exception.message}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return res
-                    .status(httpCodes.NOT_FOUND)
-                    .json({
-                        message: `L'utilisateur n'a pas été trouvé.`,
-                    })
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la recherche de l'utilisateur`,
+                        }
+                    )
             }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when finding user by id ${req.params.id} exception ${exception.message}`, {file: 'user.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la recherche de l'utilisateur`,
-                })
-        })
+        )
 }
 
 tokenExistVerify = (req, res, next) =>
@@ -338,30 +390,38 @@ tokenExistVerify = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Vous devez envoyer une requête sur la plateforme avant d'avoir accès aux données.`,
-            })
+            .json(
+                {
+                    message: `Vous devez envoyer une requête sur la plateforme avant d'avoir accès aux données.`,
+                }
+            )
     }
 
     const secret = process.env.APP_SECRET + req.user.password
 
-    jwt.verify(req.params.token, secret, (error, decoded) =>
-    {
-        if(error)
+    jwt.verify(
+        req.params.token,
+        secret,
+        (error, decoded) =>
         {
-            logger.error(`token ${req.params.token} invalid ${error}`, {file: 'user.middleware.js', function: 'tokenExistVerify', http: httpCodes.UNAUTHORIZED})
+            if(error)
+            {
+                logger.error(`token ${req.params.token} invalid ${error}`, {file: 'user.middleware.js', function: 'tokenExistVerify', http: httpCodes.UNAUTHORIZED})
 
-            return res
-                .status(httpCodes.UNAUTHORIZED)
-                .json({
-                    message: `Votre accès aux données a expiré.`
-                })
+                return res
+                    .status(httpCodes.UNAUTHORIZED)
+                    .json(
+                        {
+                            message: `Votre accès aux données a expiré.`
+                        }
+                    )
+            }
+
+            req.user_id = decoded.id
+
+            return next()
         }
-
-        req.user_id = decoded.id
-
-        return next()
-    })
+    )
 }
 
 const userMiddleware =

@@ -66,85 +66,101 @@ let _buttonReady = true
 
 AuthService
     .getApiAuthSignin()
-    .then(() =>
-    {
-        _navigation.forEach((navigation) =>
+    .then(
+        () =>
         {
-            const _mouLink = document.createElement('mou-link')
+            _navigation.forEach(
+                (navigation) =>
+                {
+                    const _mouLink = document.createElement('mou-link')
 
-            _mouLink.slot = 'controls'
-            _mouLink.setAttribute('href', navigation.href)
-            _mouLink.setAttribute('label', navigation.label)
-            _mouLink.setAttribute('css', navigation.css)
-            _mouLink.setAttribute('title', navigation.title)
+                    _mouLink.slot = 'controls'
+                    _mouLink.setAttribute('href', navigation.href)
+                    _mouLink.setAttribute('label', navigation.label)
+                    _mouLink.setAttribute('css', navigation.css)
+                    _mouLink.setAttribute('title', navigation.title)
 
-            _mouHeaderbar.appendChild(_mouLink)
-        })
+                    _mouHeaderbar.appendChild(_mouLink)
+                }
+            )
 
-        const _logout = document.createElement('mou-link')
+            const _logout = document.createElement('mou-link')
 
-        _logout.slot = 'controls'
-        _logout.setAttribute('label', 'Se déconnecter')
-        _logout.setAttribute('css', 'colored')
-        _logout.setAttribute('title', 'Se déconnecter')
-        _logout.addEventListener('click', () =>
+            _logout.slot = 'controls'
+            _logout.setAttribute('label', 'Se déconnecter')
+            _logout.setAttribute('css', 'colored')
+            _logout.setAttribute('title', 'Se déconnecter')
+            _logout.addEventListener(
+                'click',
+                () =>
+                {
+                    AuthService
+                        .getApiAuthSignout()
+                        .then(
+                            () =>
+                            {
+                                window.location.href = '/'
+                            }
+                        )
+                        .catch(
+                            (exception) =>
+                            {
+                                console.error(exception)
+                            }
+                        )
+                }
+            )
+
+            _mouHeaderbar.appendChild(_logout)
+
+            _loading.style.display = 'none'
+        }
+    )
+    .catch(
+        () =>
         {
-            AuthService
-                .getApiAuthSignout()
-                .then(() =>
-                {
-                    window.location.href = '/'
-                })
-                .catch((exception) =>
-                {
-                    console.error(exception)
-                })
-        })
+            const _signin = document.createElement('mou-link')
 
-        _mouHeaderbar.appendChild(_logout)
+            _signin.slot = 'controls'
+            _signin.setAttribute('href', '/signin')
+            _signin.setAttribute('label', 'Se connecter')
+            _signin.setAttribute('css', 'default')
+            _signin.setAttribute('title', 'Se connecter')
 
-        _loading.style.display = 'none'
-    })
-    .catch(() =>
-    {
-        const _signin = document.createElement('mou-link')
+            const _signup = document.createElement('mou-link')
 
-        _signin.slot = 'controls'
-        _signin.setAttribute('href', '/signin')
-        _signin.setAttribute('label', 'Se connecter')
-        _signin.setAttribute('css', 'default')
-        _signin.setAttribute('title', 'Se connecter')
+            _signup.slot = 'controls'
+            _signup.setAttribute('href', '/signup')
+            _signup.setAttribute('label', 'Créer un compte')
+            _signup.setAttribute('css', 'colored')
+            _signup.setAttribute('title', 'Créer un compte')
 
-        const _signup = document.createElement('mou-link')
+            _mouHeaderbar.appendChild(_signin)
+            _mouHeaderbar.appendChild(_signup)
 
-        _signup.slot = 'controls'
-        _signup.setAttribute('href', '/signup')
-        _signup.setAttribute('label', 'Créer un compte')
-        _signup.setAttribute('css', 'colored')
-        _signup.setAttribute('title', 'Créer un compte')
-
-        _mouHeaderbar.appendChild(_signin)
-        _mouHeaderbar.appendChild(_signup)
-
-        _loading.style.display = 'none'
-    })
+            _loading.style.display = 'none'
+        }
+    )
 
 /*===============================================//
 // Hides or shows the password when the _show
 // checkbox is triggered
 //===============================================*/
 
-_show.addEventListener('click', () =>
-{
-    if(_password.getAttribute('type') === 'password')
+_show.addEventListener(
+    'click',
+    () =>
     {
-        _password.setAttribute('type', 'text')
+        if(_password.getAttribute('type') === 'password')
+        {
+            _password.setAttribute('type', 'text')
+        }
+        else
+        {
+            _password.setAttribute('type', 'password')
+        }
     }
-    else
-    {
-        _password.setAttribute('type', 'password')
-    }
-})
+)
 
 /*===============================================//
 // Tries to submit the form when the _button is
@@ -213,54 +229,68 @@ const buildFormAndSend = () =>
 
     UserService
         .postApiUserPasswordReset(formData)
-        .then(() =>
-        {
-            AuthService
-                .getApiAuthSignout()
-                .then(() =>
+        .then(
+            () =>
+            {
+                AuthService
+                    .getApiAuthSignout()
+                    .then(
+                        () =>
+                        {
+                            ok(`Votre mot de passe à été mis à jour.`)
+                        }
+                    )
+                    .catch(
+                        (exception) =>
+                        {
+                            console.error(exception)
+
+                            error(`Une erreur est survenue.`)
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
                 {
-                    ok(`Votre mot de passe à été mis à jour.`)
-                })
-                .catch((exception) =>
+                    error(exception.response.data.message)
+                }
+                else
                 {
                     console.error(exception)
 
                     error(`Une erreur est survenue.`)
-                })
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
-            {
-                error(exception.response.data.message)
+                }
             }
-            else
-            {
-                console.error(exception)
-
-                error(`Une erreur est survenue.`)
-            }
-        })
+        )
 }
 
-_button.addEventListener('click', () =>
-{
-    if(_buttonReady)
+_button.addEventListener(
+    'click',
+    () =>
     {
-        _buttonReady = false
+        if(_buttonReady)
+        {
+            _buttonReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)
 
 /*===============================================//
 // Removes the loading screen when everything
 // is loaded
 //===============================================*/
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+window.addEventListener(
+    'DOMContentLoaded',
+    () =>
+    {
+        _loading.style.display = 'none'
+    }
+)

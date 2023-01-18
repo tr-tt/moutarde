@@ -15,6 +15,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 
 const _logout = document.querySelector('#logout')
 const _subtitle = document.querySelector('#subtitle')
+const _confidential = document.querySelector('#confidential')
 const _situation = document.querySelector('#situation')
 const _tool = document.querySelector('#tool')
 const _when = document.querySelector('#when')
@@ -38,19 +39,26 @@ let _buttonReady = true
 // index page when _logout button is clicked
 //===============================================*/
 
-_logout.addEventListener('click', () =>
-{
-    AuthService
-        .getApiAuthSignout()
-        .then(() =>
-        {
-            window.location.href = '/'
-        })
-        .catch((exception) =>
-        {
-            console.error(exception)
-        })
-})
+_logout.addEventListener(
+    'click',
+    () =>
+    {
+        AuthService
+            .getApiAuthSignout()
+            .then(
+                () =>
+                {
+                    window.location.href = '/'
+                }
+            )
+            .catch(
+                (exception) =>
+                {
+                    console.error(exception)
+                }
+            )
+    }
+)
 
 /*===============================================//
 // Tries to submit the form when the _button is
@@ -74,6 +82,7 @@ const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
+    const confidential = _confidential.checked
     const situation = _situation.value
     const tool = _tool.value
     const when = _when.value
@@ -85,6 +94,8 @@ const buildFormAndSend = () =>
     const improvement = _improvement.value
     const more = _more.value
     const picture = _picture.value
+
+    formData.append('confidential', confidential)
 
     if(situation)
     {
@@ -154,43 +165,53 @@ const buildFormAndSend = () =>
     
     PostService
         .postApiPost(formData, _popupProgress)
-        .then(() =>
-        {
-            window.location.href = '/posts'
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
+        .then(
+            () =>
             {
-                error(exception.response.data.message)
+                window.location.href = '/posts'
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                console.error(exception)
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
+                {
+                    error(exception.response.data.message)
+                }
+                else
+                {
+                    console.error(exception)
 
-                error(`Une erreur est survenue.`)
+                    error(`Une erreur est survenue.`)
+                }
             }
-        })
+        )
 }
 
-_button.addEventListener('click', () =>
-{
-    if(_buttonReady)
+_button.addEventListener(
+    'click',
+    () =>
     {
-        _buttonReady = false
+        if(_buttonReady)
+        {
+            _buttonReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)
 
 /*===============================================//
 // Removes the loading screen when everything
 // is loaded
 //===============================================*/
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+window.addEventListener(
+    'DOMContentLoaded',
+    () =>
+    {
+        _loading.style.display = 'none'
+    }
+)

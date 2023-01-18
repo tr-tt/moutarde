@@ -8,7 +8,10 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 
 const _loading = document.querySelector('#loading')
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+window.addEventListener(
+    'DOMContentLoaded',
+    () =>
+    {
+        _loading.style.display = 'none'
+    }
+)

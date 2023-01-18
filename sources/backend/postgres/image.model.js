@@ -1,38 +1,40 @@
 module.exports = (sequelize, DataTypes) =>
 {
-    const Image = sequelize.define('Image',
-    {
-        name:
+    const Image = sequelize.define(
+        'Image',
         {
-            type: DataTypes.STRING(100),
-            defaultValue: ''
-        },
-        type:
-        {
-            type: DataTypes.STRING(100),
-            defaultValue: ''
-        },
-        blob:
-        {
-            type: DataTypes.BLOB,
-            defaultValue: null
-        },
-        number:
-        {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            validate:
+            name:
             {
-                notEmpty:
+                type: DataTypes.STRING(100),
+                defaultValue: ''
+            },
+            type:
+            {
+                type: DataTypes.STRING(100),
+                defaultValue: ''
+            },
+            blob:
+            {
+                type: DataTypes.BLOB,
+                defaultValue: null
+            },
+            number:
+            {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate:
                 {
-                    msg: `Image "number" is missing.`
+                    notEmpty:
+                    {
+                        msg: `Image "number" is missing.`
+                    }
                 }
             }
+        },
+        {
+            tableName: 'Images'
         }
-    },
-    {
-        tableName: 'Images'
-    })
+    )
   
     return Image
 }

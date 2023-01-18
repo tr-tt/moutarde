@@ -43,11 +43,16 @@ label
     top: 0;
     height: 100%;
     width: 100%;
+    max-width: 100%;
     padding: 13px 10px;
     background-color:rgb(var(--white));
     border: 2px solid rgb(var(--color-9));
     border-radius: var(--border-radius);
     font-size: 18px;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 
     transition: none;
 }
@@ -97,6 +102,7 @@ label.hide
     label.icon
     {
         width: calc(100% - 75px);
+        max-width: calc(100% - 75px);
         border-radius: var(--border-radius) 0 0 var(--border-radius);
     }
 
@@ -125,6 +131,7 @@ label.hide
     label.icon
     {
         width: calc(100% - 50px);
+        max-width: calc(100% - 50px);
         border-radius: var(--border-radius) 0 0 var(--border-radius);
     }
 

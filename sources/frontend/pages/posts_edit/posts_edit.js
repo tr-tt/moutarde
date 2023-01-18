@@ -16,6 +16,7 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 const post_id = window.location.pathname.replace('/posts/edit/', '')
 const _logout = document.querySelector('#logout')
 const _subtitle = document.querySelector('#subtitle')
+const _confidential = document.querySelector('#confidential')
 const _situation = document.querySelector('#situation')
 const _tool = document.querySelector('#tool')
 const _when = document.querySelector('#when')
@@ -39,78 +40,90 @@ let _buttonReady = true
 // index page when _logout button is clicked
 //===============================================*/
 
-_logout.addEventListener('click', () =>
-{
-    AuthService
-        .getApiAuthSignout()
-        .then(() =>
-        {
-            window.location.href = '/'
-        })
-        .catch((exception) =>
-        {
-            console.error(exception)
-        })
-})
+_logout.addEventListener(
+    'click',
+    () =>
+    {
+        AuthService
+            .getApiAuthSignout()
+            .then(
+                () =>
+                {
+                    window.location.href = '/'
+                }
+            )
+            .catch(
+                (exception) =>
+                {
+                    console.error(exception)
+                }
+            )
+    }
+)
 
 PostService.
     getApiPostId(post_id)
-    .then((response) =>
-    {
-        if(response.data
-            && response.data.message)
+    .then(
+        (response) =>
         {
-            _situation.value = response.data.message.situation || ''
-            _tool.value = response.data.message.tool || ''
-
-            const when = response.data.message.when || ''
-
-            if(when)
+            if(response.data
+                && response.data.message)
             {
-                /*===============================================//
-                // [WARNING]
-                // Real date = 11/01/2023 15:00
-                // date stored in db = 2023-01-11 15:00:00+01
-                // date returnded by pg = 2023-01-11T14:00:00.000Z
-                //===============================================*/
-                const date = when.split('T')[0] || ''
-                const time = new Date(when).toLocaleTimeString([]) || ''
+                _confidential.checked = response.data.message.confidential || false
+                _situation.value = response.data.message.situation || ''
+                _tool.value = response.data.message.tool || ''
 
-                if(date && time)
+                const when = response.data.message.when || ''
+
+                if(when)
                 {
-                    _when.value = `${date}T${time}`
+                    /*===============================================//
+                    // [WARNING]
+                    // Real date = 11/01/2023 15:00
+                    // date stored in db = 2023-01-11 15:00:00+01
+                    // date returnded by pg = 2023-01-11T14:00:00.000Z
+                    //===============================================*/
+                    const date = when.split('T')[0] || ''
+                    const time = new Date(when).toLocaleTimeString([]) || ''
+
+                    if(date && time)
+                    {
+                        _when.value = `${date}T${time}`
+                    }
                 }
+
+                _feeling.value = response.data.message.feeling || ''
+                _description.value = response.data.message.description || ''
+                _ressource.value = response.data.message.ressource || ''
+                _difficulty.value = response.data.message.difficulty || ''
+                _trick.value = response.data.message.trick || ''
+                _improvement.value = response.data.message.improvement || ''
+                _more.value = response.data.message.more || ''
+                _picture.value = response.data.message.Images
+            }
+            else
+            {
+                console.error('response not well formated')
             }
 
-            _feeling.value = response.data.message.feeling || ''
-            _description.value = response.data.message.description || ''
-            _ressource.value = response.data.message.ressource || ''
-            _difficulty.value = response.data.message.difficulty || ''
-            _trick.value = response.data.message.trick || ''
-            _improvement.value = response.data.message.improvement || ''
-            _more.value = response.data.message.more || ''
-            _picture.value = response.data.message.Images
+            _loading.style.display = 'none'
         }
-        else
+    )
+    .catch(
+        (exception) =>
         {
-            console.error('response not well formated')
+            if(exception.response
+                && exception.response.data
+                && exception.response.data.message)
+            {
+                console.log(exception.response.data.message)
+            }
+            else
+            {
+                console.error(exception)
+            }
         }
-
-        _loading.style.display = 'none'
-    })
-    .catch((exception) =>
-    {
-        if(exception.response
-            && exception.response.data
-            && exception.response.data.message)
-        {
-            console.log(exception.response.data.message)
-        }
-        else
-        {
-            console.error(exception)
-        }
-    })
+    )
 
 /*===============================================//
 // Tries to submit the form when the _button is
@@ -134,6 +147,7 @@ const buildFormAndSend = () =>
 {
     const formData = new FormData()
 
+    const confidential = _confidential.checked
     const situation = _situation.value
     const tool = _tool.value
     const when = _when.value
@@ -145,6 +159,8 @@ const buildFormAndSend = () =>
     const improvement = _improvement.value
     const more = _more.value
     const picture = _picture.value
+
+    formData.append('confidential', confidential)
 
     if(situation)
     {
@@ -214,33 +230,40 @@ const buildFormAndSend = () =>
     
     PostService
         .putApiPostId(post_id, formData, _popupProgress)
-        .then(() =>
-        {
-            window.location.href = '/posts'
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
+        .then(
+            () =>
             {
-                error(exception.response.data.message)
+                window.location.href = '/posts'
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                console.error(exception)
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
+                {
+                    error(exception.response.data.message)
+                }
+                else
+                {
+                    console.error(exception)
 
-                error(`Une erreur est survenue.`)
+                    error(`Une erreur est survenue.`)
+                }
             }
-        })
+        )
 }
 
-_button.addEventListener('click', () =>
-{
-    if(_buttonReady)
+_button.addEventListener(
+    'click',
+    () =>
     {
-        _buttonReady = false
+        if(_buttonReady)
+        {
+            _buttonReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)

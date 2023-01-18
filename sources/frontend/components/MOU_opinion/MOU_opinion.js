@@ -15,10 +15,12 @@ class MOUopinion extends HTMLElement
 
     connectedCallback()
     {
-        this._opinionFields.forEach((field) =>
-        {
-            field.addEventListener('click', this._onClickHandler.bind(this))
-        })
+        this._opinionFields.forEach(
+            (field) =>
+            {
+                field.addEventListener('click', this._onClickHandler.bind(this))
+            }
+        )
     }
 
     disconnectedCallback()
@@ -28,13 +30,15 @@ class MOUopinion extends HTMLElement
 
     _onClickHandler(event)
     {
-        this._opinionFields.forEach((field) =>
-        {
-            if(field !== event.target)
+        this._opinionFields.forEach(
+            (field) =>
             {
-                field.classList.remove('active')
+                if(field !== event.target)
+                {
+                    field.classList.remove('active')
+                }
             }
-        })
+        )
 
         event.target.classList.toggle('active')
     }

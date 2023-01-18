@@ -1,1 +1,19 @@
+/*===============================================//
+// PC
+//===============================================*/
 
+@media screen and (min-width: 800px)
+{
+    /* Override */
+    .root__page
+    {
+        padding: 40px;
+        margin: auto;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+}

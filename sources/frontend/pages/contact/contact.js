@@ -20,19 +20,26 @@ const _page = document.querySelector('#page')
 // index page when _logout button is clicked
 //===============================================*/
 
-_logout.addEventListener('click', () =>
-{
-    AuthService
-        .getApiAuthSignout()
-        .then(() =>
-        {
-            window.location.href = '/'
-        })
-        .catch((exception) =>
-        {
-            console.error(exception)
-        })
-})
+_logout.addEventListener(
+    'click',
+    () =>
+    {
+        AuthService
+            .getApiAuthSignout()
+            .then(
+                () =>
+                {
+                    window.location.href = '/'
+                }
+            )
+            .catch(
+                (exception) =>
+                {
+                    console.error(exception)
+                }
+            )
+    }
+)
 
 /*===============================================//
 // Retrieves the user's school and the school
@@ -41,61 +48,71 @@ _logout.addEventListener('click', () =>
 
 UserService
     .getApiUser()
-    .then((response) =>
-    {
-        if(response.data
-            && response.data.message
-            && response.data.message.School)
+    .then(
+        (response) =>
         {
-            const school = response.data.message.School.name || ''
-
-            if(school)
+            if(response.data
+                && response.data.message
+                && response.data.message.School)
             {
-                SchoolService
-                    .getApiSchoolByName(school)
-                    .then((response) =>
-                    {
-                        if(response.data
-                            && response.data.message)
-                        {
-                            const contacts = response.data.message.Contacts || []
-    
-                            contacts.forEach((contact) =>
-                            {
-                                const contactElement = document.createElement('mou-contact')
-    
-                                contactElement.setAttribute('name', contact.name)
-                                contactElement.setAttribute('job', contact.job)
-                                contactElement.setAttribute('email', contact.email)
-    
-                                _page.appendChild(contactElement)
-                            })
-                        }
-                        else
-                        {
-                            console.error('response not well formated')
-                        }
+                const school = response.data.message.School.name || ''
 
-                        _loading.style.display = 'none'
-                    })
-                    .catch((exception) =>
-                    {
-                        console.error(exception)
-                    })
+                if(school)
+                {
+                    SchoolService
+                        .getApiSchoolByName(school)
+                        .then(
+                            (response) =>
+                            {
+                                if(response.data
+                                    && response.data.message)
+                                {
+                                    const contacts = response.data.message.Contacts || []
+            
+                                    contacts.forEach(
+                                        (contact) =>
+                                        {
+                                            const contactElement = document.createElement('mou-contact')
+                
+                                            contactElement.setAttribute('name', contact.name)
+                                            contactElement.setAttribute('job', contact.job)
+                                            contactElement.setAttribute('email', contact.email)
+                
+                                            _page.appendChild(contactElement)
+                                        }
+                                    )
+                                }
+                                else
+                                {
+                                    console.error('response not well formated')
+                                }
+
+                                _loading.style.display = 'none'
+                            }
+                        )
+                        .catch(
+                            (exception) =>
+                            {
+                                console.error(exception)
+                            }
+                        )
+                }
+                else
+                {
+                    console.error('no user school found')
+                }
             }
             else
             {
-                console.error('no user school found')
+                console.error('response not well formated')
             }
-        }
-        else
-        {
-            console.error('response not well formated')
-        }
 
-        _loading.style.display = 'none'
-    })
-    .catch((exception) =>
-    {
-        console.error(exception)
-    })
+            _loading.style.display = 'none'
+        }
+    )
+    .catch(
+        (exception) =>
+        {
+            console.error(exception)
+        }
+    )

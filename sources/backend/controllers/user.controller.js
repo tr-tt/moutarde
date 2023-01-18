@@ -10,44 +10,54 @@ exports.getApiUser = (req, res) =>
 {
     UserTable
         .findById(req.user_id)
-        .then((user) =>
-        {
-            if(user)
+        .then(
+            (user) =>
             {
-                logger.debug(`user id ${req.user_id} username ${user.username} found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.OK})
+                if(user)
+                {
+                    logger.debug(`user id ${req.user_id} username ${user.username} found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.OK})
 
-                user.dataValues.createdAt && delete user.dataValues.createdAt
-                user.dataValues.updatedAt && delete user.dataValues.updatedAt
-                user.dataValues.password && delete user.dataValues.password
-                user.dataValues.SchoolId && delete user.dataValues.SchoolId
+                    user.dataValues.createdAt && delete user.dataValues.createdAt
+                    user.dataValues.updatedAt && delete user.dataValues.updatedAt
+                    user.dataValues.password && delete user.dataValues.password
+                    user.dataValues.SchoolId && delete user.dataValues.SchoolId
 
-                return res
-                    .status(httpCodes.OK)
-                    .json({
-                        message: user
-                    })
+                    return res
+                        .status(httpCodes.OK)
+                        .json(
+                            {
+                                message: user
+                            }
+                        )
+                }
+                else
+                {
+                    logger.warn(`user id ${req.user_id} not found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.NOT_FOUND})
+        
+                    return res
+                        .status(httpCodes.NOT_FOUND)
+                        .json(
+                            {
+                                message: `L'utilisateur n'a pas été trouvé.`,
+                            }
+                        )
+                }
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                logger.warn(`user id ${req.user_id} not found`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.NOT_FOUND})
-    
+                logger.error(`Error when finding user by id ${req.user_id} exception ${exception.message}`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
+        
                 return res
-                    .status(httpCodes.NOT_FOUND)
-                    .json({
-                        message: `L'utilisateur n'a pas été trouvé.`,
-                    })
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la recherche de l'utilisateur.`,
+                        }
+                    )
             }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when finding user by id ${req.user_id} exception ${exception.message}`, {file: 'user.controller.js', function: 'getApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
-    
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la recherche de l'utilisateur.`,
-                })
-        })
+        )
 }
 
 exports.postApiUser = async (req, res) =>
@@ -89,26 +99,34 @@ exports.postApiUser = async (req, res) =>
                         link: `${req.protocol}://${req.get('host')}/signin`
                     }
                 )
-                .then((result) =>
-                {
-                    logger.debug(`Email sent to ${user.email} result ${JSON.stringify(result, null, 2)}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK}) 
-            
-                    return res
-                        .status(httpCodes.OK)
-                        .json({
-                            message: `L'utilisateur ${user.username} a été enregistré.`
-                        })
-                })
-                .catch((exception) =>
-                {
-                    logger.error(`Error when sending email to ${user.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
-            
-                    return res
-                        .status(httpCodes.INTERNAL_SERVER_ERROR)
-                        .json({
-                            message: `Une erreur est survenue lors de l'envoi de l'email de confirmation de l'enregistrement de l'utilisateur.`,
-                        })
-                })
+                .then(
+                    (result) =>
+                    {
+                        logger.debug(`Email sent to ${user.email} result ${JSON.stringify(result, null, 2)}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.OK}) 
+                
+                        return res
+                            .status(httpCodes.OK)
+                            .json(
+                                {
+                                    message: `L'utilisateur ${user.username} a été enregistré.`
+                                }
+                            )
+                    }
+                )
+                .catch(
+                    (exception) =>
+                    {
+                        logger.error(`Error when sending email to ${user.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUser', http: httpCodes.INTERNAL_SERVER_ERROR})
+                
+                        return res
+                            .status(httpCodes.INTERNAL_SERVER_ERROR)
+                            .json(
+                                {
+                                    message: `Une erreur est survenue lors de l'envoi de l'email de confirmation de l'enregistrement de l'utilisateur.`,
+                                }
+                            )
+                    }
+                )
         }
         catch(exception)
         {
@@ -118,9 +136,11 @@ exports.postApiUser = async (req, res) =>
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de l'enregistrement de l'utilisateur.`,
-                })
+                .json(
+                    {
+                        message: `Une erreur est survenue lors de l'enregistrement de l'utilisateur.`,
+                    }
+                )
         }
     }
     else
@@ -129,9 +149,11 @@ exports.postApiUser = async (req, res) =>
     
         return res
             .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Une erreur est survenue lors de la recherche de l'établissement scolaire.`,
-            })
+            .json(
+                {
+                    message: `Une erreur est survenue lors de la recherche de l'établissement scolaire.`,
+                }
+            )
     }
 }
 
@@ -166,9 +188,11 @@ exports.putApiUser = async (req, res) =>
 
             return res
                 .status(httpCodes.OK)
-                .json({
-                    message: `Votre profil a été mis à jour.`
-                })
+                .json(
+                    {
+                        message: `Votre profil a été mis à jour.`
+                    }
+                )
         }
         catch(exception)
         {
@@ -178,9 +202,11 @@ exports.putApiUser = async (req, res) =>
 
             return res
                 .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la mise à jour de l'utilisateur.`,
-                })
+                .json(
+                    {
+                        message: `Une erreur est survenue lors de la mise à jour de l'utilisateur.`,
+                    }
+                )
         }
     }
     else
@@ -189,9 +215,11 @@ exports.putApiUser = async (req, res) =>
     
         return res
             .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Une erreur est survenue lors de la recherche de l'établissement scolaire.`,
-            })
+            .json(
+                {
+                    message: `Une erreur est survenue lors de la recherche de l'établissement scolaire.`,
+                }
+            )
     }
 }
 
@@ -199,26 +227,34 @@ exports.deleteApiUserId = (req, res) =>
 {
     UserTable
         .delete(req.params.id)
-        .then((count) =>
-        {
-            logger.debug(`user id ${req.params.id} row(s) ${count} deleted`, {file: 'user.controller.js', function: 'deleteApiUserId', http: httpCodes.OK})
+        .then(
+            (count) =>
+            {
+                logger.debug(`user id ${req.params.id} row(s) ${count} deleted`, {file: 'user.controller.js', function: 'deleteApiUserId', http: httpCodes.OK})
 
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `Le compte utilisateur a été supprimé.`
-                })
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when deleting user by id ${req.params.id} exception ${exception.message}`, {file: 'user.controller.js', function: 'deleteApiUserId', http: httpCodes.INTERNAL_SERVER_ERROR})
+                return res
+                    .status(httpCodes.OK)
+                    .json(
+                        {
+                            message: `Le compte utilisateur a été supprimé.`
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when deleting user by id ${req.params.id} exception ${exception.message}`, {file: 'user.controller.js', function: 'deleteApiUserId', http: httpCodes.INTERNAL_SERVER_ERROR})
 
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la suppression du compte utilisateur.`,
-                })
-        })
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la suppression du compte utilisateur.`,
+                        }
+                    )
+            }
+        )
 }
 
 exports.postApiUserPasswordForgot = (req, res) =>
@@ -240,50 +276,66 @@ exports.postApiUserPasswordForgot = (req, res) =>
                 link: link
             }
         )
-        .then((result) =>
-        {
-            logger.debug(`Email sent to ${req.user.email} result ${JSON.stringify(result, null, 2)}`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.OK})
+        .then(
+            (result) =>
+            {
+                logger.debug(`Email sent to ${req.user.email} result ${JSON.stringify(result, null, 2)}`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.OK})
 
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `Un lien vous a été envoyé par email pour changer votre mot de passe (valide 15 min).`
-                })
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when sending email to ${req.user.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.INTERNAL_SERVER_ERROR})
-        
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la réinitialisation du mot de passe.`
-                })
-        })
+                return res
+                    .status(httpCodes.OK)
+                    .json(
+                        {
+                            message: `Un lien vous a été envoyé par email pour changer votre mot de passe (valide 15 min).`
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when sending email to ${req.user.email} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUserPasswordForgot', http: httpCodes.INTERNAL_SERVER_ERROR})
+            
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la réinitialisation du mot de passe.`
+                        }
+                    )
+            }
+        )
 }
 
 exports.postApiUserPasswordReset = (req, res) =>
 {
     UserTable
         .update({password: req.body.password}, req.user_id)
-        .then((count) =>
-        {
-            logger.debug(`user id ${req.user_id} password row(s) ${count} updated`, {file: 'user.controller.js', function: 'postApiUserPasswordReset', http: httpCodes.OK})
-  
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `Votre mot de passe à été mis à jour.`
-                })
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when updating password user id ${req.user_id} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUserPasswordReset', http: httpCodes.INTERNAL_SERVER_ERROR})
+        .then(
+            (count) =>
+            {
+                logger.debug(`user id ${req.user_id} password row(s) ${count} updated`, {file: 'user.controller.js', function: 'postApiUserPasswordReset', http: httpCodes.OK})
+    
+                return res
+                    .status(httpCodes.OK)
+                    .json(
+                        {
+                            message: `Votre mot de passe à été mis à jour.`
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when updating password user id ${req.user_id} exception ${exception.message}`, {file: 'user.controller.js', function: 'postApiUserPasswordReset', http: httpCodes.INTERNAL_SERVER_ERROR})
 
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la mise à jour du mot de passe.`,
-                })
-        })
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la mise à jour du mot de passe.`,
+                        }
+                    )
+            }
+        )
 }

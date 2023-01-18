@@ -24,17 +24,20 @@ let _buttonReady = true
 // checkbox is triggered
 //===============================================*/
 
-_show.addEventListener('click', () =>
-{
-    if(_password.getAttribute('type') === 'password')
+_show.addEventListener(
+    'click',
+    () =>
     {
-        _password.setAttribute('type', 'text')
+        if(_password.getAttribute('type') === 'password')
+        {
+            _password.setAttribute('type', 'text')
+        }
+        else
+        {
+            _password.setAttribute('type', 'password')
+        }
     }
-    else
-    {
-        _password.setAttribute('type', 'password')
-    }
-})
+)
 
 /*===============================================//
 // Tries to submit the form when the _button is
@@ -80,53 +83,66 @@ const buildFormAndSend = () =>
 
     AuthService
         .postApiAuthSignin(formData)
-        .then(() =>
-        {
-            window.location.href = '/posts'
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
+        .then(
+            () =>
             {
-                error(exception.response.data.message)
+                window.location.href = '/posts'
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                console.error(exception)
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
+                {
+                    error(exception.response.data.message)
+                }
+                else
+                {
+                    console.error(exception)
 
-                error(`Une erreur est survenue.`)
+                    error(`Une erreur est survenue.`)
+                }
             }
-        })
+        )
 }
 
-_button.addEventListener('click', async () =>
-{
-    if(_buttonReady)
+_button.addEventListener(
+    'click',
+    () =>
     {
-        _buttonReady = false
+        if(_buttonReady)
+        {
+            _buttonReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)
 
-window.addEventListener('keydown', (event) =>
-{
-    if(event.key === 'Enter' && _keyReady)
+window.addEventListener(
+    'keydown',
+    (event) =>
     {
-        _keyReady = false
+        if(event.key === 'Enter' && _keyReady)
+        {
+            _keyReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)
 
 /*===============================================//
 // Removes the loading screen when everything
 // is loaded
 //===============================================*/
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+window.addEventListener(
+    'DOMContentLoaded',
+    () =>
+    {
+        _loading.style.display = 'none'
+    }
+)

@@ -1,16 +1,17 @@
 const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport(
-{         
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: true,
-    auth:
-    {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }          
-})
+    {         
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: true,
+        auth:
+        {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+        }          
+    }
+)
 
 const mailer = {}
 
@@ -20,7 +21,7 @@ mailer.sendAccountCreated = (emailData) =>
     `
         <img src="https://mon-carnet-hercule.fr/static/images/logos/logo_hercule.png" width="400px" draggable="false">
 
-        <h1 style="font-size: 20px;color: #5f6368;">Bienvenu sur la plateforme HERCULE !</h1>
+        <h1 style="font-size: 20px;color: #5f6368;">Bienvenue dans votre carnet de récolte "Hercule 4.0"</h1>
 
         <p style="font-size: 18px;text-align: justify;color: #5f6368;">Votre compte utilisateur <strong style="color: #F8AC00;">${emailData.username}</strong> a bien été créé, vous pouvez désormais vous connecter avec en cliquant sur le lien ci-dessous.</p>
 

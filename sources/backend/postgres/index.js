@@ -11,13 +11,20 @@ const sequelize = new Sequelize(
     }
 )
 
-sequelize.authenticate().then(() =>
-{
-    console.debug('[INFO] Connection with postgresql successfull')
-}).catch((error) =>
-{
-    console.error(`[ERROR] Connection with postgresql error - ${error}`)
-})
+sequelize
+    .authenticate()
+    .then(
+        () =>
+        {
+            console.debug('[INFO] Connection with postgresql successfull')
+        }
+    )
+    .catch(
+        (error) =>
+        {
+            console.error(`[ERROR] Connection with postgresql error - ${error}`)
+        }
+    )
 
 const db = {}
 
@@ -34,7 +41,8 @@ db.Image = require('./image.model.js')(sequelize, DataTypes)
 /*===============================================//
 // USER 1 <==> n POST
 //===============================================*/
-db.User.hasMany(db.Post,
+db.User.hasMany(
+    db.Post,
     {
         onDelete: 'CASCADE'
     }
@@ -50,13 +58,15 @@ db.User.belongsTo(db.School)
 /*===============================================//
 // SCHOOL n <==> n CONTACT
 //===============================================*/
-db.School.belongsToMany(db.Contact,
+db.School.belongsToMany(
+    db.Contact,
     {
         through: 'school_contact',
         foreignKey: 'school_id'
     }
 )
-db.Contact.belongsToMany(db.School,
+db.Contact.belongsToMany(
+    db.School,
     {
         through: 'school_contact',
         foreignKey: 'contact_id'
@@ -66,7 +76,8 @@ db.Contact.belongsToMany(db.School,
 /*===============================================//
 // POST 1 <==> n IMAGE
 //===============================================*/
-db.Post.hasMany(db.Image,
+db.Post.hasMany(
+    db.Image,
     {
         onDelete: 'CASCADE'
     }

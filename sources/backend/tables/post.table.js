@@ -3,7 +3,8 @@ const db = require('../postgres')
 exports.createWithTransaction = (postData, transactionInstance) =>
 {
     return db.Post
-        .create(postData,
+        .create(
+            postData,
             {
                 transaction: transactionInstance
             }
@@ -13,7 +14,8 @@ exports.createWithTransaction = (postData, transactionInstance) =>
 exports.updateWithTransaction = (postData, postId, transactionInstance) =>
 {
     return db.Post
-        .update(postData,
+        .update(
+            postData,
             {
                 where:
                 {
@@ -42,7 +44,8 @@ exports.delete = (id) =>
 exports.findById = (id) =>
 {
     return db.Post
-        .findByPk(id,
+        .findByPk(
+            id,
             {
                 include:
                 [

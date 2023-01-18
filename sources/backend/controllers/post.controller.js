@@ -4,39 +4,49 @@ const PostTable = require('../tables/post.table')
 const ImageTable = require('../tables/image.table')
 const UserTable = require('../tables/user.table')
 const db = require('../postgres')
+const pdf = require('../pdf')
 
 exports.getApiPost = (req, res) =>
 {
     PostTable
         .findAllByUserId(req.user_id)
-        .then((posts) =>
-        {
-            logger.debug(`user id ${req.user_id} has ${posts.length} posts found`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.OK})
+        .then(
+            (posts) =>
+            {
+                logger.debug(`user id ${req.user_id} has ${posts.length} posts found`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.OK})
 
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: posts
-                })
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when retrieving user id ${req.user_id}'s posts exception ${exception.message}`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
-    
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la recherche des pages du carnet.`,
-                })
-        })
+                return res
+                    .status(httpCodes.OK)
+                    .json(
+                        {
+                            message: posts
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when retrieving user id ${req.user_id}'s posts exception ${exception.message}`, {file: 'post.controller.js', function: 'getApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
+        
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la recherche des pages du carnet.`,
+                        }
+                    )
+            }
+        )
 }
 
-exports.postApiPost = async (req, res) =>
+exports.postApiPost = (req, res) =>
 {
     const postData = {}
     const image0Data = {}
     const image1Data = {}
 
+    postData.confidential = req.body.confidential
     postData.situation = req.body.situation
     postData.tool = req.body.tool || ''
     postData.when = req.body.when || null
@@ -66,94 +76,127 @@ exports.postApiPost = async (req, res) =>
     }
     image1Data.number = 1
 
-    const user = await UserTable.findById(req.user_id)
+    UserTable
+        .findById(req.user_id)
+        .then(
+            (user) =>
+            {
+                if(user)
+                {
+                    return user
+                }
+                else
+                {
+                    throw(`User by id ${req.user_id} not found`)
+                }
+            }
+        )
+        .then(
+            async (user) =>
+            {
+                const transactionInstance = await db.sequelize.transaction()
 
-    if(user)
-    {
-        const transactionInstance = await db.sequelize.transaction()
+                try
+                {
+                    const post = await PostTable.createWithTransaction(postData, transactionInstance)
 
-        try
-        {
-            const post = await PostTable.createWithTransaction(postData, transactionInstance)
+                    await user.addPost(post, {transaction: transactionInstance})
+        
+                    const image0 = await ImageTable.createWithTransaction(image0Data, transactionInstance)
+        
+                    await post.addImage(image0, {transaction: transactionInstance})
+        
+                    const image1 = await ImageTable.createWithTransaction(image1Data, transactionInstance)
+        
+                    await post.addImage(image1, {transaction: transactionInstance})
+        
+                    await transactionInstance.commit()
 
-            await user.addPost(post, {transaction: transactionInstance})
+                    logger.debug(`user id ${req.user_id} new post ${post.id} created`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.OK})
 
-            const image0 = await ImageTable.createWithTransaction(image0Data, transactionInstance)
+                    return res
+                        .status(httpCodes.OK)
+                        .json(
+                            {
+                                message: `La nouvelle page de carnet a été enregistrée.`
+                            }
+                        )
+                }
+                catch(exception)
+                {
+                    await transactionInstance.rollback()
 
-            await post.addImage(image0, {transaction: transactionInstance})
-
-            const image1 = await ImageTable.createWithTransaction(image1Data, transactionInstance)
-
-            await post.addImage(image1, {transaction: transactionInstance})
-
-            await transactionInstance.commit()
-
-            logger.debug(`user id ${req.user_id} new post ${post.Id} created`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.OK})
-
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `La nouvelle page de carnet a été enregistrée.`
-                })
-        }
-        catch(exception)
-        {
-            await transactionInstance.rollback()
-
-            logger.error(`Error when saving new post user id ${req.user_id} exception ${exception.message}`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de l'enregistrement de la nouvelle page de carnet.`,
-                })
-        }
-    }
-    else
-    {
-        logger.error(`Error when retrieving user by id ${req.user_id} not found`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
-    
-        return res
-            .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Une erreur est survenue lors de la recherche d'un utilisateur.`,
-            })
-    }
+                    logger.error(`Error when saving user id ${req.user_id}'s post exception ${exception.message}`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
+        
+                    return res
+                        .status(httpCodes.INTERNAL_SERVER_ERROR)
+                        .json(
+                            {
+                                message: `Une erreur est survenue lors de l'enregistrement de la nouvelle page de carnet.`,
+                            }
+                        )
+                }
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when saving user id ${req.user_id}'s post exception ${exception.message}`, {file: 'post.controller.js', function: 'postApiPost', http: httpCodes.INTERNAL_SERVER_ERROR})
+        
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de l'enregistrement de la nouvelle page de carnet.`,
+                        }
+                    )
+            }
+        )
 }
 
 exports.getApiPostId = (req, res) =>
 {
     return res
         .status(httpCodes.OK)
-        .json({
-            message: req.post
-        })
+        .json(
+            {
+                message: req.post
+            }
+        )
 }
 
 exports.deleteApiPostId = (req, res) =>
 {
     PostTable
         .delete(req.params.id)
-        .then((count) =>
-        {
-            logger.debug(`post id ${req.params.id} row(s) ${count} deleted`, {file: 'post.controller.js', function: 'deleteApiPostId', http: httpCodes.OK})
+        .then(
+            (count) =>
+            {
+                logger.debug(`post id ${req.params.id} row(s) ${count} deleted`, {file: 'post.controller.js', function: 'deleteApiPostId', http: httpCodes.OK})
 
-            return res
-                .status(httpCodes.OK)
-                .json({
-                    message: `La page du carnet a été supprimée.`
-                })
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when deleting post id ${req.params.id} exception ${exception.message}`, {file: 'post.controller.js', function: 'deleteApiPostId', http: httpCodes.INTERNAL_SERVER_ERROR})
+                return res
+                    .status(httpCodes.OK)
+                    .json(
+                        {
+                            message: `La page du carnet a été supprimée.`
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when deleting post id ${req.params.id} exception ${exception.message}`, {file: 'post.controller.js', function: 'deleteApiPostId', http: httpCodes.INTERNAL_SERVER_ERROR})
 
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la suppression d'une page de carnet.`,
-                })
-        })
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la suppression d'une page de carnet.`,
+                        }
+                    )
+            }
+        )
 }
 
 exports.putApiPostId = async (req, res) =>
@@ -162,6 +205,7 @@ exports.putApiPostId = async (req, res) =>
     const image0Data = {}
     const image1Data = {}
 
+    postData.confidential = req.body.confidential
     postData.situation = req.body.situation
     postData.tool = req.body.tool || ''
     postData.when = req.body.when || null
@@ -219,9 +263,11 @@ exports.putApiPostId = async (req, res) =>
 
         return res
             .status(httpCodes.OK)
-            .json({
-                message: `La page du carnet à été mise à jour.`
-            })
+            .json(
+                {
+                    message: `La page du carnet à été mise à jour.`
+                }
+            )
     }
     catch(exception)
     {
@@ -231,8 +277,86 @@ exports.putApiPostId = async (req, res) =>
 
         return res
             .status(httpCodes.INTERNAL_SERVER_ERROR)
-            .json({
-                message: `Une erreur est survenue lors de la mise à jour de la page du carnet.`,
-            })
+            .json(
+                {
+                    message: `Une erreur est survenue lors de la mise à jour de la page du carnet.`,
+                }
+            )
     }
+}
+
+exports.getApiPdfPost = (req, res) =>
+{
+    UserTable
+        .findById(req.user_id)
+        .then(
+            (user) =>
+            {
+                if(user)
+                {
+                    return user
+                }
+                else
+                {
+                    throw(`User by id ${req.user_id} not found`)
+                }
+            }
+        )
+        .then(
+            (user) =>
+            {
+                PostTable
+                    .findAllByUserId(req.user_id)
+                    .then(
+                        (posts) =>
+                        {
+                            logger.debug(`user id ${user.id} has ${posts.length} posts found`, {file: 'post.controller.js', function: 'getApiPdfPost', http: httpCodes.OK})
+
+                            const stream = res
+                                .writeHead(
+                                    httpCodes.OK,
+                                    {
+                                        'Content-Type': 'application/pdf',
+                                        'Content-Disposition': `attachment;filename=hercule.pdf`
+                                    }
+                                )
+
+                            pdf.buildPDF(
+                                user,
+                                posts,
+                                (chunk) => stream.write(chunk),
+                                () => stream.end()
+                            )
+                        }
+                    )
+                    .catch(
+                        (exception) =>
+                        {
+                            logger.error(`Error when retrieving user id ${user.id}'s posts ${exception.message}`, {file: 'post.controller.js', function: 'getApiPdfPost', http: httpCodes.INTERNAL_SERVER_ERROR})
+                        
+                            return res
+                                .status(httpCodes.INTERNAL_SERVER_ERROR)
+                                .json(
+                                    {
+                                        message: `Une erreur est survenue lors de la recherche des pages du carnet.`,
+                                    }
+                                )
+                        }
+                    )
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                logger.error(`Error when building pdf exception ${exception.message}`, {file: 'post.controller.js', function: 'getApiPdfPost', http: httpCodes.INTERNAL_SERVER_ERROR})
+        
+                return res
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la fabrication du pdf.`,
+                        }
+                    )
+            }
+        )
 }

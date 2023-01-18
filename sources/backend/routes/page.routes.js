@@ -74,7 +74,7 @@ module.exports = (app) =>
     )
 
     app.get(
-        '/',
+        '*',
         controller.getIndex
     )
 }

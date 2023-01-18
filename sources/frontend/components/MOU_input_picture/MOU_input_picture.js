@@ -23,7 +23,7 @@ class MOUInputPicture extends HTMLElement
         this._file0 = null
         this._file1 = null
 
-        this._maxSize = 1000 // KB = 1MB
+        this._maxSize = 700 // KB = 0.7MB
     }
 
     connectedCallback()
@@ -52,21 +52,25 @@ class MOUInputPicture extends HTMLElement
         if(file)
         {
             compressAccurately(file, this._maxSize)
-                .then((blob) =>
-                {
-                    this._file0 = new File([blob], file.name)
+                .then(
+                    (blob) =>
+                    {
+                        this._file0 = new File([blob], file.name)
 
-                    this._img0.src = URL.createObjectURL(this._file0)
-                    this._img0.classList.remove('hide')
+                        this._img0.src = URL.createObjectURL(this._file0)
+                        this._img0.classList.remove('hide')
 
-                    this._delete0.setAttribute('label', 'Supprimer')
-                    this._delete0.setAttribute('css', 'default')
-                    this._delete0.classList.add('above')
-                })
-                .catch((exception) =>
-                {
-                    console.error(exception)
-                })
+                        this._delete0.setAttribute('label', 'Supprimer')
+                        this._delete0.setAttribute('css', 'default')
+                        this._delete0.classList.add('above')
+                    }
+                )
+                .catch(
+                    (exception) =>
+                    {
+                        console.error(exception)
+                    }
+                )
         }
     }
 
@@ -77,21 +81,25 @@ class MOUInputPicture extends HTMLElement
         if(file)
         {
             compressAccurately(file, this._maxSize)
-                .then((blob) =>
-                {
-                    this._file1 = new File([blob], file.name)
+                .then(
+                    (blob) =>
+                    {
+                        this._file1 = new File([blob], file.name)
 
-                    this._img1.src = URL.createObjectURL(this._file1)
-                    this._img1.classList.remove('hide')
+                        this._img1.src = URL.createObjectURL(this._file1)
+                        this._img1.classList.remove('hide')
 
-                    this._delete1.setAttribute('label', 'Supprimer')
-                    this._delete1.setAttribute('css', 'default')
-                    this._delete1.classList.add('above')
-                })
-                .catch((exception) =>
-                {
-                    console.error(exception)
-                })
+                        this._delete1.setAttribute('label', 'Supprimer')
+                        this._delete1.setAttribute('css', 'default')
+                        this._delete1.classList.add('above')
+                    }
+                )
+                .catch(
+                    (exception) =>
+                    {
+                        console.error(exception)
+                    }
+                )
         }
     }
 

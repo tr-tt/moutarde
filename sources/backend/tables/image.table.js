@@ -3,7 +3,8 @@ const db = require('../postgres')
 exports.createWithTransaction = (imageData, transactionInstance) =>
 {
     return db.Image
-        .create(imageData,
+        .create(
+            imageData,
             {
                 transaction: transactionInstance
             }
@@ -13,7 +14,8 @@ exports.createWithTransaction = (imageData, transactionInstance) =>
 exports.updateWithTransaction = (imageData, postId, transactionInstance) =>
 {
     return db.Image
-        .update(imageData,
+        .update(
+            imageData,
             {
                 where:
                 {

@@ -1,24 +1,26 @@
 module.exports = (sequelize, DataTypes) =>
 {
-    const School = sequelize.define('School',
-    {
-        name:
+    const School = sequelize.define(
+        'School',
         {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            unique: true,
-            validate:
+            name:
             {
-                notEmpty:
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                unique: true,
+                validate:
                 {
-                    msg: `Le nom de l'école est requis.`
+                    notEmpty:
+                    {
+                        msg: `Le nom de l'école est requis.`
+                    }
                 }
             }
+        },
+        {
+            tableName: 'Schools'
         }
-    },
-    {
-        tableName: 'Schools'
-    })
+    )
 
     return School
 }

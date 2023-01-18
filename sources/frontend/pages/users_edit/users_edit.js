@@ -6,6 +6,7 @@ import '../../components/MOU_select/MOU_select'
 import UserService from '../../services/user.service'
 import AuthService from '../../services/auth.service'
 import SchoolService from '../../services/school.service'
+import PostService from '../../services/post.service'
 
 if(process.env.NODE_ENV === 'development' && module.hot)
 {
@@ -33,6 +34,7 @@ const _button = document.querySelector('#button')
 const _popup = document.querySelector('#popup')
 const _cancel = document.querySelector('#cancel')
 const _confirm = document.querySelector('#confirm')
+const _pdf = document.querySelector('#pdf')
 
 let _current_username = ''
 let _current_email = ''
@@ -41,13 +43,59 @@ let _buttonReady = true
 const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
 /*===============================================//
+// Download user's posts into a pdf
+//===============================================*/
+
+_pdf.addEventListener(
+    'click',
+    () =>
+    {
+        PostService
+            .getApiPdfPost()
+            .then(
+                (response) =>
+                {
+                    if(!response.ok || response.status !== 200)
+                    {
+                        throw(`Une erreur est survenue lors du téléchargement du pdf.`)
+                    }
+
+                    return response.blob()
+                }
+            )
+            .then(
+                (blob) =>
+                {
+                    const downloadUrl = URL.createObjectURL(new Blob([blob]))
+                    const link = document.createElement('a')
+                    link.href = downloadUrl
+                    link.download = 'mon-carnet-hercule.pdf'
+                    document.body.appendChild(link)
+                    link.click()
+                    link.remove()
+                    setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+                }
+            )
+            .catch(
+                (exception) =>
+                {
+                    console.error(exception)
+                }
+            )
+    }
+)
+
+/*===============================================//
 // Open the chart in a new tab
 //===============================================*/
 
-_gotoChart.addEventListener('click', () =>
-{
-    window.open('/chart', '_blank')
-})
+_gotoChart.addEventListener(
+    'click',
+    () =>
+    {
+        window.open('/chart', '_blank')
+    }
+)
 
 /*===============================================//
 // Retrieves all schools stored in database and
@@ -58,122 +106,137 @@ _gotoChart.addEventListener('click', () =>
 
 SchoolService
     .getApiSchool()
-    .then((response) =>
-    {
-        // SCHOOLS
-        if(response.data
-            && response.data.message)
+    .then(
+        (response) =>
         {
-            const schools = response.data.message || []
+            // SCHOOLS
+            if(response.data
+                && response.data.message)
+            {
+                const schools = response.data.message || []
 
-            schools.forEach((school) =>
+                schools.forEach(
+                    (school) =>
+                    {
+                        const _option = document.createElement('option')
+
+                        _option.value = school.name
+                        _option.textContent = school.name
+
+                        _school.appendChild(_option)
+                    }
+                )
+            }
+            else
+            {
+                console.error('response not well formated')
+            }
+
+            // BIRTHDAY
+            const startYear = 1930
+            const endYear = new Date().getFullYear()
+
+            for(let i = endYear; i > startYear; i--)
             {
                 const _option = document.createElement('option')
 
-                _option.value = school.name
-                _option.textContent = school.name
+                _option.value = i
+                _option.textContent = i
 
-                _school.appendChild(_option)
-            })
+                _birthday.appendChild(_option)
+            }
+
+            // USER DATA
+            UserService
+                .getApiUser()
+                .then(
+                    (response) =>
+                    {
+                        if(response.data
+                            && response.data.message)
+                        {
+                            _current_username = response.data.message.username || ''
+                            _current_email = response.data.message.email || ''
+            
+                            _userId = response.data.message.id || 0
+                            _job.value = response.data.message.job
+                            _username.value = _current_username
+                            _email.value = _current_email
+                            _lastname.value = response.data.message.lastname || ''
+                            _firstname.value = response.data.message.firstname || ''
+                            _birthday.value = response.data.message.birthday || ''
+                            _sex.value = response.data.message.sex || ''
+                            _schoolYear.value = response.data.message.schoolYear || ''
+                            _seniority.value = response.data.message.seniority || ''
+
+                            if(response.data.message.School)
+                            {
+                                _school.value = response.data.message.School.name || ''
+                            }
+            
+                            if(_job.value === 'Etudiant')
+                            {
+                                _seniority.style.display = 'none'
+                            }
+                            else if(_job.value === 'Enseignant')
+                            {
+                                _schoolYear.style.display = 'none'
+                            }
+                            else
+                            {
+                                console.error(`[ERROR] job ${_job.value} not supported`)
+                            }                    
+                        }
+                        else
+                        {
+                            console.error('response not well formated')
+                        }
+
+                        _loading.style.display = 'none'
+                    }
+                )
+                .catch(
+                    (exception) =>
+                    {
+                        console.error(exception)
+                    }
+                )
+
+            _loading.style.display = 'none'
         }
-        else
+    )
+    .catch(
+        (exception) =>
         {
-            console.error('response not well formated')
+            console.error(exception)
         }
-
-        // BIRTHDAY
-        const startYear = 1930
-        const endYear = new Date().getFullYear()
-
-        for(let i = endYear; i > startYear; i--)
-        {
-            const _option = document.createElement('option')
-
-            _option.value = i
-            _option.textContent = i
-
-            _birthday.appendChild(_option)
-        }
-
-        // USER DATA
-        UserService
-            .getApiUser()
-            .then((response) =>
-            {
-                if(response.data
-                    && response.data.message)
-                {
-                    console.log(response.data.message);
-                    _current_username = response.data.message.username || ''
-                    _current_email = response.data.message.email || ''
-    
-                    _userId = response.data.message.id || 0
-                    _job.value = response.data.message.job
-                    _username.value = _current_username
-                    _email.value = _current_email
-                    _lastname.value = response.data.message.lastname || ''
-                    _firstname.value = response.data.message.firstname || ''
-                    _birthday.value = response.data.message.birthday || ''
-                    _sex.value = response.data.message.sex || ''
-                    _schoolYear.value = response.data.message.schoolYear || ''
-                    _seniority.value = response.data.message.seniority || ''
-
-                    if(response.data.message.School)
-                    {
-                        _school.value = response.data.message.School.name || ''
-                    }
-    
-                    if(_job.value === 'Etudiant')
-                    {
-                        _seniority.style.display = 'none'
-                    }
-                    else if(_job.value === 'Enseignant')
-                    {
-                        _schoolYear.style.display = 'none'
-                    }
-                    else
-                    {
-                        console.error(`[ERROR] job ${_job.value} not supported`)
-                    }                    
-                }
-                else
-                {
-                    console.error('response not well formated')
-                }
-
-                _loading.style.display = 'none'
-            })
-            .catch((exception) =>
-            {
-                console.error(exception)
-            })
-
-        _loading.style.display = 'none'
-    })
-    .catch((exception) =>
-    {
-        console.error(exception)
-    })
+    )
 
 /*===============================================//
 // Opens the delete popup when _delete button
 // is clicked
 //===============================================*/
 
-_delete.addEventListener('click', () =>
-{
-    _popup.style.display = 'flex'
-})
+_delete.addEventListener(
+    'click',
+    () =>
+    {
+        _popup.style.display = 'flex'
+    }
+)
 
 /*===============================================//
 // Closes the delete popup when _cancel button
 // is clicked
 //===============================================*/
 
-_cancel.addEventListener('click', () =>
-{
-    _popup.style.display = 'none'
-})
+_cancel.addEventListener(
+    'click',
+    () =>
+    {
+        _popup.style.display = 'none'
+    }
+)
 
 /*===============================================//
 // Deletes the user accound in database then
@@ -181,56 +244,74 @@ _cancel.addEventListener('click', () =>
 // index page
 //===============================================*/
 
-_confirm.addEventListener('click', () =>
-{
-    UserService
-        .deleteApiUserId(_userId)
-        .then(() =>
-        {
-            AuthService
-                .getApiAuthSignout()
-                .then(() =>
+_confirm.addEventListener(
+    'click',
+    () =>
+    {
+        UserService
+            .deleteApiUserId(_userId)
+            .then(
+                () =>
                 {
-                    window.location.href = '/'
-                })
-                .catch((exception) =>
+                    AuthService
+                        .getApiAuthSignout()
+                        .then(
+                            () =>
+                            {
+                                window.location.href = '/'
+                            }
+                        )
+                        .catch(
+                            (exception) =>
+                            {
+                                console.error(exception)
+                            }
+                        )
+                }
+            )
+            .catch(
+                (exception) =>
                 {
-                    console.error(exception)
-                })
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
-            {
-                _subtitle.textContent = exception.response.data.message
-            }
-            else
-            {
-                console.error(exception)
-            }
-        })
-})
+                    if(exception.response
+                        && exception.response.data
+                        && exception.response.data.message)
+                    {
+                        _subtitle.textContent = exception.response.data.message
+                    }
+                    else
+                    {
+                        console.error(exception)
+                    }
+                }
+            )
+    }
+)
 
 /*===============================================//
 // Logouts the user and redirects him to the
 // index page when _logout button is clicked
 //===============================================*/
 
-_logout.addEventListener('click', () =>
-{
-    AuthService
-        .getApiAuthSignout()
-        .then(() =>
-        {
-            window.location.href = '/'
-        })
-        .catch((exception) =>
-        {
-            console.error(exception)
-        })
-})
+_logout.addEventListener(
+    'click',
+    () =>
+    {
+        AuthService
+            .getApiAuthSignout()
+            .then(
+                () =>
+                {
+                    window.location.href = '/'
+                }
+            )
+            .catch(
+                (exception) =>
+                {
+                    console.error(exception)
+                }
+            )
+    }
+)
 
 /*===============================================//
 // Tries to send the user updated data to
@@ -373,35 +454,42 @@ const buildFormAndSend = () =>
 
     UserService
         .putApiUser(formData)
-        .then(() =>
-        {
-            ok(`Votre profil a été mis à jour.`)
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
+        .then(
+            () =>
             {
-                error(exception.response.data.message)
+                ok(`Votre profil a été mis à jour.`)
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                console.error(exception)
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
+                {
+                    error(exception.response.data.message)
+                }
+                else
+                {
+                    console.error(exception)
 
-                error(`Une erreur est survenue`)
+                    error(`Une erreur est survenue`)
+                }
             }
-        })
+        )
 }
 
-_button.addEventListener('click', () =>
-{
-    if(_buttonReady)
+_button.addEventListener(
+    'click',
+    () =>
     {
-        _buttonReady = false
+        if(_buttonReady)
+        {
+            _buttonReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)
 
 

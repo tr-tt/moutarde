@@ -43,32 +43,38 @@ const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]
 
 SchoolService
     .getApiSchool()
-    .then((response) =>
-    {
-        if(response.data
-            && response.data.message)
+    .then(
+        (response) =>
         {
-            const schools = response.data.message || []
-
-            schools.forEach((school) =>
+            if(response.data
+                && response.data.message)
             {
-                const _option = document.createElement('option')
-    
-                _option.value = school.name
-                _option.textContent = school.name
-    
-                _school.appendChild(_option)
-            })
+                const schools = response.data.message || []
+
+                schools.forEach(
+                    (school) =>
+                    {
+                        const _option = document.createElement('option')
+            
+                        _option.value = school.name
+                        _option.textContent = school.name
+            
+                        _school.appendChild(_option)
+                    }
+                )
+            }
+            else
+            {
+                console.error('response not well formated')
+            }
         }
-        else
+    )
+    .catch(
+        (exception) =>
         {
-            console.error('response not well formated')
+            console.error(exception);
         }
-    })
-    .catch((exception) =>
-    {
-        console.error(exception);
-    })
+    )
 
 /*===============================================//
 // Populate _birthday
@@ -95,49 +101,58 @@ for(let i = endYear; i > startYear; i--)
 
 _seniority.style.display = 'none'
 
-_job.addEventListener('mou-select:change', (event) =>
-{
-    if(event.detail.value === 'Etudiant')
+_job.addEventListener(
+    'mou-select:change',
+    (event) =>
     {
-        _schoolYear.style.display = 'block'
-        _seniority.style.display = 'none'
+        if(event.detail.value === 'Etudiant')
+        {
+            _schoolYear.style.display = 'block'
+            _seniority.style.display = 'none'
+        }
+        else if(event.detail.value === 'Enseignant')
+        {
+            _schoolYear.style.display = 'none'
+            _seniority.style.display = 'block'
+        }
+        else
+        {
+            console.error(`[ERROR] job ${event.detail.value} not supported`)
+        }
     }
-    else if(event.detail.value === 'Enseignant')
-    {
-        _schoolYear.style.display = 'none'
-        _seniority.style.display = 'block'
-    }
-    else
-    {
-        console.error(`[ERROR] job ${event.detail.value} not supported`)
-    }
-})
+)
 
 /*===============================================//
 // Open the chart in a new tab
 //===============================================*/
 
-_gotoChart.addEventListener('click', () =>
-{
-    window.open('/chart', '_blank')
-})
+_gotoChart.addEventListener(
+    'click',
+    () =>
+    {
+        window.open('/chart', '_blank')
+    }
+)
 
 /*===============================================//
 // Hides or shows the password when the _show
 // checkbox is triggered
 //===============================================*/
 
-_show.addEventListener('click', () =>
-{
-    if(_password.getAttribute('type') === 'password')
+_show.addEventListener(
+    'click',
+    () =>
     {
-        _password.setAttribute('type', 'text')
+        if(_password.getAttribute('type') === 'password')
+        {
+            _password.setAttribute('type', 'text')
+        }
+        else
+        {
+            _password.setAttribute('type', 'password')
+        }
     }
-    else
-    {
-        _password.setAttribute('type', 'password')
-    }
-})
+)
 
 /*===============================================//
 // Tries to submit the form when the _button is
@@ -304,43 +319,53 @@ const buildFormAndSend = () =>
 
     UserService
         .postApiUser(formData)
-        .then(() =>
-        {
-            ok(`Votre compte a été crée, vous pouvez dès à présent vous connecter.`)
-        })
-        .catch((exception) =>
-        {
-            if(exception.response
-                && exception.response.data
-                && exception.response.data.message)
+        .then(
+            () =>
             {
-                error(exception.response.data.message)
+                ok(`Votre compte a été crée, vous pouvez dès à présent vous connecter.`)
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                console.error(exception)
+                if(exception.response
+                    && exception.response.data
+                    && exception.response.data.message)
+                {
+                    error(exception.response.data.message)
+                }
+                else
+                {
+                    console.error(exception)
 
-                error(`Une erreur est survenue.`)
+                    error(`Une erreur est survenue.`)
+                }
             }
-        })
+        )
 }
 
-_button.addEventListener('click', () =>
-{
-    if(_buttonReady)
+_button.addEventListener(
+    'click',
+    () =>
     {
-        _buttonReady = false
+        if(_buttonReady)
+        {
+            _buttonReady = false
 
-        buildFormAndSend()
+            buildFormAndSend()
+        }
     }
-})
+)
 
 /*===============================================//
 // Removes the loading screen when everything
 // is loaded
 //===============================================*/
 
-window.addEventListener('DOMContentLoaded', () =>
-{
-    _loading.style.display = 'none'
-})
+window.addEventListener(
+    'DOMContentLoaded',
+    () =>
+    {
+        _loading.style.display = 'none'
+    }
+)

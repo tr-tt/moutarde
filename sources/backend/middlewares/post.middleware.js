@@ -14,9 +14,11 @@ situationExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Le champ "Situation vécue" est requis.`,
-            })
+            .json(
+                {
+                    message: `Le champ "Situation vécue" est requis.`,
+                }
+            )
     }
 }
 
@@ -28,44 +30,54 @@ postIdExist = (req, res, next) =>
 
         return res
             .status(httpCodes.BAD_REQUEST)
-            .json({
-                message: `Un id de page de carnet est requis.`,
-            })
+            .json(
+                {
+                    message: `Un id de page de carnet est requis.`,
+                }
+            )
     }
 
     PostTable
         .findById(req.params.id)
-        .then((post) =>
-        {
-            if(post)
+        .then(
+            (post) =>
             {
-                req.post = post
+                if(post)
+                {
+                    req.post = post
 
-                logger.debug(`post ${post.Id} found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.OK})
+                    logger.debug(`post ${post.Id} found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.OK})
 
-                return next()
+                    return next()
+                }
+                else
+                {
+                    logger.warn(`post id ${req.params.id} not found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.NOT_FOUND})
+
+                    return res
+                        .status(httpCodes.NOT_FOUND)
+                        .json(
+                            {
+                                message: `La page de carnet n'a pas été trouvé.`,
+                            }
+                        )
+                }
             }
-            else
+        )
+        .catch(
+            (exception) =>
             {
-                logger.warn(`post id ${req.params.id} not found`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.NOT_FOUND})
+                logger.error(`Error when finding post by id ${req.params.id} exception ${exception.message}`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return res
-                    .status(httpCodes.NOT_FOUND)
-                    .json({
-                        message: `La page de carnet n'a pas été trouvé.`,
-                    })
+                    .status(httpCodes.INTERNAL_SERVER_ERROR)
+                    .json(
+                        {
+                            message: `Une erreur est survenue lors de la recherche de la page de carnet`,
+                        }
+                    )
             }
-        })
-        .catch((exception) =>
-        {
-            logger.error(`Error when finding post by id ${req.params.id} exception ${exception.message}`, {file: 'post.middleware.js', function: 'postIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return res
-                .status(httpCodes.INTERNAL_SERVER_ERROR)
-                .json({
-                    message: `Une erreur est survenue lors de la recherche de la page de carnet`,
-                })
-        })
+        )
 }
 
 const postMiddleware =

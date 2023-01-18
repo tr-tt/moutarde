@@ -20,19 +20,26 @@ const _empty = document.querySelector('#empty')
 // index page when _logout button is clicked
 //===============================================*/
 
-_logout.addEventListener('click', () =>
-{
-    AuthService
-        .getApiAuthSignout()
-        .then(() =>
-        {
-            window.location.href = '/'
-        })
-        .catch((exception) =>
-        {
-            console.error(exception)
-        })
-})
+_logout.addEventListener(
+    'click',
+    () =>
+    {
+        AuthService
+            .getApiAuthSignout()
+            .then(
+                () =>
+                {
+                    window.location.href = '/'
+                }
+            )
+            .catch(
+                (exception) =>
+                {
+                    console.error(exception)
+                }
+            )
+    }
+)
 
 /*===============================================//
 // Retrieves all forms stored in database and
@@ -51,72 +58,81 @@ const createPostsView = (posts) =>
     _empty.classList.add('hide')
     _page.classList.remove('hide')
 
-    posts.forEach((post) =>
-    {
-        const postElement = document.createElement('mou-post')
-        
-        postElement.id = post.id
-
-        if(post.when)
-        {          
-            postElement.setAttribute('when', post.when)
-        }
-
-        postElement.images = post.Images
-
-        postElement.setAttribute('situation', post.situation)
-
-        if(post.tool)
+    posts.forEach(
+        (post) =>
         {
-            postElement.setAttribute('tool', post.tool)
-        }
-        
-        if(post.description)
-        {
-            postElement.setAttribute('description', post.description)
-        }        
+            const postElement = document.createElement('mou-post')
+            
+            postElement.id = post.id
 
-        postElement.addEventListener('mou-post:delete', () =>
-        {
-            if(_page.childElementCount === 1)
-            {
-                _empty.classList.remove('hide')
-                _page.classList.add('hide')
+            if(post.when)
+            {          
+                postElement.setAttribute('when', post.when)
             }
-        })
-        
-        _page.appendChild(postElement)
-    })
+
+            postElement.images = post.Images
+
+            postElement.setAttribute('situation', post.situation)
+
+            if(post.tool)
+            {
+                postElement.setAttribute('tool', post.tool)
+            }
+            
+            if(post.description)
+            {
+                postElement.setAttribute('description', post.description)
+            }        
+
+            postElement.addEventListener(
+                'mou-post:delete',
+                () =>
+                {
+                    if(_page.childElementCount === 1)
+                    {
+                        _empty.classList.remove('hide')
+                        _page.classList.add('hide')
+                    }
+                }
+            )
+            
+            _page.appendChild(postElement)
+        }
+    )
 
     _loading.style.display = 'none'
 }
 
 PostService
     .getApiPost()
-    .then((response) =>
-    {
-        if(response.data
-            && response.data.message)
+    .then(
+        (response) =>
         {
-            createPostsView(response.data.message)
+            if(response.data
+                && response.data.message)
+            {
+                createPostsView(response.data.message)
+            }
+            else
+            {
+                console.error('response not well formated')
+            }
         }
-        else
+    )
+    .catch(
+        (exception) =>
         {
-            console.error('response not well formated')
+            if(exception.response
+                && exception.response.data
+                && exception.response.data.message)
+            {
+                console.log(exception.response.data.message)
+            }
+            else
+            {
+                console.error(exception)
+            }
         }
-    })
-    .catch((exception) =>
-    {
-        if(exception.response
-            && exception.response.data
-            && exception.response.data.message)
-        {
-            console.log(exception.response.data.message)
-        }
-        else
-        {
-            console.error(exception)
-        }
-    })
+    )
 
 

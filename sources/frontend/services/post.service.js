@@ -5,20 +5,24 @@ class PostService
     postApiPost(formData, _popupProgress)
     {
         return axios
-            .post('/api/post', formData,
+            .post(
+                '/api/post',
+                formData,
                 {
                     headers:
                     {
                         'accept': 'application/json',
                         'Content-Type': 'multipart/form-data'
                     },
-                    onUploadProgress: (event) =>
+                    onUploadProgress:
+                    (event) =>
                     {
                         const progress = Math.round((event.loaded * 100) / event.total)
 
                         _popupProgress.textContent = `${progress}%`
                     }
-                })
+                }
+            )
     }
 
     getApiPost()
@@ -42,20 +46,34 @@ class PostService
     putApiPostId(id, formData, _popupProgress)
     {
         return axios
-            .put(`/api/post/${id}`, formData,
-            {
-                headers:
+            .put(
+                `/api/post/${id}`,
+                formData,
                 {
-                    'accept': 'application/json',
-                    'Content-Type': 'multipart/form-data'
-                },
-                onUploadProgress: (event) =>
-                {
-                    const progress = Math.round((event.loaded * 100) / event.total)
+                    headers:
+                    {
+                        'accept': 'application/json',
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    onUploadProgress:
+                    (event) =>
+                    {
+                        const progress = Math.round((event.loaded * 100) / event.total)
 
-                    _popupProgress.textContent = `${progress}%`
+                        _popupProgress.textContent = `${progress}%`
+                    }
                 }
-            })
+            )
+    }
+
+    getApiPdfPost()
+    {
+        return fetch(
+            `/api/pdf/post`,
+            {
+                method: 'GET'
+            }
+        )
     }
 }
 

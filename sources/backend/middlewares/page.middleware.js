@@ -16,34 +16,39 @@ userIdExist = (req, res, next) =>
 
     db.User
         .findByPk(req.params.id)
-        .then((user) =>
-        {
-            if(user)
+        .then(
+            (user) =>
             {
-                req.user = user
+                if(user)
+                {
+                    req.user = user
 
-                req.status = httpCodes.OK
+                    req.status = httpCodes.OK
 
-                logger.debug(`user id ${req.params.id} found`, {file: 'page.middleware.js', function: 'userIdExist', http: httpCodes.OK})
+                    logger.debug(`user id ${req.params.id} found`, {file: 'page.middleware.js', function: 'userIdExist', http: httpCodes.OK})
+
+                    return next()
+                }
+                else
+                {
+                    req.status = httpCodes.NOT_FOUND
+
+                    logger.warn(`user id ${req.params.id} not found`, {file: 'page.middleware.js', function: 'userIdExist', http: httpCodes.NOT_FOUND})
+
+                    return next()
+                }
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                req.status = httpCodes.INTERNAL_SERVER_ERROR
+
+                logger.error(`user id ${req.params.id} exception ${exception.message}`, {file: 'page.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return next()
             }
-            else
-            {
-                req.status = httpCodes.NOT_FOUND
-
-                logger.warn(`user id ${req.params.id} not found`, {file: 'page.middleware.js', function: 'userIdExist', http: httpCodes.NOT_FOUND})
-
-                return next()
-            }
-        }).catch((exception) =>
-        {
-            req.status = httpCodes.INTERNAL_SERVER_ERROR
-
-            logger.error(`user id ${req.params.id} exception ${exception.message}`, {file: 'page.middleware.js', function: 'userIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return next()
-        })
+        )
 }
 
 postIdExist = (req, res, next) =>
@@ -64,35 +69,39 @@ postIdExist = (req, res, next) =>
 
     db.Post
         .findByPk(req.params.id)
-        .then((post) =>
-        {
-            if(post)
+        .then(
+            (post) =>
             {
-                req.post = post
+                if(post)
+                {
+                    req.post = post
 
-                req.status = httpCodes.OK
-                
-                logger.debug(`post id ${req.params.id} found`, {file: 'page.middleware.js', function: 'postIdExist', http: httpCodes.OK})
+                    req.status = httpCodes.OK
+                    
+                    logger.debug(`post id ${req.params.id} found`, {file: 'page.middleware.js', function: 'postIdExist', http: httpCodes.OK})
+
+                    return next()
+                }
+                else
+                {
+                    req.status = httpCodes.NOT_FOUND
+
+                    logger.warn(`post id ${req.params.id} not found`, {file: 'page.middleware.js', function: 'postIdExist', http: httpCodes.NOT_FOUND})
+
+                    return next()
+                }
+            }
+        )
+        .catch(
+            (exception) =>
+            {
+                req.status = httpCodes.INTERNAL_SERVER_ERROR
+
+                logger.error(`post id ${req.params.id} exception ${exception.message}`, {file: 'page.middleware.js', function: 'postIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
 
                 return next()
             }
-            else
-            {
-                req.status = httpCodes.NOT_FOUND
-
-                logger.warn(`post id ${req.params.id} not found`, {file: 'page.middleware.js', function: 'postIdExist', http: httpCodes.NOT_FOUND})
-
-                return next()
-            }
-        })
-        .catch((exception) =>
-        {
-            req.status = httpCodes.INTERNAL_SERVER_ERROR
-
-            logger.error(`post id ${req.params.id} exception ${exception.message}`, {file: 'page.middleware.js', function: 'postIdExist', http: httpCodes.INTERNAL_SERVER_ERROR})
-
-            return next()
-        })
+        )
 }
 
 tokenExistVerify = (req, res, next) =>
@@ -113,25 +122,29 @@ tokenExistVerify = (req, res, next) =>
 
     const secret = process.env.APP_SECRET + req.user.password
 
-    jwt.verify(req.params.token, secret, (error, decoded) =>
-    {
-        if(error)
+    jwt.verify(
+        req.params.token,
+        secret,
+        (error, decoded) =>
         {
-            logger.error(`user id ${req.user.id} user name ${req.user.username}'s token ${req.params.token} invalid ${error}`, {file: 'page.middleware.js', function: 'tokenExistVerify', http: httpCodes.UNAUTHORIZED})
+            if(error)
+            {
+                logger.error(`user id ${req.user.id} user name ${req.user.username}'s token ${req.params.token} invalid ${error}`, {file: 'page.middleware.js', function: 'tokenExistVerify', http: httpCodes.UNAUTHORIZED})
 
-            req.status = httpCodes.UNAUTHORIZED
+                req.status = httpCodes.UNAUTHORIZED
+
+                return next()
+            }
+
+            req.user_id = decoded.id
+
+            req.status = httpCodes.OK
+
+            logger.debug(`user id ${decoded.id}'s token ${req.params.token} authorized`, {file: 'page.middleware.js', function: 'tokenExistVerify', http: httpCodes.OK})
 
             return next()
         }
-
-        req.user_id = decoded.id
-
-        req.status = httpCodes.OK
-
-        logger.debug(`user id ${decoded.id}'s token ${req.params.token} authorized`, {file: 'page.middleware.js', function: 'tokenExistVerify', http: httpCodes.OK})
-
-        return next()
-    })
+    )
 }
 
 
