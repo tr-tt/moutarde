@@ -22,19 +22,20 @@
         <mou-link id="logout" slot="controls" label="Se déconnecter" css="colored" title="Se déconnecter"></mou-link>
     </mou-headerbar>
 
-    <div id="empty">
-        <div class="root__bar"></div>
+    <div id="page" class="root__page">
+        <div id="post">
+            <div class="root__bar"></div>
 
-        <div class="root__fields">
-            <p>
-                Pour commencer à <strong>créer une nouvelle page</strong> de carnet vous pouvez cliquer sur le bouton ci dessous :
-            </p>
-            <div style="display: flex;">
-                <mou-link href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
+            <div id="post__frame">
+                <p>
+                    Pour commencer à <strong>créer une nouvelle page</strong> de carnet vous pouvez cliquer sur le bouton ci dessous :
+                </p>
+
+                <div id="post__controls">
+                    <mou-link href="/posts/new" label="Nouvelle page" css="colored" title="Créer une nouvelle page de carnet"></mou-link>
+                </div>
             </div>
         </div>
     </div>
-
-    <div id="page" class="root__page hide"></div>
 </body>
 </html>

@@ -13,7 +13,6 @@ if(process.env.NODE_ENV === 'development' && module.hot)
 const _loading = document.querySelector('#loading')
 const _logout = document.querySelector('#logout')
 const _page = document.querySelector('#page')
-const _empty = document.querySelector('#empty')
 
 /*===============================================//
 // Logouts the user and redirects him to the
@@ -55,9 +54,6 @@ const createPostsView = (posts) =>
         return
     }
 
-    _empty.classList.add('hide')
-    _page.classList.remove('hide')
-
     posts.forEach(
         (post) =>
         {
@@ -83,18 +79,6 @@ const createPostsView = (posts) =>
             {
                 postElement.setAttribute('description', post.description)
             }        
-
-            postElement.addEventListener(
-                'mou-post:delete',
-                () =>
-                {
-                    if(_page.childElementCount === 1)
-                    {
-                        _empty.classList.remove('hide')
-                        _page.classList.add('hide')
-                    }
-                }
-            )
             
             _page.appendChild(postElement)
         }

@@ -7,9 +7,9 @@ const _MARGIN__T = 20
 const _MARGIN__B = 20
 const _TITLE__SIZE = 35
 const _ICON__SIZE = 25
-const _HEADER__SIZE = 16
-const _DATE__SIZE = 18
-const _TEXT__SIZE = 12
+const _HEADER__SIZE = 12
+const _DATE__SIZE = 14
+const _TEXT__SIZE = 10
 const _COLOR__1 = '#DD9936'
 const _COLOR__BLACK = '#000000'
 
@@ -121,9 +121,15 @@ const drawPostPicture = (doc, imageData, imageX, imageY) =>
 
     doc.image(imageData.blob, imageX, imageY, 
         {
-            fit: [halfWidth - _MARGIN__L, 300]
+           fit: [halfWidth - _MARGIN__L, 200],
+           align: 'center',
+           valign: 'center'
         }
     )
+    .rect(imageX, imageY, halfWidth - _MARGIN__L, 200)
+    .stroke()
+
+    doc.y = 290.8 // required because the doc.y is not well computed if the first image is smaller than the fit property.
 }
 
 const drawPostPictureFooter = (doc) =>

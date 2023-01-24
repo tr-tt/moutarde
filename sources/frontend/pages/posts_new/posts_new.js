@@ -113,7 +113,7 @@ const buildFormAndSend = () =>
 
     if(when)
     {
-        formData.append('when', when)
+        formData.append('when', new Date(when).toISOString())
     }
 
     if(feeling)
