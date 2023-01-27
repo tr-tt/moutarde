@@ -153,7 +153,14 @@ else
 {
     app.use(express.static(path.resolve('_build')))
 
-    db.sequelize.sync()
+    db.sequelize
+        .sync()
+        .then(
+            () =>
+            {
+                populate()
+            }
+        )
 }
 
 /*===============================================//
