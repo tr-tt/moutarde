@@ -178,7 +178,14 @@ const buildFormAndSend = () =>
 
     if(when)
     {
-        formData.append('when', new Date(when).toISOString())
+        try
+        {
+            formData.append('when', new Date(when).toISOString())
+        }
+        catch(exception)
+        {
+            console.error(exception)
+        }
     }
 
     if(feeling)

@@ -213,104 +213,146 @@ buildPDF = (user, posts, dataCallback, endCallback) =>
             }
 
             /*===============================================//
-            // pictures
-            //===============================================*/
-
-            drawPostPictureHeader(doc, 'Mes visuels', '10_appareil_photo.png')
-
-            let imageX = _MARGIN__L
-            let imageY = doc.y
-
-            if(post.Images[0]
-                && post.Images[0].dataValues.name
-                && post.Images[0].dataValues.type
-                && post.Images[0].dataValues.blob
-            )
-            {
-                drawPostPicture(doc, post.Images[0].dataValues, imageX, imageY)
-
-                imageX = doc.page.width / 2
-            }
-
-            if(post.Images[1]
-                && post.Images[1].dataValues.name
-                && post.Images[1].dataValues.type
-                && post.Images[1].dataValues.blob
-            )
-            {
-                drawPostPicture(doc, post.Images[1].dataValues, imageX, imageY)
-            }
-
-            drawPostPictureFooter(doc)
-
-            /*===============================================//
             // situation
             //===============================================*/
 
             drawPost(doc, 'Situation vécue', post.situation)
 
             /*===============================================//
+            // pictures
+            //===============================================*/
+
+            if(
+                (
+                    post.Images[0]
+                    && post.Images[0].dataValues.name
+                    && post.Images[0].dataValues.type
+                    && post.Images[0].dataValues.blob
+                )
+                ||
+                (
+                    post.Images[1]
+                    && post.Images[1].dataValues.name
+                    && post.Images[1].dataValues.type
+                    && post.Images[1].dataValues.blob
+                )
+            )
+            {
+                drawPostPictureHeader(doc, 'Mes visuels', '10_appareil_photo.png')
+
+                let imageX = _MARGIN__L
+                let imageY = doc.y
+    
+                if(post.Images[0]
+                    && post.Images[0].dataValues.name
+                    && post.Images[0].dataValues.type
+                    && post.Images[0].dataValues.blob
+                )
+                {
+                    drawPostPicture(doc, post.Images[0].dataValues, imageX, imageY)
+    
+                    imageX = doc.page.width / 2
+                }
+    
+                if(post.Images[1]
+                    && post.Images[1].dataValues.name
+                    && post.Images[1].dataValues.type
+                    && post.Images[1].dataValues.blob
+                )
+                {
+                    drawPostPicture(doc, post.Images[1].dataValues, imageX, imageY)
+                }
+    
+                drawPostPictureFooter(doc)
+            }
+
+            /*===============================================//
             // tool
             //===============================================*/
 
-            drawPost(doc, 'Outil cible', post.tool)
-
+            if(post.tool)
+            {
+                drawPost(doc, 'Outil cible', post.tool)
+            }
+            
             /*===============================================//
             // feeling
             //===============================================*/
 
-            let feeling__icon = ''
+            if(post.feeling)
+            {
+                let feeling__icon = ''
 
-            if(post.feeling === 'Satisfaisant')
-            {
-                feeling__icon = '1_satisfaisant.png'
-            }
-            else if(post.feeling === 'Indécis')
-            {
-                feeling__icon = '2_indecis.png'
-            }
-            else if(post.feeling === 'Insatisfaisant')
-            {
-                feeling__icon = '3_insatisfaisant.png'
-            }
+                if(post.feeling === 'Satisfaisant')
+                {
+                    feeling__icon = '1_satisfaisant.png'
+                }
+                else if(post.feeling === 'Indécis')
+                {
+                    feeling__icon = '2_indecis.png'
+                }
+                else if(post.feeling === 'Insatisfaisant')
+                {
+                    feeling__icon = '3_insatisfaisant.png'
+                }
 
-            drawPost(doc, 'Ressenti', post.feeling, feeling__icon)
+                drawPost(doc, 'Ressenti', post.feeling, feeling__icon)
+            }
+            
 
             /*===============================================//
             // description
             //===============================================*/
 
-            drawPost(doc, `Ce qu'il s'est passé (personnes impliquées, lieu(x) et déroulement)`, post.description, '4_ce_qu_il_s_est_passe.png')
-
+            if(post.description)
+            {
+                drawPost(doc, `Ce qu'il s'est passé (personnes impliquées, lieu(x) et déroulement)`, post.description, '4_ce_qu_il_s_est_passe.png')
+            }
+            
             /*===============================================//
             // ressource
             //===============================================*/
 
-            drawPost(doc, 'Autre(s) ressource(s) ou support(s) mobilisé(s)', post.ressource, '5_autres_ressources.png')
+            if(post.ressource)
+            {
+                drawPost(doc, 'Autre(s) ressource(s) ou support(s) mobilisé(s)', post.ressource, '5_autres_ressources.png')
+            }
 
             /*===============================================//
             // difficulty
             //===============================================*/
 
-            drawPost(doc, 'Difficulté(s) rencontrée(s)', post.difficulty, '6_difficulte.png')
+            if(post.difficulty)
+            {
+                drawPost(doc, 'Difficulté(s) rencontrée(s)', post.difficulty, '6_difficulte.png')
+            }
 
             /*===============================================//
             // trick
             //===============================================*/
 
-            drawPost(doc, 'Astuces', post.trick, '7_astuces.png')
-
+            if(post.trick)
+            {   
+                drawPost(doc, 'Astuces', post.trick, '7_astuces.png')
+            }
+            
             /*===============================================//
             // improvement
             //===============================================*/
 
-            drawPost(doc, 'Futurs imaginés pour cette situation', post.improvement, '8_futurs_imagines.png')
-
+            if(post.improvement)
+            {
+                drawPost(doc, 'Futurs imaginés pour cette situation', post.improvement, '8_futurs_imagines.png')
+            }
+            
             /*===============================================//
             // more
             //===============================================*/
 
-            drawPost(doc, 'En dire plus ?', post.more, '9_en_dire_plus.png')
+            if(post.more)
+            {
+                drawPost(doc, 'En dire plus ?', post.more, '9_en_dire_plus.png')
+            }
         }
     )
 
