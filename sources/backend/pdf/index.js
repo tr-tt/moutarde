@@ -128,8 +128,6 @@ const drawPostPicture = (doc, imageData, imageX, imageY) =>
     )
     .rect(imageX, imageY, halfWidth - _MARGIN__L, 200)
     .stroke()
-
-    doc.y = 290.8 // required because the doc.y is not well computed if the first image is smaller than the fit property.
 }
 
 const drawPostPictureFooter = (doc) =>
@@ -264,6 +262,8 @@ buildPDF = (user, posts, dataCallback, endCallback) =>
                 }
     
                 drawPostPictureFooter(doc)
+
+                doc.y = imageY + 210 // required because the doc.y is not well computed if the first image is smaller than the fit property.
             }
 
             /*===============================================//
