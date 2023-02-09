@@ -51,11 +51,12 @@ class MOUInputPicture extends HTMLElement
 
         if(file)
         {
+            console.log('before', file);
             compressAccurately(file, this._maxSize)
                 .then(
                     (blob) =>
                     {
-                        this._file0 = new File([blob], file.name)
+                        this._file0 = new File([blob], file.name, {type: file.type})
 
                         this._img0.src = URL.createObjectURL(this._file0)
                         this._img0.classList.remove('hide')
@@ -84,7 +85,7 @@ class MOUInputPicture extends HTMLElement
                 .then(
                     (blob) =>
                     {
-                        this._file1 = new File([blob], file.name)
+                        this._file1 = new File([blob], file.name, {type: file.type})
 
                         this._img1.src = URL.createObjectURL(this._file1)
                         this._img1.classList.remove('hide')
